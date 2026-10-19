@@ -48,7 +48,7 @@ export function loadConfig(): ApiConfig {
     botToken: required('TOKEN'),
     port,
     apiUrl: trimSlash(optional('API_URL') ?? `http://localhost:${port}`),
-    webUrl: trimSlash(optional('WEB_URL') ?? 'http://localhost:5173'),
+    webUrl: trimSlash(optional('WEB_URL') ?? 'http://localhost:5180'),
     databasePath: path.resolve(ROOT_DIR, optional('DATABASE_PATH') ?? 'storage/mythcore.db'),
   };
 }

@@ -1,4 +1,7 @@
 import { accounts, audit, closeDatabase, openDatabase, settings, shop, work } from '@mythcore/core';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import type { FastifyInstance, InjectOptions } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { buildApp } from '../src/app.ts';
@@ -237,5 +240,22 @@ describe('shop', () => {
   it('only lists roles the bot could give', async () => {
     const { roles } = (await call('GET', guildUrl('/roles'))).json();
     expect(roles.map((role: { id: string }) => role.id)).toEqual([ROLE]);
+  });
+});
+
+describe('dashboard files', () => {
+  it('serves the built dashboard and keeps API errors as JSON', async () => {
+    const webDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mythcore-web-'));
+    fs.writeFileSync(path.join(webDir, 'index.html'), '<div id="app"></div>');
+    const web = await buildApp({ config, discord: fakeDiscord, webDir });
+
+    const page = await web.inject({ method: 'GET', url: `/g/${ADMIN_GUILD}/members` });
+    expect(page.statusCode).toBe(200);
+    expect(page.body).toContain('id="app"');
+
+    const missing = await web.inject({ method: 'GET', url: '/api/nothing' });
+    expect(missing.statusCode).toBe(404);
+    expect(missing.json()).toEqual({ error: 'not_found' });
+    await web.close();
   });
 });

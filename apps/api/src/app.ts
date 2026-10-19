@@ -1,4 +1,5 @@
 import cookie from '@fastify/cookie';
+import staticFiles from '@fastify/static';
 import Fastify, { type FastifyInstance } from 'fastify';
 import { access, type Access } from './access.ts';
 import { authRoutes } from './routes/auth.ts';
@@ -24,14 +25,22 @@ export interface AppOptions {
   config: ApiConfig;
   discord: DiscordApi;
   logger?: boolean;
+  /** Built dashboard (apps/web/dist) to serve next to the API, if any. */
+  webDir?: string | null;
 }
 
 export async function buildApp({
   config,
   discord,
   logger = false,
+  webDir = null,
 }: AppOptions): Promise<FastifyInstance> {
-  const app = Fastify({ logger, trustProxy: true });
+  const app = Fastify({
+    logger,
+    trustProxy: true,
+    // Schemas use type lists such as ['string', 'null'].
+    ajv: { customOptions: { allowUnionTypes: true } },
+  });
   app.decorate('config', config);
   app.decorate('discord', discord);
   app.decorate('access', access(discord));
@@ -77,5 +86,18 @@ export async function buildApp({
     },
     { prefix: '/api/guilds/:guildId' },
   );
+
+  if (webDir) {
+    // One process serves the dashboard and its API. Unknown paths load the
+    // app, which has its own router; unknown API paths stay JSON 404s.
+    await app.register(staticFiles, { root: webDir, wildcard: false });
+    app.setNotFoundHandler((request, reply) => {
+      const apiPath = /^\/(api|auth)(\/|$)/.test(request.url);
+      if (request.method !== 'GET' || apiPath) {
+        return reply.status(404).send({ error: 'not_found' });
+      }
+      return reply.sendFile('index.html');
+    });
+  }
   return app;
 }
