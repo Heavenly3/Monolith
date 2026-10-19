@@ -20,6 +20,7 @@ export * as roleRewards from './services/roleRewards.ts';
 export * as settings from './services/settings.ts';
 export * as settingsForm from './services/settingsForm.ts';
 export * as shop from './services/shop.ts';
+export * as webSessions from './services/webSessions.ts';
 export * as wheel from './services/wheel.ts';
 export * as work from './services/work.ts';
 
@@ -33,6 +34,7 @@ export type { DrawResult, TicketPurchase } from './services/raffle.ts';
 export type { RobResult } from './services/rob.ts';
 export type { RoleReward } from './services/roleRewards.ts';
 export type { NewProduct } from './services/shop.ts';
+export type { WebSession } from './services/webSessions.ts';
 export type { Adjustment, MoneyAction } from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';
 export type { BetResult, Settlement } from './games/bets.ts';

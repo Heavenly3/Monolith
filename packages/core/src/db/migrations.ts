@@ -189,6 +189,22 @@ export const MIGRATIONS: readonly string[] = [
   );
   CREATE INDEX idx_audit_guild ON audit_log (guild_id, created_at DESC);
   `,
+
+  // 4 — sessions of the web dashboard (Discord login)
+  `
+  CREATE TABLE web_sessions (
+    id           TEXT PRIMARY KEY,          -- SHA-256 of the cookie token
+    user_id      TEXT NOT NULL,
+    username     TEXT NOT NULL,
+    avatar       TEXT,
+    access_token TEXT NOT NULL,
+    guilds       TEXT,                      -- cached guild list (JSON)
+    guilds_at    INTEGER,
+    expires_at   INTEGER NOT NULL,
+    created_at   INTEGER NOT NULL DEFAULT ${NOW}
+  );
+  CREATE INDEX idx_web_sessions_expiry ON web_sessions (expires_at);
+  `,
 ];
 
 /** Tables that belong to one server (used to hand legacy data over to a server). */
