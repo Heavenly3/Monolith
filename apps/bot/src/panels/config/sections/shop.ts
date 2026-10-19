@@ -1,6 +1,6 @@
 import { LabelBuilder, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
-import { formatNumber, parseWholeNumber, shop, type Product } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { formatNumber, parseWholeNumber, shop, type Product } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { coins, emojis } from '../../../ui/index.ts';
 import { ButtonStyle, button, list, modal, picker, textField } from '../shared.ts';
 import { confirmed, type Section } from '../types.ts';

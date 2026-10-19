@@ -55,7 +55,7 @@ function createV2Database(file: string): void {
 
 describe('migration to per-server economies', () => {
   it('keeps every balance, item, loan and setting', () => {
-    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'spacebet-'));
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mythcore-'));
     const file = path.join(dir, 'v2.db');
     createV2Database(file);
 

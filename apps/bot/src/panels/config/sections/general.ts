@@ -1,6 +1,6 @@
 import { StringSelectMenuBuilder } from 'discord.js';
-import { parseFieldValue, settings, settingsForm, type SettingValues } from '@spacebet/core';
-import { LANGUAGES, translator, type Translator } from '@spacebet/i18n';
+import { parseFieldValue, settings, settingsForm, type SettingValues } from '@mythcore/core';
+import { LANGUAGES, translator, type Translator } from '@mythcore/i18n';
 import { emojis } from '../../../ui/index.ts';
 import { ButtonStyle, actionId, categoryLines, resetButton } from '../shared.ts';
 import type { Section } from '../types.ts';
@@ -16,7 +16,7 @@ function languageMenu(t: Translator, guildId: string): StringSelectMenuBuilder {
       (['auto', ...LANGUAGES] as const).map((value) => ({
         label: t(`config.languages.${value}`),
         description: value === 'auto' ? t('config.languages.autoDescription') : undefined,
-        emoji: value === 'auto' ? emojis.galaxy : translator(value)('meta.flag'),
+        emoji: value === 'auto' ? emojis.realm : translator(value)('meta.flag'),
         value,
         default: value === current,
       })),

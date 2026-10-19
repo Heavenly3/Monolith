@@ -1,6 +1,6 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { KENO, rules } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { KENO, rules } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { betError, outcomeColor, placeBet, resultText, settle } from '../../services/games.ts';
 import * as ui from '../../ui/index.ts';
@@ -23,12 +23,12 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('keno')
-    .setDescription(`Pick up to ${KENO.maxSpots} numbers and hope they are drawn.`)
+    .setDescription(`Keno: pick up to ${KENO.maxSpots} numbers and see how many are drawn.`)
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName('bet')
-        .setDescription('Your bet — e.g. 500, 2.5k, half or all')
+        .setDescription('Your wager — e.g. 500, 2.5k, half or all')
         .setRequired(true)
         .setMaxLength(20),
     )
@@ -42,8 +42,8 @@ export default defineCommand({
     )
     .addIntegerOption((option) =>
       option
-        .setName('quickpick')
-        .setDescription('Let the bot pick this many numbers for you')
+        .setName('random')
+        .setDescription('Let the bot pick this many random numbers for you')
         .setMinValue(1)
         .setMaxValue(KENO.maxSpots),
     ),
@@ -59,7 +59,7 @@ export default defineCommand({
         return interaction.reply(ui.error(t(`keno.${parsed.error}`, ERROR_VARS[parsed.error])));
       picks = parsed.numbers;
     } else {
-      picks = rules.quickPick(interaction.options.getInteger('quickpick') ?? 5);
+      picks = rules.quickPick(interaction.options.getInteger('random') ?? 5);
     }
 
     const bet = placeBet(guildId, user, interaction.options.getString('bet', true), 'keno');

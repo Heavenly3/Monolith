@@ -4,8 +4,8 @@ import {
   InteractionContextType,
   SlashCommandBuilder,
 } from 'discord.js';
-import { accounts, shop, truncate, type Product } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { accounts, shop, truncate, type Product } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import { buy } from '../../services/purchases.ts';
@@ -38,7 +38,7 @@ function render(t: Translator, guildId: string, page: number): ui.Card {
   if (products.length === 0) {
     return card
       .divider()
-      .text(`${emojis.star} ${t('shop.empty')}`)
+      .text(`${emojis.candle} ${t('shop.empty')}`)
       .footer();
   }
 

@@ -1,5 +1,5 @@
 import { REST, Routes, type RESTPutAPIApplicationCommandsResult } from 'discord.js';
-import { logger } from '@spacebet/core';
+import { logger } from '@mythcore/core';
 import { env } from './env.ts';
 import { loadCommands } from './framework/loader.ts';
 

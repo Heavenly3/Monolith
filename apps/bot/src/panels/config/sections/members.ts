@@ -1,13 +1,11 @@
 import { LabelBuilder, StringSelectMenuBuilder, UserSelectMenuBuilder } from 'discord.js';
-import { accounts, formatNumber, parseWholeNumber, type Balance } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { accounts, formatNumber, parseWholeNumber, type Balance } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { coins, emojis } from '../../../ui/index.ts';
 import { ButtonStyle, button, modal, textField } from '../shared.ts';
 import type { Section } from '../types.ts';
 
-const ACTIONS = ['add', 'remove', 'set', 'reset'] as const;
-type MoneyAction = (typeof ACTIONS)[number];
-const MEDALS = [emojis.first, emojis.second, emojis.third];
+const medals = (): string[] => [emojis.first, emojis.second, emojis.third];
 
 function adjustModal(t: Translator) {
   const select = (id: string, required: boolean) =>
@@ -21,7 +19,7 @@ function adjustModal(t: Translator) {
       ),
     new LabelBuilder().setLabel(t('panel.members.action')).setStringSelectMenuComponent(
       select('action', true).addOptions(
-        ACTIONS.map((value) => ({
+        accounts.MONEY_ACTIONS.map((value) => ({
           label: t(`panel.members.actions.${value}`),
           value,
           default: value === 'add',
@@ -54,7 +52,7 @@ export const members: Section = {
     const stats = accounts.stats(guildId);
     const top = accounts
       .leaderboard(guildId, 3)
-      .map((row, i) => `${MEDALS[i]} <@${row.userId}> · ${coins(row.netWorth)}`);
+      .map((row, i) => `${medals()[i]} <@${row.userId}> · ${coins(row.netWorth)}`);
     return {
       blocks: [
         [
@@ -77,7 +75,7 @@ export const members: Section = {
     save({ t, guildId, fields }) {
       if (!fields) return { error: t('config.unknown') };
       const user = fields.getSelectedUsers('user', true).first()!;
-      const action = (fields.getStringSelectValues('action')[0] ?? 'add') as MoneyAction;
+      const action = (fields.getStringSelectValues('action')[0] ?? 'add') as accounts.MoneyAction;
       const account = (fields.getStringSelectValues('account')[0] ?? 'wallet') as Balance;
       const amount = parseWholeNumber(fields.getTextInputValue('amount'));
 
@@ -86,32 +84,14 @@ export const members: Section = {
         return { error: t('panel.members.amountRequired') };
       }
 
-      const before = accounts.getAccount(guildId, user);
-      const vars = { user, account: t(`moneyAdmin.accounts.${account}`) };
-      let summary: string;
-      switch (action) {
-        case 'add':
-          accounts.credit(guildId, user.id, amount!, 'admin', account);
-          summary = t('moneyAdmin.add', { ...vars, amount: coins(amount!) });
-          break;
-        case 'remove':
-          summary = t('moneyAdmin.remove', {
-            ...vars,
-            amount: coins(accounts.debitUpTo(guildId, user.id, amount!, 'admin', account)),
-          });
-          break;
-        case 'set':
-          accounts.setBalance(guildId, user.id, account, amount!);
-          summary = t('moneyAdmin.set', { ...vars, amount: coins(amount!) });
-          break;
-        case 'reset':
-          accounts.setBalance(guildId, user.id, 'wallet', 0);
-          accounts.setBalance(guildId, user.id, 'bank', 0);
-          summary = t('moneyAdmin.reset', vars);
-          break;
-      }
+      const {
+        before,
+        after,
+        amount: moved,
+      } = accounts.adjust(guildId, user, action, account, amount ?? 0);
+      const vars = { user, account: t(`moneyAdmin.accounts.${account}`), amount: coins(moved) };
+      const summary = t(`moneyAdmin.${action}`, vars);
 
-      const after = accounts.findAccount(guildId, user.id)!;
       return {
         banner: [
           `${emojis.success} ${summary}`,

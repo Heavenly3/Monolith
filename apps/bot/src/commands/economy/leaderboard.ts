@@ -4,15 +4,15 @@ import {
   InteractionContextType,
   SlashCommandBuilder,
 } from 'discord.js';
-import { accounts } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { accounts } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis } from '../../ui/index.ts';
 
 const PAGE_SIZE = 10;
-const MEDALS = [emojis.first, emojis.second, emojis.third];
+const medals = (): string[] => [emojis.first, emojis.second, emojis.third];
 
 function render(t: Translator, guildId: string, userId: string, page: number): ui.Card {
   const pages = Math.max(1, Math.ceil(accounts.leaderboardSize(guildId) / PAGE_SIZE));
@@ -21,7 +21,7 @@ function render(t: Translator, guildId: string, userId: string, page: number): u
 
   const lines = rows.map((row, index) => {
     const position = current * PAGE_SIZE + index + 1;
-    const badge = MEDALS[position - 1] ?? `\`#${position}\``;
+    const badge = medals()[position - 1] ?? `\`#${position}\``;
     const you = row.userId === userId ? ` ◂ **${t('leaderboard.you')}**` : '';
     return `${badge} <@${row.userId}> · ${coins(row.netWorth)}${you}`;
   });
@@ -29,7 +29,7 @@ function render(t: Translator, guildId: string, userId: string, page: number): u
   const card = new ui.Card('leaderboard')
     .header(ui.featureTitle(t, 'leaderboard'), t('leaderboard.subtitle'))
     .divider()
-    .text(lines.length ? lines.join('\n') : `${emojis.brand} ${t('leaderboard.empty')}`);
+    .text(lines.length ? lines.join('\n') : `${emojis.crest} ${t('leaderboard.empty')}`);
 
   if (pages > 1) {
     card.actions([
@@ -58,7 +58,7 @@ function render(t: Translator, guildId: string, userId: string, page: number): u
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('leaderboard')
-    .setDescription('See the richest commanders in the galaxy.')
+    .setDescription('See the richest members of the server.')
     .setContexts(InteractionContextType.Guild),
 
   async execute(interaction, { t, guildId }) {

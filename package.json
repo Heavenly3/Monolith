@@ -1,7 +1,7 @@
 {
-  "name": "spacebet",
+  "name": "mythcore",
   "version": "3.0.0",
-  "description": "A space-themed economy and casino bot for Discord.",
+  "description": "A medieval fantasy economy and tavern-games bot for Discord.",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -18,9 +18,9 @@
     "apps/*"
   ],
   "scripts": {
-    "start": "npm run start -w @spacebet/bot",
-    "dev": "npm run dev -w @spacebet/bot",
-    "deploy": "npm run deploy -w @spacebet/bot --",
+    "start": "npm run start -w @mythcore/bot",
+    "dev": "npm run dev -w @mythcore/bot",
+    "deploy": "npm run deploy -w @mythcore/bot --",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -31,10 +31,12 @@
     "check:i18n": "node scripts/check-i18n.ts",
     "check": "npm run typecheck && npm run lint && npm run check:i18n && npm test",
     "migrate:legacy": "node scripts/migrate-legacy.ts",
-    "seed:shop": "node scripts/seed-shop.ts"
+    "seed:shop": "node scripts/seed-shop.ts",
+    "emojis": "node scripts/emojis.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.0.0",
     "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",

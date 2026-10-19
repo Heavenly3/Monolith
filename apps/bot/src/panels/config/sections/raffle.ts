@@ -1,4 +1,4 @@
-import { formatNumber, raffle } from '@spacebet/core';
+import { formatNumber, raffle } from '@mythcore/core';
 import { coins, emojis, relativeTime } from '../../../ui/index.ts';
 import { categoryLines, editButton, resetButton } from '../shared.ts';
 import type { Section } from '../types.ts';

@@ -1,5 +1,5 @@
-import type { WheelReward } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import type { WheelReward } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { emojis, type EmojiName } from './emojis.ts';
 import { coins } from './format.ts';
 
@@ -29,7 +29,7 @@ export type Feature =
   | 'help';
 
 const FEATURE_ICONS: Record<Feature, EmojiName> = {
-  balance: 'planet',
+  balance: 'wallet',
   bank: 'bank',
   work: 'work',
   collect: 'collect',

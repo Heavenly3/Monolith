@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { ROB, rob } from '@spacebet/core';
+import { ROB, rob } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis, relativeTime } from '../../ui/index.ts';
@@ -9,10 +9,10 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('rob')
-    .setDescription("Try to steal from another member's wallet. Risky!")
+    .setDescription("Try to steal gold from another member's wallet. Risky!")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
-      option.setName('user').setDescription('Your victim').setRequired(true),
+      option.setName('user').setDescription('Who to rob').setRequired(true),
     ),
 
   async execute(interaction, { t, guildId }) {

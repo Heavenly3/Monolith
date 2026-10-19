@@ -1,13 +1,13 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { RAFFLE, accounts, formatDuration, formatNumber, raffle, settings } from '@spacebet/core';
+import { RAFFLE, accounts, formatDuration, formatNumber, raffle, settings } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis, relativeTime, ticket } from '../../ui/index.ts';
 
 export default defineCommand({
   data: new SlashCommandBuilder()
-    .setName('raffle')
-    .setDescription('The Galactic Raffle — pick a number and win the pot.')
+    .setName('lottery')
+    .setDescription('Lottery: buy a numbered ticket and win the prize.')
     .setContexts(InteractionContextType.Guild)
     .addSubcommand((sub) =>
       sub

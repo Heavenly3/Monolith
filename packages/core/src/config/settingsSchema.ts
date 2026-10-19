@@ -1,7 +1,7 @@
 // Settings editable from the admin panel, grouped by category. Shared by the
 // bot (/config) and the future web dashboard. Labels live in the locale files
 // under config.categories.<id> and config.fields.<id>.<field>.
-import { LANGUAGES } from '@spacebet/i18n';
+import { LANGUAGES } from '@mythcore/i18n';
 import type { SettingKey } from './defaults.ts';
 import { parseDuration, parseWholeNumber } from '../utils/parse.ts';
 

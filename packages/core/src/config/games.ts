@@ -7,12 +7,12 @@ export const MIN_BET = 100;
 export type GameName = 'slots' | 'roulette' | 'horserace' | 'keno';
 export type CooldownName = GameName | 'work' | 'collect' | 'wheel' | 'rob';
 
-export const SLOT_SYMBOLS = ['cherry', 'lemon', 'grape', 'bell', 'diamond', 'seven'] as const;
+export const SLOT_SYMBOLS = ['sword', 'shield', 'ale', 'crown', 'gem', 'dragon'] as const;
 export type SlotSymbol = (typeof SLOT_SYMBOLS)[number];
 
 export const SLOTS = {
   symbols: SLOT_SYMBOLS,
-  jackpotSymbol: 'seven' as SlotSymbol,
+  jackpotSymbol: 'dragon' as SlotSymbol,
   payouts: { pair: 1.5, triple: 10, jackpot: 25 },
 };
 
@@ -39,17 +39,18 @@ export const ROULETTE = {
 };
 
 export const HORSERACE = {
+  // The knights of the Royal Joust (internally still "horserace").
   horses: [
-    'Thunderbolt',
-    'Lightning',
-    'Storm',
-    'Tornado',
-    'Blizzard',
-    'Hurricane',
-    'Cyclone',
-    'Typhoon',
-    'Tempest',
-    'Gale',
+    'Sir Aldric',
+    'Lady Brienna',
+    'Sir Cedric',
+    'Dame Elowen',
+    'Sir Gareth',
+    'Lady Isolde',
+    'Sir Roland',
+    'Dame Sybil',
+    'Sir Tristan',
+    'Lady Wynn',
   ],
   payouts: { 1: 6, 2: 2, 3: 1 } as Record<number, number>,
 };

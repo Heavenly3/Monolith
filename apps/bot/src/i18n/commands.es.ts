@@ -1,120 +1,169 @@
-// Spanish names shown by the Discord client for descriptions, options and
-// choices. Command and option names stay in English so they are the same
-// for everyone; Discord limits each text to 100 characters.
-import { ROULETTE_BETS } from '@spacebet/core';
-import { LOCALES } from '@spacebet/i18n';
+// Spanish names and descriptions shown by the Discord client. The bot always
+// receives the English names, so the code only uses those. Discord limits
+// names to 32 lowercase characters and descriptions to 100.
+import { ROULETTE_BETS } from '@mythcore/core';
+import { LOCALES } from '@mythcore/i18n';
 
 const es = LOCALES.es;
 
-const amount = 'Cantidad — p. ej. 500, 2.5k, mitad o todo';
-const bet = 'Tu apuesta — p. ej. 500, 2.5k, mitad o todo';
+const amount = { name: 'cantidad', description: 'Cantidad — p. ej. 500, 2.5k, mitad o todo' };
+const bet = { name: 'apuesta', description: 'Tu apuesta — p. ej. 500, 2.5k, mitad o todo' };
+
+export interface OptionTexts {
+  name?: string;
+  description?: string;
+  choices?: Record<string, string>;
+}
 
 export interface CommandTexts {
+  name?: string;
   description?: string;
-  options?: Record<string, string>;
-  choices?: Record<string, Record<string, string>>;
+  options?: Record<string, OptionTexts>;
   subcommands?: Record<string, CommandTexts>;
 }
 
 export const commandsEs: Record<string, CommandTexts> = {
   balance: {
-    description: 'Muestra tu saldo o el de otro miembro.',
-    options: { user: 'Miembro a consultar' },
+    name: 'saldo',
+    description: 'Mira tu oro (cartera y banco) o el de otro miembro.',
+    options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
   },
   deposit: {
-    description: 'Pasa dinero de tu cartera al banco.',
+    name: 'depositar',
+    description: 'Pasa oro de tu cartera al banco, a salvo de ladrones.',
     options: { amount },
   },
   withdraw: {
-    description: 'Pasa dinero del banco a tu cartera.',
+    name: 'retirar',
+    description: 'Pasa oro del banco a tu cartera.',
     options: { amount },
   },
   pay: {
-    description: 'Envía dinero de tu cartera a otro miembro.',
-    options: { user: 'Quién recibe el dinero', amount },
+    name: 'pagar',
+    description: 'Da oro de tu cartera a otro miembro.',
+    options: { user: { name: 'usuario', description: 'Quién recibe el oro' }, amount },
   },
-  work: { description: 'Haz un trabajo por la galaxia y gana monedas.' },
-  income: { description: 'Cobra los ingresos que te dan tus roles.' },
-  wheel: { description: 'Gira la Rueda Cósmica para ganar un premio gratis.' },
+  work: { name: 'trabajar', description: 'Haz una misión y gana oro.' },
+  collect: { name: 'cobrar', description: 'Cobra los ingresos de tus roles.' },
+  wheel: { name: 'rueda', description: 'Gira la Rueda de la Fortuna para ganar un premio gratis.' },
   rob: {
-    description: 'Intenta robar de la cartera de otro miembro. ¡Es arriesgado!',
-    options: { user: 'Tu víctima' },
+    name: 'robar',
+    description: 'Intenta robar oro de la cartera de otro miembro. ¡Es arriesgado!',
+    options: { user: { name: 'usuario', description: 'A quién robar' } },
   },
-  leaderboard: { description: 'Mira a los comandantes más ricos de la galaxia.' },
+  leaderboard: { name: 'ranking', description: 'Mira a los miembros más ricos del servidor.' },
 
   slots: {
-    description: 'Tira de la palanca de la Tragamonedas Nebulosa.',
+    name: 'tragaperras',
+    description: 'Juega a la tragaperras: gira tres rodillos.',
     options: { bet },
   },
   roulette: {
-    description: 'Apuesta en la Ruleta Orbital.',
+    name: 'ruleta',
+    description: 'Apuesta en la ruleta.',
     options: {
       bet,
-      on: 'A qué apuestas',
-      number: 'El número al que apuestas (solo para "Número único")',
-    },
-    choices: {
-      on: Object.fromEntries(
-        Object.entries(ROULETTE_BETS).map(([value, { multiplier }]) => [
-          value,
-          `${es.roulette.bets[value as keyof typeof es.roulette.bets]} — paga ×${multiplier}`,
-        ]),
-      ),
+      on: {
+        name: 'jugada',
+        description: 'A qué apuestas',
+        choices: Object.fromEntries(
+          Object.entries(ROULETTE_BETS).map(([value, { multiplier }]) => [
+            value,
+            `${es.roulette.bets[value as keyof typeof es.roulette.bets]} — paga ×${multiplier}`,
+          ]),
+        ),
+      },
+      number: {
+        name: 'numero',
+        description: 'El número al que apuestas (solo para "Número único")',
+      },
     },
   },
   race: {
-    description: 'Apuesta por un caballo en el Derby de Cometas.',
-    options: { bet, horse: 'El caballo por el que apuestas' },
-  },
-  keno: {
-    description: 'Elige hasta 10 números y espera que salgan.',
+    name: 'carrera',
+    description: 'Apuesta por un caballero en la carrera de caballos.',
     options: {
       bet,
-      numbers: 'Hasta 10 números del 1 al 80, p. ej. "4 8 15 16 23 42"',
-      quickpick: 'Deja que el bot elija esta cantidad de números por ti',
+      knight: { name: 'caballero', description: 'El caballero por el que apuestas' },
     },
   },
-  raffle: {
-    description: 'La Rifa Galáctica — elige un número y gana el bote.',
+  keno: {
+    name: 'keno',
+    description: 'Keno: elige hasta 10 números y mira cuántos salen.',
+    options: {
+      bet,
+      numbers: {
+        name: 'numeros',
+        description: 'Hasta 10 números del 1 al 80, p. ej. "4 8 15 16 23 42"',
+      },
+      random: {
+        name: 'aleatorio',
+        description: 'El bot elige esta cantidad de números al azar por ti',
+      },
+    },
+  },
+  lottery: {
+    name: 'loteria',
+    description: 'Lotería: compra un boleto con número y gana el premio.',
     subcommands: {
       buy: {
+        name: 'comprar',
         description: 'Compra un boleto con un número del 000 al 999.',
-        options: { number: 'Tu número de la suerte (0-999)' },
+        options: { number: { name: 'numero', description: 'Tu número de la suerte (0-999)' } },
       },
-      info: { description: 'Mira el bote, la hora del sorteo y tus boletos.' },
+      info: { name: 'info', description: 'Mira el premio, la hora del sorteo y tus boletos.' },
     },
   },
 
   loan: {
-    description: 'Pide monedas prestadas al Banco Estelar.',
+    name: 'prestamo',
+    description: 'Pide oro prestado y devuélvelo con interés.',
     subcommands: {
       request: {
-        description: 'Pide un préstamo nuevo.',
-        options: { amount: 'Cuánto pedir — p. ej. 5000 o 10k' },
+        name: 'pedir',
+        description: 'Pide un préstamo.',
+        options: {
+          amount: { name: 'cantidad', description: 'Cuánto oro pedir — p. ej. 5000 o 10k' },
+        },
       },
-      status: { description: 'Consulta tu préstamo activo.' },
-      repay: { description: 'Paga tu préstamo completo.' },
+      status: { name: 'estado', description: 'Mira cuánto debes.' },
+      repay: { name: 'pagar', description: 'Paga toda tu deuda.' },
     },
   },
 
-  shop: { description: 'Mira los artículos a la venta.' },
+  shop: { name: 'tienda', description: 'Mira los objetos a la venta.' },
   buy: {
-    description: 'Compra un artículo de la tienda.',
-    options: { item: 'El artículo que quieres comprar', quantity: 'Cuántos (por defecto 1)' },
+    name: 'comprar',
+    description: 'Compra un objeto de la tienda.',
+    options: {
+      item: { name: 'objeto', description: 'El objeto que quieres comprar' },
+      quantity: { name: 'cantidad', description: 'Cuántos (por defecto 1)' },
+    },
   },
   use: {
-    description: 'Usa un artículo consumible de tu inventario.',
-    options: { item: 'El artículo que quieres usar', quantity: 'Cuántos (por defecto 1)' },
+    name: 'usar',
+    description: 'Usa un objeto consumible de tu inventario.',
+    options: {
+      item: { name: 'objeto', description: 'El objeto que quieres usar' },
+      quantity: { name: 'cantidad', description: 'Cuántos (por defecto 1)' },
+    },
   },
   inventory: {
-    description: 'Mira los artículos que tienes tú u otro miembro.',
-    options: { user: 'Miembro a consultar' },
+    name: 'inventario',
+    description: 'Mira tus objetos o los de otro miembro.',
+    options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
   },
 
   help: {
-    description: 'Guía de todos los comandos, juegos y ajustes del bot.',
-    options: { command: 'Abre directamente la ayuda de un comando' },
+    name: 'ayuda',
+    description: 'Aprende cómo funciona el bot: comandos, juegos y ajustes.',
+    options: {
+      command: { name: 'comando', description: 'Abre directamente la página de un comando' },
+    },
   },
 
-  config: { description: 'Abre el Centro de Control para gestionar todo el bot.' },
+  config: {
+    name: 'config',
+    description: 'Abre el panel de ajustes del bot (solo administradores).',
+  },
 };

@@ -1,4 +1,4 @@
-import { accounts, formatNumber, loans } from '@spacebet/core';
+import { accounts, formatNumber, loans } from '@mythcore/core';
 import { coins, emojis, relativeTime } from '../../../ui/index.ts';
 import {
   ButtonStyle,
@@ -31,7 +31,7 @@ export const loansSection: Section = {
                 t,
                 10,
               )
-            : `${emojis.galaxy} ${t('loansAdmin.empty')}`
+            : `${emojis.realm} ${t('loansAdmin.empty')}`
         }`,
       ],
       rows: [

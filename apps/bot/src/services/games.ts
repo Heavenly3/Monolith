@@ -1,5 +1,5 @@
-import { MIN_BET, bets, type BetResult, type GameName, type Settlement } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { MIN_BET, bets, type BetResult, type GameName, type Settlement } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import * as ui from '../ui/index.ts';
 import { emojis, coins } from '../ui/index.ts';
 

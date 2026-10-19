@@ -5,8 +5,8 @@ import type {
   ModalSubmitInteraction,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord.js';
-import type { SettingKey } from '@spacebet/core';
-import type { Language, Translator } from '@spacebet/i18n';
+import type { SettingKey } from '@mythcore/core';
+import type { Language, Translator } from '@mythcore/i18n';
 
 /** Passed to every handler. */
 export interface Context {

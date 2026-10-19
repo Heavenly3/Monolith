@@ -18,12 +18,12 @@ import {
   formatDuration,
   settings,
   type SettingField,
-} from '@spacebet/core';
-import type { Language, Translator } from '@spacebet/i18n';
+} from '@mythcore/core';
+import type { Language, Translator } from '@mythcore/i18n';
 import { defineCommand, type Context, type LoadedCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import { selectedValue } from '../../framework/respond.ts';
-import { describe } from '../../i18n/localizeCommand.ts';
+import { describe, localName } from '../../i18n/localizeCommand.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis, type ColorName, type EmojiName } from '../../ui/index.ts';
 import { settingLines } from '../../ui/settings.ts';
@@ -42,12 +42,12 @@ const SECTIONS: Record<
 };
 
 const COMMAND_ICONS: Record<string, EmojiName> = {
-  balance: 'planet',
+  balance: 'wallet',
   deposit: 'deposit',
   withdraw: 'withdraw',
   pay: 'payment',
   work: 'work',
-  income: 'collect',
+  collect: 'collect',
   wheel: 'wheel',
   rob: 'rob',
   leaderboard: 'rank',
@@ -55,7 +55,7 @@ const COMMAND_ICONS: Record<string, EmojiName> = {
   roulette: 'roulette',
   race: 'horse',
   keno: 'keno',
-  raffle: 'raffle',
+  lottery: 'raffle',
   loan: 'loan',
   shop: 'shop',
   buy: 'buy',
@@ -65,13 +65,13 @@ const COMMAND_ICONS: Record<string, EmojiName> = {
   config: 'config',
 };
 
-// Game commands and the feature (themed name) they belong to.
+// Game commands and the feature they belong to.
 const GAME_FEATURES = { slots: 'slots', roulette: 'roulette', race: 'horserace', keno: 'keno' };
 
 // Settings category of /config that affects each command.
 const COMMAND_SETTINGS: Record<string, string> = {
   work: 'work',
-  income: 'collect',
+  collect: 'collect',
   wheel: 'wheel',
   slots: 'games',
   roulette: 'games',
@@ -79,7 +79,7 @@ const COMMAND_SETTINGS: Record<string, string> = {
   keno: 'games',
   rob: 'games',
   loan: 'loans',
-  raffle: 'raffle',
+  lottery: 'raffle',
 };
 
 const icon = (name: string): string => emojis[COMMAND_ICONS[name] ?? 'help'];
@@ -154,7 +154,7 @@ function commandMenu({ t, lang }: View, commands: LoadedCommand[], selected?: st
     .setPlaceholder(t('help.commandPlaceholder'))
     .addOptions(
       commands.slice(0, 25).map((command) => ({
-        label: `/${command.data.name}`,
+        label: `/${localName(command.json, lang)}`,
         description: describe(command.json, lang).slice(0, 100),
         emoji: icon(command.data.name),
         value: command.data.name,
@@ -184,7 +184,7 @@ function renderHome(view: View): ui.Card {
     )
     .text(t('help.home.intro'))
     .divider()
-    .text(`### ${emojis.brand} ${t('help.home.quickStart')}\n${steps.join('\n')}`)
+    .text(`### ${emojis.crest} ${t('help.home.quickStart')}\n${steps.join('\n')}`)
     .divider()
     .text(
       visibleSections(admin)
@@ -256,7 +256,7 @@ function optionLines(view: View, options: APIApplicationCommandOption[] | undefi
   return (options ?? []).map((option) => {
     const optional =
       'required' in option && option.required ? '' : ` · *${view.t('help.optional')}*`;
-    return `› \`${option.name}\` — ${describe(option, view.lang)}${optional}`;
+    return `› \`${localName(option, view.lang)}\` — ${describe(option, view.lang)}${optional}`;
   });
 }
 
@@ -268,7 +268,7 @@ function renderCommand(view: View, command: LoadedCommand): ui.Card {
   )?.[0];
 
   const card = new ui.Card(sectionId ? SECTIONS[sectionId]!.color : 'help')
-    .header(`${icon(name)} /${name}`, describe(command.json, lang))
+    .header(`${icon(name)} /${localName(command.json, lang)}`, describe(command.json, lang))
     .text(t(`help.commands.${name}.about`));
 
   const subcommands = subcommandsOf(command.json.options);
@@ -312,7 +312,7 @@ function viewFor(
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('help')
-    .setDescription('Guide to every command, game and setting of the bot.')
+    .setDescription('Learn how the bot works: every command, game and setting.')
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
@@ -326,11 +326,15 @@ export default defineCommand({
     const admin = isAdmin(interaction.memberPermissions);
     return interaction.respond(
       [...interaction.client.commands.values()]
-        .filter((command) => (admin || !command.adminOnly) && command.data.name.includes(query))
-        .sort((a, b) => a.data.name.localeCompare(b.data.name))
+        .filter(
+          (command) =>
+            (admin || !command.adminOnly) &&
+            (command.data.name.includes(query) || localName(command.json, lang).includes(query)),
+        )
+        .sort((a, b) => localName(a.json, lang).localeCompare(localName(b.json, lang)))
         .slice(0, 25)
         .map((command) => ({
-          name: `/${command.data.name} — ${describe(command.json, lang)}`.slice(0, 100),
+          name: `/${localName(command.json, lang)} — ${describe(command.json, lang)}`.slice(0, 100),
           value: command.data.name,
         })),
     );
@@ -341,7 +345,11 @@ export default defineCommand({
     const requested = interaction.options.getString('command')?.replace(/^\//, '').toLowerCase();
 
     if (requested) {
-      const command = interaction.client.commands.get(requested);
+      const command =
+        interaction.client.commands.get(requested) ??
+        [...interaction.client.commands.values()].find(
+          (candidate) => localName(candidate.json, ctx.lang) === requested,
+        );
       if (!command || (command.adminOnly && !view.admin)) {
         return interaction.reply(ui.error(ctx.t('help.unknownCommand', { name: requested })));
       }

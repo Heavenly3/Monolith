@@ -1,4 +1,4 @@
-import { truncate, work } from '@spacebet/core';
+import { truncate, work } from '@mythcore/core';
 import { emojis } from '../../../ui/index.ts';
 import {
   ButtonStyle,

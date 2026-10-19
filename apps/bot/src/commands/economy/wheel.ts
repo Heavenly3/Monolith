@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, cooldowns, pick, wheel } from '@spacebet/core';
+import { accounts, cooldowns, pick, wheel } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import { wait } from '../../framework/respond.ts';
@@ -11,7 +11,7 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('wheel')
-    .setDescription('Spin the Cosmic Wheel for a free reward.')
+    .setDescription('Spin the Wheel of Fortune for a free prize.')
     .setContexts(InteractionContextType.Guild),
 
   async execute(interaction, { t, guildId }) {
@@ -49,8 +49,8 @@ export default defineCommand({
       .header(
         ui.featureTitle(t, 'wheel'),
         won
-          ? `${emojis.galaxy} ${t('wheel.won', { label })}`
-          : `${emojis.comet} ${t('wheel.lost', { label })}`,
+          ? `${emojis.realm} ${t('wheel.won', { label })}`
+          : `${emojis.wisp} ${t('wheel.lost', { label })}`,
         user.displayAvatarURL({ size: 128 }),
       )
       .divider()

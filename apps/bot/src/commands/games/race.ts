@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { HORSERACE, rules } from '@spacebet/core';
+import { HORSERACE, rules } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { wait } from '../../framework/respond.ts';
 import { betError, outcomeColor, placeBet, resultText, settle } from '../../services/games.ts';
@@ -7,7 +7,7 @@ import * as ui from '../../ui/index.ts';
 import { emojis } from '../../ui/index.ts';
 
 const TRACK_LENGTH = 12;
-const PLACES = [emojis.first, emojis.second, emojis.third];
+const places = (): string[] => [emojis.first, emojis.second, emojis.third];
 const horseName = (index: number): string => `#${index + 1} ${HORSERACE.horses[index]}`;
 
 /** Renders the track for one animation frame (progress 0..1). */
@@ -29,19 +29,19 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('race')
-    .setDescription('Bet on a horse in the Comet Derby.')
+    .setDescription('Bet on a knight in the horse race.')
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName('bet')
-        .setDescription('Your bet — e.g. 500, 2.5k, half or all')
+        .setDescription('Your wager — e.g. 500, 2.5k, half or all')
         .setRequired(true)
         .setMaxLength(20),
     )
     .addIntegerOption((option) =>
       option
-        .setName('horse')
-        .setDescription('The horse you back')
+        .setName('knight')
+        .setDescription('The knight you bet on')
         .setRequired(true)
         .addChoices(
           ...HORSERACE.horses.map((_, index) => ({ name: horseName(index), value: index })),
@@ -50,7 +50,7 @@ export default defineCommand({
 
   async execute(interaction, { t, guildId }) {
     const { user } = interaction;
-    const chosen = interaction.options.getInteger('horse', true);
+    const chosen = interaction.options.getInteger('knight', true);
     const bet = placeBet(guildId, user, interaction.options.getString('bet', true), 'horserace');
     if (!bet.ok) return interaction.reply(betError(t, 'horserace', bet));
 
@@ -75,7 +75,7 @@ export default defineCommand({
 
     const podium = race.order
       .slice(0, 3)
-      .map((horse, i) => `${PLACES[i]} **${horseName(horse)}** · ×${HORSERACE.payouts[i + 1]}`)
+      .map((horse, i) => `${places()[i]} **${horseName(horse)}** · ×${HORSERACE.payouts[i + 1]}`)
       .join('\n');
 
     const card = new ui.Card(outcomeColor(result.net))

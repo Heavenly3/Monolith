@@ -1,16 +1,16 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { SLOTS, rules, type SlotOutcome, type SlotSymbol } from '@spacebet/core';
+import { SLOTS, rules, type SlotOutcome, type SlotSymbol } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { wait } from '../../framework/respond.ts';
 import { betError, outcomeColor, placeBet, resultText, settle } from '../../services/games.ts';
 import * as ui from '../../ui/index.ts';
-import { emojis, reelEmojis } from '../../ui/index.ts';
+import { emojis, reelEmojis, type EmojiName } from '../../ui/index.ts';
 
-const OUTCOME_ICONS: Record<SlotOutcome, string> = {
-  jackpot: emojis.jackpot,
-  triple: emojis.win,
-  pair: emojis.sparkle,
-  none: emojis.lose,
+const OUTCOME_ICONS: Record<SlotOutcome, EmojiName> = {
+  jackpot: 'jackpot',
+  triple: 'win',
+  pair: 'sparkle',
+  none: 'lose',
 };
 
 function machine(reels: SlotSymbol[], revealed: number): string {
@@ -23,12 +23,12 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('slots')
-    .setDescription('Pull the lever of the Nebula slot machine.')
+    .setDescription('Play the slot machine: spin three reels.')
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName('bet')
-        .setDescription('Your bet — e.g. 500, 2.5k, half or all')
+        .setDescription('Your wager — e.g. 500, 2.5k, half or all')
         .setRequired(true)
         .setMaxLength(20),
     ),
@@ -57,7 +57,7 @@ export default defineCommand({
     const card = new ui.Card(outcomeColor(result.net))
       .header(
         ui.featureTitle(t, 'slots'),
-        `${OUTCOME_ICONS[outcome]} **${t(`slots.${outcome}`)}**`,
+        `${emojis[OUTCOME_ICONS[outcome]]} **${t(`slots.${outcome}`)}**`,
         user.displayAvatarURL({ size: 128 }),
       )
       .divider()

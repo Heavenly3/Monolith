@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import type { Client, ClientEvents } from 'discord.js';
-import { logger } from '@spacebet/core';
+import { logger } from '@mythcore/core';
 import { localizeCommand } from '../i18n/localizeCommand.ts';
 import type { CommandDefinition, LoadedCommand } from './types.ts';
 

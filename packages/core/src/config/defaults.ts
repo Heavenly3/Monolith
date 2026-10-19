@@ -1,4 +1,4 @@
-import type { Language } from '@spacebet/i18n';
+import type { Language } from '@mythcore/i18n';
 
 const MINUTE = 60;
 const HOUR = 60 * MINUTE;

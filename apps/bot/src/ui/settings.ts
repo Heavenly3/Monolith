@@ -1,5 +1,5 @@
-import { formatDuration, settings, type SettingField } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { formatDuration, settings, type SettingField } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { coins } from './format.ts';
 
 /** Raw value of a settings field in a server. */

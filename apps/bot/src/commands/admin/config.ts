@@ -6,7 +6,7 @@ import * as panel from '../../panels/config/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('config')
-    .setDescription('Open the Mission Control panel to manage the whole bot.')
+    .setDescription('Open the settings panel of the bot (admins only).')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setContexts(InteractionContextType.Guild),
 

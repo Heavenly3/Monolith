@@ -3,7 +3,6 @@ import { DEFAULTS, isSettingKey, type SettingKey, type SettingValues } from '../
 
 // guildId → key → value. Settings are read on almost every command.
 const cache = new Map<string, Map<SettingKey, unknown>>();
-
 function guildCache(guildId: string): Map<SettingKey, unknown> {
   let entry = cache.get(guildId);
   if (!entry) {

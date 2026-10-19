@@ -10,7 +10,7 @@ import {
   openDatabase,
   settings,
   shop,
-} from '@spacebet/core';
+} from '@mythcore/core';
 
 // Skip the small UI animations.
 vi.mock('../src/framework/respond.ts', async (importOriginal) => ({
@@ -91,7 +91,7 @@ async function suite(locale: string) {
   await cmd('pay', { opts: { user: alice, amount: '1' } });
   await cmd('work');
   await cmd('work');
-  await cmd('income');
+  await cmd('collect');
   await cmd('wheel');
   await cmd('rob', { opts: { user: bob } });
   await cmd('leaderboard');
@@ -103,16 +103,16 @@ async function suite(locale: string) {
     clearCooldowns();
     await cmd('slots', { opts: { bet: '500' } });
     await cmd('roulette', { opts: { bet: '500', on } });
-    await cmd('race', { opts: { bet: '1k', horse: 3 } });
+    await cmd('race', { opts: { bet: '1k', knight: 3 } });
     await cmd('keno', { opts: { bet: '500', numbers: '1 2 3 4 5 6 7 8 9 10' } });
   }
   await cmd('roulette', { opts: { bet: '500', on: 'straight' } });
   await cmd('keno', { opts: { bet: '500', numbers: '1 1 99' } });
   await cmd('slots', { opts: { bet: '5' } });
   await cmd('slots', { user: makeUser('poor', 'poor'), opts: { bet: 'all' } });
-  await cmd('raffle', { sub: 'buy', opts: { number: 7 } });
-  await cmd('raffle', { sub: 'buy', opts: { number: 7 } });
-  await cmd('raffle', { sub: 'info' });
+  await cmd('lottery', { sub: 'buy', opts: { number: 7 } });
+  await cmd('lottery', { sub: 'buy', opts: { number: 7 } });
+  await cmd('lottery', { sub: 'info' });
 
   // Loans
   await cmd('loan', { sub: 'status' });
@@ -204,7 +204,7 @@ async function suite(locale: string) {
 
   // Help: every page
   await cmd('help');
-  await cmd('help', { opts: { command: 'raffle' } });
+  await cmd('help', { opts: { command: 'lottery' } });
   await cmd('help', { opts: { command: 'config' }, admin: false });
   await harness.autocomplete(execute, 'help', { user: alice, focused: 'lo', locale });
   for (const section of ['economy', 'games', 'loans', 'shop', 'admin', 'config']) {
@@ -240,6 +240,8 @@ describe('language', () => {
 
   it('non-admins cannot use the admin panel', async () => {
     await harness.component(execute, 'config:act:members:adjust', { user: bob, admin: false });
-    expect(harness.recorder.payloads.at(-1)?.text).toMatch(/administrators|administradores/);
+    expect(harness.recorder.payloads.at(-1)?.text).toMatch(
+      /Only administrators|Solo los administradores/,
+    );
   });
 });

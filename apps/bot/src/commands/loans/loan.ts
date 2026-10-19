@@ -4,8 +4,8 @@ import {
   InteractionContextType,
   SlashCommandBuilder,
 } from 'discord.js';
-import { accounts, formatDuration, loans, parseAmount, settings, type Loan } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { accounts, formatDuration, loans, parseAmount, settings, type Loan } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';
@@ -71,22 +71,22 @@ function repay(
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('loan')
-    .setDescription('Borrow coins from the Stellar Bank.')
+    .setDescription('Borrow gold and pay it back with interest.')
     .setContexts(InteractionContextType.Guild)
     .addSubcommand((sub) =>
       sub
         .setName('request')
-        .setDescription('Request a new loan.')
+        .setDescription('Ask for a loan.')
         .addStringOption((option) =>
           option
             .setName('amount')
-            .setDescription('How much to borrow — e.g. 5000 or 10k')
+            .setDescription('How much gold to borrow — e.g. 5000 or 10k')
             .setRequired(true)
             .setMaxLength(20),
         ),
     )
-    .addSubcommand((sub) => sub.setName('status').setDescription('Check your active loan.'))
-    .addSubcommand((sub) => sub.setName('repay').setDescription('Repay your loan in full.')),
+    .addSubcommand((sub) => sub.setName('status').setDescription('See what you owe.'))
+    .addSubcommand((sub) => sub.setName('repay').setDescription('Pay back your whole debt.')),
 
   async execute(interaction, { t, guildId }) {
     const { user } = interaction;

@@ -9,8 +9,8 @@ import {
   type ModalSubmitFields,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
-import { settingsForm, truncate, type SettingCategoryId } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { settingsForm, truncate, type SettingCategoryId } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { emojis } from '../../ui/index.ts';
 import { inputValue, settingLines } from '../../ui/settings.ts';
 

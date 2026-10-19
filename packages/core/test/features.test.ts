@@ -122,8 +122,8 @@ describe('shop', () => {
   });
 
   it('finds products by name ignoring case', () => {
-    shop.addProduct(GUILD, { name: 'Space Horse', price: 10, consumable: false });
-    expect(shop.findProductByName(GUILD, 'space horse')?.name).toBe('Space Horse');
+    shop.addProduct(GUILD, { name: 'War Horse', price: 10, consumable: false });
+    expect(shop.findProductByName(GUILD, 'war horse')?.name).toBe('War Horse');
     expect(shop.searchProducts(GUILD, 'hor')).toHaveLength(1);
   });
 });

@@ -1,6 +1,6 @@
 import type { Client } from 'discord.js';
-import { logger, raffle, formatNumber, type DrawResult } from '@spacebet/core';
-import type { Translator } from '@spacebet/i18n';
+import { logger, raffle, formatNumber, type DrawResult } from '@mythcore/core';
+import type { Translator } from '@mythcore/i18n';
 import { translatorFor } from '../framework/context.ts';
 import { mention } from '../framework/mentions.ts';
 import * as ui from '../ui/index.ts';
@@ -28,10 +28,10 @@ function announcement(t: Translator, result: DrawResult): ui.Card {
     );
   } else {
     card.text(
-      `${t('raffle.noWinner', { tickets: formatNumber(result.tickets), pot: coins(result.nextPot) })} ${emojis.brand}`,
+      `${t('raffle.noWinner', { tickets: formatNumber(result.tickets), pot: coins(result.nextPot) })} ${emojis.crest}`,
     );
   }
-  return card.footer(t('raffle.footer', { command: mention('raffle buy') }));
+  return card.footer(t('raffle.footer', { command: mention('lottery buy') }));
 }
 
 /** Draws every round whose time has come and announces it where it started. */

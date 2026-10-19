@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, cooldowns, pick, randomBetween, settings, work } from '@spacebet/core';
+import { accounts, cooldowns, pick, randomBetween, settings, work } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';
@@ -10,7 +10,7 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('work')
-    .setDescription('Take a job across the galaxy and earn some coins.')
+    .setDescription('Work a quest and earn gold.')
     .setContexts(InteractionContextType.Guild),
 
   async execute(interaction, { t, guildId }) {

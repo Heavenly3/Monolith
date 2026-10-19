@@ -232,3 +232,47 @@ export function stats(guildId: string): { accounts: number; wallets: number; ban
     ) ?? { accounts: 0, wallets: 0, banks: 0 }
   );
 }
+
+export const MONEY_ACTIONS = ['add', 'remove', 'set', 'reset'] as const;
+export type MoneyAction = (typeof MONEY_ACTIONS)[number];
+
+export interface Adjustment {
+  before: Account;
+  after: Account;
+  /** Amount actually moved (removing stops at zero). */
+  amount: number;
+}
+
+/**
+ * Admin change of a member's gold, shared by the bot panel and the dashboard.
+ * `amount` is ignored for "reset".
+ */
+export function adjust(
+  guildId: string,
+  user: UserRef,
+  action: MoneyAction,
+  account: Balance,
+  amount: number,
+): Adjustment {
+  return transaction(() => {
+    const before = getAccount(guildId, user);
+    let moved = amount;
+    switch (action) {
+      case 'add':
+        credit(guildId, user.id, amount, 'admin', account);
+        break;
+      case 'remove':
+        moved = debitUpTo(guildId, user.id, amount, 'admin', account);
+        break;
+      case 'set':
+        setBalance(guildId, user.id, account, amount);
+        break;
+      case 'reset':
+        setBalance(guildId, user.id, 'wallet', 0);
+        setBalance(guildId, user.id, 'bank', 0);
+        moved = 0;
+        break;
+    }
+    return { before, after: findAccount(guildId, user.id)!, amount: moved };
+  });
+}

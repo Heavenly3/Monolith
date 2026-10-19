@@ -15,7 +15,7 @@ import {
   transaction,
   type SettingKey,
   type SettingValues,
-} from '@spacebet/core';
+} from '@mythcore/core';
 import { ROOT_DIR, env } from '../apps/bot/src/env.ts';
 
 const log = logger.child('legacy');

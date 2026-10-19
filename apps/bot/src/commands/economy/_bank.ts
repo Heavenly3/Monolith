@@ -1,7 +1,7 @@
 // Shared implementation of /deposit and /withdraw. Files starting with "_"
 // are helpers, not commands: the loader only loads files with a default export.
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, parseAmount, type Balance } from '@spacebet/core';
+import { accounts, parseAmount, type Balance } from '@mythcore/core';
 import { defineCommand, type CommandDefinition } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis } from '../../ui/index.ts';

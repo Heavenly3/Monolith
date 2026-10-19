@@ -1,6 +1,6 @@
-# 🚀 SpaceBet
+# ⚜️ Mythcore
 
-**SpaceBet** is a space-themed economy and casino bot for Discord. Members earn coins, bank them, gamble them across four casino games, take loans, join a jackpot raffle and spend their fortune in a role shop — all through modern slash commands and Discord's **Components V2** message layout. Every server has its own economy.
+**Mythcore** is an economy and casino bot for Discord with a medieval fantasy theme. Members work to earn gold, keep it in the bank, bet it in four tavern games, take loans, play the lottery and spend it in a role shop — all through clear slash commands, Discord's **Components V2** layout and a hand-picked icon set. Every server has its own economy.
 
 ![CI](https://github.com/Heavenly3/SpaceBet/actions/workflows/ci.yml/badge.svg)
 ![Node](https://img.shields.io/badge/node-%E2%89%A522.18-339933?logo=node.js&logoColor=white)
@@ -25,43 +25,44 @@
 
 ## ✨ Features
 
-- **One economy per server** — balances, shop, settings and leaderboards are separate in every server the bot joins.
-- **Components V2 interface** — every reply is a container with sections, avatars, dividers and inline buttons. Each feature has its own colour, icon and space-themed name (Stellar Bank, Nebula Slots, Orbital Roulette...).
-- **English and Spanish** — replies follow each member's Discord language, or a language forced by the admins. Slash command descriptions and options are translated in the Discord client too.
-- **Mission Control panel (`/config`)** — manage the whole bot without typing commands: language, member balances, work pay and job messages, role income, wheel prizes, game cooldowns, shop items, loans and the raffle. Destructive actions ask for confirmation, and every change is recorded in an audit log.
-- **Built-in guide** — `/help` explains every command, option, game payout and setting, with live values and clickable commands.
-- **Fair casino games** — slots, roulette, horse racing and keno with animations, cryptographically secure randomness and a house edge verified by tests, so nobody can farm infinite money.
+- **One economy per server** — balances, shop, settings and leaderboard are separate in every server the bot joins.
+- **Clear commands, medieval flavour** — commands have the names people expect (`/balance`, `/work`, `/slots`, `/shop`...), while texts, colours and custom icons from [game-icons.net](https://game-icons.net) set a medieval fantasy mood.
+- **English and Spanish** — replies follow each member's Discord language, or a language chosen by the admins. Command names, options and descriptions are translated in the Discord client too (`/saldo`, `/trabajar`, `/tragaperras`...).
+- **Settings panel (`/config`)** — set up everything without typing commands: language, members' gold, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans and the lottery. Destructive actions ask for confirmation, and every change is recorded in an audit log.
+- **Built-in guide (`/help`)** — explains every command, option, game payout and setting, with live values and clickable commands.
+- **Fair tavern games** — Dragon's Hoard, Wizard's Roulette, the Royal Joust and Oracle's Runes, with animations, cryptographically secure randomness and a house edge verified by tests.
 - **Transaction ledger** — every coin that moves is recorded with its reason and resulting balance.
-- **Loans, raffle and role shop** — loans with interest collected automatically when overdue, a jackpot raffle that rolls over, and permanent or consumable items that can grant roles.
-- **Nothing to compile** — written in strict TypeScript that Node runs directly, with data in Node's built-in SQLite.
+- **Nothing to compile** — strict TypeScript that Node runs directly, with data in Node's built-in SQLite.
 
 ---
 
 ## 🎮 Commands
 
-Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Run `/help` in Discord for the full guide, or `/help command:<name>` for one command.
+Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Use `/help` in Discord for the full guide, or `/help command:<name>` for one command.
 
-| Category   | Commands                                                                                  |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| 💰 Economy | `/balance` `/deposit` `/withdraw` `/pay` `/work` `/income` `/wheel` `/rob` `/leaderboard` |
-| 🎰 Games   | `/slots` `/roulette` `/race` `/keno` `/raffle buy` `/raffle info`                         |
-| 🏦 Loans   | `/loan request` `/loan status` `/loan repay`                                              |
-| 🛒 Shop    | `/shop` `/buy` `/use` `/inventory`                                                        |
-| ⚙️ Admin   | `/config` (Mission Control panel)                                                         |
-| 📖 General | `/help`                                                                                   |
+| Category   | Commands                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------ |
+| 💰 Economy | `/balance` `/deposit` `/withdraw` `/pay` `/work` `/collect` `/wheel` `/rob` `/leaderboard` |
+| 🎲 Games   | `/slots` `/roulette` `/race` `/keno` `/lottery buy` `/lottery info`                        |
+| 📃 Loans   | `/loan request` `/loan status` `/loan repay`                                               |
+| 🏪 Shop    | `/shop` `/buy` `/use` `/inventory`                                                         |
+| ⚙️ Admin   | `/config`                                                                                  |
+| 📖 Help    | `/help`                                                                                    |
 
-`/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → SpaceBet**.
+Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/ayuda` `/config`.
+
+`/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → Mythcore**.
 
 ### Payouts
 
-All games return the stake multiplied by the number shown (stake included).
+All games return the bet multiplied by the number shown (bet included).
 
-| Game          | Payouts                                                              |
-| ------------- | -------------------------------------------------------------------- |
-| 🎰 Slots      | Pair ×1.5 · Three of a kind ×10 · Three sevens ×25                   |
-| 🎡 Roulette   | Colour / even / odd / low / high ×2 · Dozen / column ×3 · Number ×36 |
-| 🏇 Horse race | 1st ×6 · 2nd ×2 · 3rd ×1 (bet back)                                  |
-| 🎱 Keno       | Depends on how many numbers you pick (1–10) and how many are drawn   |
+| Game           | Payouts                                                              |
+| -------------- | -------------------------------------------------------------------- |
+| 🎰 Slots       | Pair ×1.5 · Three of a kind ×10 · Three dragons ×25                  |
+| 🎡 Roulette    | Colour / even / odd / low / high ×2 · Dozen / column ×3 · Number ×36 |
+| 🏇 Knight race | 1st ×6 · 2nd ×2 · 3rd ×1 (bet back)                                  |
+| 🔢 Keno        | Depends on how many numbers you pick (1–10) and how many match       |
 
 Rules and paytables live in [packages/core/src/config/games.ts](packages/core/src/config/games.ts).
 
@@ -75,7 +76,7 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 
    ```bash
    git clone https://github.com/Heavenly3/SpaceBet.git
-   cd SpaceBet
+   cd Mythcore
    npm install
    ```
 
@@ -92,7 +93,7 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
    | `TOKEN`         | ✅       | Bot token.                                                             |
    | `CLIENT_ID`     | ✅       | Application ID.                                                        |
    | `GUILD_ID`      |          | Server ID for instant command updates. Leave empty to deploy globally. |
-   | `DATABASE_PATH` |          | SQLite file location. Default: `storage/spacebet.db`.                  |
+   | `DATABASE_PATH` |          | SQLite file location. Default: `storage/mythcore.db`.                  |
    | `LOG_LEVEL`     |          | `debug`, `info`, `warn` or `error`. Default: `info`.                   |
 
 4. **Register the slash commands and start the bot**
@@ -102,38 +103,44 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
    npm start
    ```
 
-   Optionally add starter items to a server's shop with `npm run seed:shop -- <serverId>`.
+5. **Upload the icon set** (recommended) — renders the fantasy icons and uploads them as application emojis of your bot, so they work in every server:
+
+   ```bash
+   npm run emojis
+   ```
+
+   Restart the bot afterwards. Without this step the bot uses standard Unicode emojis.
+
+   Optionally stock a server's market with `npm run seed:shop -- <serverId>`.
 
 ---
 
 ## 🔧 Configuration
 
-- **In Discord:** everything is managed from the `/config` panel, per server. _General → Language_ chooses between automatic (each member's Discord language), English or Spanish.
+- **In Discord:** everything is set up from `/config`, per server. _General → Language_ chooses between automatic (each member's Discord language), English or Spanish.
 - **Defaults:** [packages/core/src/config/defaults.ts](packages/core/src/config/defaults.ts) holds the starting value of every setting.
-- **Look and feel:** [apps/bot/src/ui/theme.ts](apps/bot/src/ui/theme.ts) (name and colours) and [apps/bot/src/ui/emojis.ts](apps/bot/src/ui/emojis.ts) (every icon).
-
-> **Custom emojis:** standard Unicode emojis are used so the bot looks right everywhere. To use your own art, upload it as **application emojis** in the Developer Portal and paste the markup into `emojis.ts`.
+- **Look and feel:** [apps/bot/src/ui/theme.ts](apps/bot/src/ui/theme.ts) (name and colours), [apps/bot/src/ui/emojis.ts](apps/bot/src/ui/emojis.ts) (Unicode fallbacks) and [apps/bot/src/ui/icons.ts](apps/bot/src/ui/icons.ts) (which game-icons.net icon and colour each emoji uses). After changing `icons.ts`, run `npm run emojis -- --force`.
 
 ---
 
 ## 🏗️ Architecture
 
-SpaceBet is a monorepo (npm workspaces) so the bot and a future web dashboard share the same rules and data.
+Mythcore is a monorepo (npm workspaces) so the bot and a future web dashboard share the same rules and data.
 
 ```
 packages/
-├── i18n/            @spacebet/i18n — English and Spanish texts, pure TypeScript
-└── core/            @spacebet/core — database, migrations and domain logic, no Discord code
+├── i18n/            @mythcore/i18n — English and Spanish texts, pure TypeScript
+└── core/            @mythcore/core — database, migrations and domain logic, no Discord code
     └── src/
         ├── db/          SQLite connection and versioned migrations
         ├── services/    accounts, ledger, settings, shop, loans, raffle, rob, audit...
         ├── games/       pure game rules and the betting flow
         └── config/      defaults, game tables and the settings schema
 apps/
-└── bot/             @spacebet/bot — the Discord bot
+└── bot/             @mythcore/bot — the Discord bot
     └── src/
         ├── commands/    one file per slash command, grouped by category
-        ├── panels/      the /config panel, one file per section
+        ├── panels/      the settings panel (/config), one file per section
         ├── framework/   command loader, router context, mentions
         ├── events/      ready and interactionCreate (the router)
         ├── jobs/        loan collection, raffle draws, cleanup
@@ -159,19 +166,20 @@ Buttons, menus and forms use custom IDs shaped `command:action:args`; the router
 
 ## 🧪 Development
 
-| Script                   | Description                                                 |
-| ------------------------ | ----------------------------------------------------------- |
-| `npm start`              | Start the bot.                                              |
-| `npm run dev`            | Start with auto-restart on file changes.                    |
-| `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional). |
-| `npm run check`          | Typecheck, lint, translations and tests — run before a PR.  |
-| `npm test`               | Run the test suite (Vitest).                                |
-| `npm run typecheck`      | Type-check the whole monorepo.                              |
-| `npm run lint`           | Lint with ESLint.                                           |
-| `npm run format`         | Format with Prettier.                                       |
-| `npm run check:i18n`     | Check Discord command translations and help pages.          |
-| `npm run seed:shop`      | Add starter items to a server's shop.                       |
-| `npm run migrate:legacy` | Import data from the original v1 bot.                       |
+| Script                   | Description                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| `npm start`              | Start the bot.                                                 |
+| `npm run dev`            | Start with auto-restart on file changes.                       |
+| `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional).    |
+| `npm run check`          | Typecheck, lint, translations and tests — run before a PR.     |
+| `npm test`               | Run the test suite (Vitest).                                   |
+| `npm run typecheck`      | Type-check the whole monorepo.                                 |
+| `npm run lint`           | Lint with ESLint.                                              |
+| `npm run format`         | Format with Prettier.                                          |
+| `npm run check:i18n`     | Check Discord command translations and help pages.             |
+| `npm run emojis`         | Render and upload the icon set (`-- --force`, `-- --preview`). |
+| `npm run seed:shop`      | Add starter wares to a server's market.                        |
+| `npm run migrate:legacy` | Import data from the original v1 bot.                          |
 
 The tests cover the economy, loans, raffle, shop, migrations, the exact house edge of every game, and an end-to-end run of every command, button, menu and form in both languages. GitHub Actions runs `npm run check` on every push.
 
@@ -184,13 +192,15 @@ The tests cover the economy, loans, raffle, shop, migrations, the exact house ed
 
 ## ⬆️ Upgrading
 
-- **From v2:** start the bot — the database upgrades itself. Existing data is assigned to `GUILD_ID` (or to the only server the bot is in). Back up `storage/spacebet.db` first.
+- **From v2:** start the bot — the database upgrades itself. Existing data is assigned to `GUILD_ID` (or to the only server the bot is in). Back up `storage/mythcore.db` first.
 - **From v1:** `npm run migrate:legacy -- <serverId> [path/to/database.sqlite]`, then `npm run deploy`.
 
 ---
 
 ## 📝 License
 
-Released under the [MIT License](LICENSE). Contributions are welcome — run `npm run check` before opening a pull request.
+Released under the [MIT License](LICENSE).
 
-**SpaceBet** — the universe of betting awaits you! 🌠
+Icons by [Lorc](https://lorcblog.blogspot.com), [Delapouite](https://delapouite.com), Skoll, Caro Asercion and Sbed, from [game-icons.net](https://game-icons.net), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). They are recoloured and placed on tiles by `npm run emojis`. Contributions are welcome — run `npm run check` before opening a pull request.
+
+**Mythcore** — fortune favours the bold! ⚔️

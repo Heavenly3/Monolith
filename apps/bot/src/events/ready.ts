@@ -1,10 +1,11 @@
 import { Events } from 'discord.js';
-import { claimLegacyData, logger, settings } from '@spacebet/core';
+import { claimLegacyData, logger, settings } from '@mythcore/core';
 import { env } from '../env.ts';
 import { defineEvent } from '../framework/loader.ts';
 import { refreshMentions } from '../framework/mentions.ts';
 import { updatePresence } from '../framework/presence.ts';
 import * as scheduler from '../jobs/scheduler.ts';
+import { registerApplicationEmojis } from '../ui/emojis.ts';
 
 const log = logger.child('ready');
 
@@ -19,6 +20,16 @@ export default defineEvent({
     const owner =
       env.guildId ?? (client.guilds.cache.size === 1 ? client.guilds.cache.firstKey() : null);
     if (owner && claimLegacyData(owner)) settings.clearCache();
+
+    // Use the custom icon set if it was uploaded with `npm run emojis`.
+    try {
+      const icons = registerApplicationEmojis((await client.application.emojis.fetch()).values());
+      log.info(
+        icons ? `Using ${icons} custom icons.` : 'No custom icons uploaded; using Unicode emojis.',
+      );
+    } catch (error) {
+      log.warn('Could not load application emojis:', (error as Error).message);
+    }
 
     updatePresence(client);
     await refreshMentions(client);

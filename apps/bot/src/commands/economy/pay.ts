@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, parseAmount } from '@spacebet/core';
+import { accounts, parseAmount } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis } from '../../ui/index.ts';
@@ -7,10 +7,10 @@ import { coins, emojis } from '../../ui/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('pay')
-    .setDescription('Send money from your wallet to another member.')
+    .setDescription('Give gold from your wallet to another member.')
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
-      option.setName('user').setDescription('Who receives the money').setRequired(true),
+      option.setName('user').setDescription('Who receives the gold').setRequired(true),
     )
     .addStringOption((option) =>
       option

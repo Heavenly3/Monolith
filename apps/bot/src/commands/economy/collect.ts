@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, cooldowns, roleRewards } from '@spacebet/core';
+import { accounts, cooldowns, roleRewards } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';
@@ -9,8 +9,8 @@ export default defineCommand({
   cooldown: 'collect.cooldown',
 
   data: new SlashCommandBuilder()
-    .setName('income')
-    .setDescription('Collect the income granted by your roles.')
+    .setName('collect')
+    .setDescription('Collect the income of your roles.')
     .setContexts(InteractionContextType.Guild),
 
   async execute(interaction, { t, guildId }) {
@@ -21,7 +21,7 @@ export default defineCommand({
     const rewards = roleRewards.forRoles(guildId, member.roles.cache.keys());
     if (rewards.length === 0) {
       return interaction.reply(
-        ui.info(`${emojis.comet} ${t('collect.noRewards', { command: mention('config') })}`),
+        ui.info(`${emojis.wisp} ${t('collect.noRewards', { command: mention('config') })}`),
       );
     }
 

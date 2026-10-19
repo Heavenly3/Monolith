@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder, type Role } from 'discord.js';
-import { shop } from '@spacebet/core';
+import { shop } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { grantRole } from '../../services/purchases.ts';
 import * as ui from '../../ui/index.ts';

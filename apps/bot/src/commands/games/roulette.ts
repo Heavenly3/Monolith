@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { ROULETTE_BETS, rules, type RouletteBet } from '@spacebet/core';
+import { ROULETTE_BETS, rules, type RouletteBet } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { wait } from '../../framework/respond.ts';
 import { betError, placeBet, resultText, settle } from '../../services/games.ts';
@@ -11,12 +11,12 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('roulette')
-    .setDescription('Bet on the Orbital Roulette.')
+    .setDescription('Bet on the roulette wheel.')
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName('bet')
-        .setDescription('Your bet — e.g. 500, 2.5k, half or all')
+        .setDescription('Your wager — e.g. 500, 2.5k, half or all')
         .setRequired(true)
         .setMaxLength(20),
     )
@@ -35,7 +35,7 @@ export default defineCommand({
     .addIntegerOption((option) =>
       option
         .setName('number')
-        .setDescription('The number to bet on (only for "Single number")')
+        .setDescription('The number you bet on (only for "Single number")')
         .setMinValue(0)
         .setMaxValue(36),
     ),

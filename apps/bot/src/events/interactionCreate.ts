@@ -5,8 +5,8 @@ import {
   type Interaction,
   type RepliableInteraction,
 } from 'discord.js';
-import { accounts, logger } from '@spacebet/core';
-import { translator, type Translator } from '@spacebet/i18n';
+import { accounts, logger } from '@mythcore/core';
+import { translator, type Translator } from '@mythcore/i18n';
 import { defineEvent } from '../framework/loader.ts';
 import { translatorFor } from '../framework/context.ts';
 import { respond } from '../framework/respond.ts';

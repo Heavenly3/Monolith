@@ -1,13 +1,13 @@
-import type { Translator } from '@spacebet/i18n';
+import type { Translator } from '@mythcore/i18n';
 import { Card, type CardMessage } from './card.ts';
 import { emojis } from './emojis.ts';
 import { relativeTime } from './format.ts';
 
 const KINDS = {
-  success: { color: 'success', icon: emojis.success },
-  error: { color: 'danger', icon: emojis.error },
-  warning: { color: 'warning', icon: emojis.warning },
-  info: { color: 'info', icon: emojis.info },
+  success: { color: 'success', icon: 'success' },
+  error: { color: 'danger', icon: 'error' },
+  warning: { color: 'warning', icon: 'warning' },
+  info: { color: 'info', icon: 'info' },
 } as const;
 
 type Kind = keyof typeof KINDS;
@@ -15,7 +15,7 @@ type Kind = keyof typeof KINDS;
 /** Small single-line message. Private (ephemeral) by default. */
 export function notice(kind: Kind, message: string, { ephemeral = true } = {}): CardMessage {
   const { color, icon } = KINDS[kind];
-  return new Card(color).text(`${icon} ${message}`).toMessage({ ephemeral });
+  return new Card(color).text(`${emojis[icon]} ${message}`).toMessage({ ephemeral });
 }
 
 export const success = (message: string, options?: { ephemeral?: boolean }) =>

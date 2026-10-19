@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, loans } from '@spacebet/core';
+import { accounts, loans } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis, relativeTime } from '../../ui/index.ts';
@@ -7,7 +7,7 @@ import { coins, emojis, relativeTime } from '../../ui/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('balance')
-    .setDescription('Show your balance or the balance of another member.')
+    .setDescription("See your gold (wallet and bank) or another member's.")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) => option.setName('user').setDescription('Member to check')),
 

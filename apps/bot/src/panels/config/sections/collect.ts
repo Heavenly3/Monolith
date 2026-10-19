@@ -1,5 +1,5 @@
 import { LabelBuilder, RoleSelectMenuBuilder } from 'discord.js';
-import { formatNumber, parseWholeNumber, roleRewards } from '@spacebet/core';
+import { formatNumber, parseWholeNumber, roleRewards } from '@mythcore/core';
 import { coins, emojis } from '../../../ui/index.ts';
 import {
   ButtonStyle,

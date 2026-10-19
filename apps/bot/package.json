@@ -1,7 +1,7 @@
 {
-  "name": "@spacebet/bot",
+  "name": "@mythcore/bot",
   "version": "3.0.0",
-  "description": "SpaceBet Discord bot.",
+  "description": "Mythcore Discord bot.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "deploy": "node src/deploy.ts"
   },
   "dependencies": {
-    "@spacebet/core": "*",
-    "@spacebet/i18n": "*",
+    "@mythcore/core": "*",
+    "@mythcore/i18n": "*",
     "discord.js": "^14.27.0"
   },
   "license": "MIT"

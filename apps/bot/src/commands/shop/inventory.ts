@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { shop } from '@spacebet/core';
+import { shop } from '@mythcore/core';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';
@@ -8,7 +8,7 @@ import { coins, emojis } from '../../ui/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('inventory')
-    .setDescription('See the items you (or another member) own.')
+    .setDescription("See your items or another member's.")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) => option.setName('user').setDescription('Member to inspect')),
 

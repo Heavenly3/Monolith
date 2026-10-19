@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import { closeDatabase, logger, openDatabase } from '@spacebet/core';
+import { closeDatabase, logger, openDatabase } from '@mythcore/core';
 import { env } from './env.ts';
 import { loadCommands, registerEvents } from './framework/loader.ts';
 import * as scheduler from './jobs/scheduler.ts';

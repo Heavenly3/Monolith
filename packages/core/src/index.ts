@@ -1,4 +1,4 @@
-// Public API of @spacebet/core. Everything here is independent from Discord,
+// Public API of @mythcore/core. Everything here is independent from Discord,
 // so the bot and the web dashboard share the same rules and data.
 export { logger, createLogger, type Logger } from './logger.ts';
 export { openDatabase, closeDatabase, claimLegacyData, transaction, db } from './db/database.ts';
@@ -33,6 +33,7 @@ export type { DrawResult, TicketPurchase } from './services/raffle.ts';
 export type { RobResult } from './services/rob.ts';
 export type { RoleReward } from './services/roleRewards.ts';
 export type { NewProduct } from './services/shop.ts';
+export type { Adjustment, MoneyAction } from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';
 export type { BetResult, Settlement } from './games/bets.ts';
 export type { SlotOutcome, RouletteColor, KenoParse } from './games/rules.ts';
