@@ -2,7 +2,7 @@
 
 **Mythcore** is an economy and casino bot for Discord with a medieval fantasy theme. Members work to earn gold, keep it in the bank, bet it in four tavern games, take loans, play the lottery and spend it in a role shop — all through clear slash commands, Discord's **Components V2** layout and a hand-picked icon set. Every server has its own economy.
 
-![CI](https://github.com/Heavenly3/SpaceBet/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Heavenly3/Mythcore/actions/workflows/ci.yml/badge.svg)
 ![Node](https://img.shields.io/badge/node-%E2%89%A522.18-339933?logo=node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -76,7 +76,7 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 1. **Clone and install**
 
    ```bash
-   git clone https://github.com/Heavenly3/SpaceBet.git
+   git clone https://github.com/Heavenly3/Mythcore.git
    cd Mythcore
    npm install
    ```
