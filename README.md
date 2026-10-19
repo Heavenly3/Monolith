@@ -1,10 +1,12 @@
 # 🚀 SpaceBet
 
-**SpaceBet** is a space-themed economy and casino bot for Discord. Members earn coins, bank them, gamble them across four casino games, take loans, join a jackpot raffle and spend their fortune in a role shop — all through modern slash commands and Discord's new **Components V2** message layout.
+**SpaceBet** is a space-themed economy and casino bot for Discord. Members earn coins, bank them, gamble them across four casino games, take loans, join a jackpot raffle and spend their fortune in a role shop — all through modern slash commands and Discord's **Components V2** message layout. Every server has its own economy.
 
-![Node](https://img.shields.io/badge/node-%E2%89%A522.13-339933?logo=node.js&logoColor=white)
+![CI](https://github.com/Heavenly3/SpaceBet/actions/workflows/ci.yml/badge.svg)
+![Node](https://img.shields.io/badge/node-%E2%89%A522.18-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![discord.js](https://img.shields.io/badge/discord.js-v14.27-5865F2?logo=discord&logoColor=white)
-![SQLite](<https://img.shields.io/badge/database-SQLite%20(built--in)-003B57?logo=sqlite&logoColor=white>)
 
 ---
 
@@ -14,25 +16,24 @@
 - [Commands](#-commands)
 - [Quick start](#%EF%B8%8F-quick-start)
 - [Configuration](#-configuration)
-- [Upgrading from v1](#-upgrading-from-v1)
-- [Project structure](#-project-structure)
-- [Scripts](#-scripts)
+- [Architecture](#%EF%B8%8F-architecture)
+- [Development](#-development)
+- [Upgrading](#%EF%B8%8F-upgrading)
 - [License](#-license)
 
 ---
 
 ## ✨ Features
 
-- **Components V2 interface** — every reply is a container with sections, avatars, dividers and inline buttons instead of classic embeds. Each feature has its own colour, icon and space-themed name (Stellar Bank, Nebula Slots, Orbital Roulette...).
-- **English and Spanish** — replies follow each member's Discord language, or a language forced by the admins in `/config`. Slash command descriptions and options are translated in the Discord client too.
+- **One economy per server** — balances, shop, settings and leaderboards are separate in every server the bot joins.
+- **Components V2 interface** — every reply is a container with sections, avatars, dividers and inline buttons. Each feature has its own colour, icon and space-themed name (Stellar Bank, Nebula Slots, Orbital Roulette...).
+- **English and Spanish** — replies follow each member's Discord language, or a language forced by the admins. Slash command descriptions and options are translated in the Discord client too.
+- **Mission Control panel (`/config`)** — manage the whole bot without typing commands: language, member balances, work pay and job messages, role income, wheel prizes, game cooldowns, shop items, loans and the raffle. Destructive actions ask for confirmation, and every change is recorded in an audit log.
 - **Built-in guide** — `/help` explains every command, option, game payout and setting, with live values and clickable commands.
-- **Fair casino games** — slots, roulette, horse racing and keno with animated results, cryptographically secure randomness and a small house edge, so nobody can farm infinite money.
-- **Full economy** — wallet and bank, payments, work shifts, role-based income, a daily wheel, robberies and a leaderboard.
-- **Loans** with interest and a due date. Overdue loans are collected automatically, from the wallet first and then the bank.
-- **Galactic Raffle** — a jackpot that rolls over until someone holds the winning number.
-- **Role shop** — permanent or consumable items that can grant roles, with autocomplete and one-click **Buy** buttons.
-- **Mission Control panel (`/config`)** — manage the whole bot without typing commands: language, member balances, work pay and job messages, role income, wheel prizes, game cooldowns, shop items, loans and the raffle. Forms use member and role pickers, and destructive actions ask for confirmation.
-- **Nothing native to compile** — data lives in Node's built-in SQLite. Cooldowns and settings survive restarts.
+- **Fair casino games** — slots, roulette, horse racing and keno with animations, cryptographically secure randomness and a house edge verified by tests, so nobody can farm infinite money.
+- **Transaction ledger** — every coin that moves is recorded with its reason and resulting balance.
+- **Loans, raffle and role shop** — loans with interest collected automatically when overdue, a jackpot raffle that rolls over, and permanent or consumable items that can grant roles.
+- **Nothing to compile** — written in strict TypeScript that Node runs directly, with data in Node's built-in SQLite.
 
 ---
 
@@ -40,16 +41,16 @@
 
 Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Run `/help` in Discord for the full guide, or `/help command:<name>` for one command.
 
-| Category   | Commands                                                                                        |
-| ---------- | ----------------------------------------------------------------------------------------------- |
-| 💰 Economy | `/balance` `/deposit` `/withdraw` `/pay` `/work` `/collect` `/dailywheel` `/rob` `/leaderboard` |
-| 🎰 Games   | `/slots` `/roulette` `/horserace` `/keno` `/raffle buy` `/raffle info`                          |
-| 🏦 Loans   | `/loan request` `/loan status` `/loan repay`                                                    |
-| 🛒 Shop    | `/shop` `/buy` `/use` `/inventory`                                                              |
-| ⚙️ Admin   | `/config` (Mission Control panel)                                                               |
-| 📖 General | `/help`                                                                                         |
+| Category   | Commands                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| 💰 Economy | `/balance` `/deposit` `/withdraw` `/pay` `/work` `/income` `/wheel` `/rob` `/leaderboard` |
+| 🎰 Games   | `/slots` `/roulette` `/race` `/keno` `/raffle buy` `/raffle info`                         |
+| 🏦 Loans   | `/loan request` `/loan status` `/loan repay`                                              |
+| 🛒 Shop    | `/shop` `/buy` `/use` `/inventory`                                                        |
+| ⚙️ Admin   | `/config` (Mission Control panel)                                                         |
+| 📖 General | `/help`                                                                                   |
 
-Admin commands are hidden from members without the **Administrator** permission. You can grant them to other roles in **Server Settings → Integrations → SpaceBet**.
+`/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → SpaceBet**.
 
 ### Payouts
 
@@ -62,13 +63,13 @@ All games return the stake multiplied by the number shown (stake included).
 | 🏇 Horse race | 1st ×6 · 2nd ×2 · 3rd ×1 (bet back)                                  |
 | 🎱 Keno       | Depends on how many numbers you pick (1–10) and how many are drawn   |
 
-Paytables live in [src/config/games.js](src/config/games.js).
+Rules and paytables live in [packages/core/src/config/games.ts](packages/core/src/config/games.ts).
 
 ---
 
 ## ⚙️ Quick start
 
-**Requirements:** [Node.js 22.13 or newer](https://nodejs.org/) (Node 24 LTS recommended).
+**Requirements:** [Node.js 22.18 or newer](https://nodejs.org/) (Node 24 LTS recommended).
 
 1. **Clone and install**
 
@@ -101,90 +102,95 @@ Paytables live in [src/config/games.js](src/config/games.js).
    npm start
    ```
 
-   Optionally add starter items to the shop with `npm run seed:shop`.
+   Optionally add starter items to a server's shop with `npm run seed:shop -- <serverId>`.
 
 ---
 
 ## 🔧 Configuration
 
-- **Language:** `/config` → General. _Automatic_ (default) replies in each member's Discord language; you can also force English or Spanish for the whole server.
+- **In Discord:** everything is managed from the `/config` panel, per server. _General → Language_ chooses between automatic (each member's Discord language), English or Spanish.
+- **Defaults:** [packages/core/src/config/defaults.ts](packages/core/src/config/defaults.ts) holds the starting value of every setting.
+- **Look and feel:** [apps/bot/src/ui/theme.ts](apps/bot/src/ui/theme.ts) (name and colours) and [apps/bot/src/ui/emojis.ts](apps/bot/src/ui/emojis.ts) (every icon).
 
-- **At runtime:** everything is managed from the `/config` panel.
-- **Defaults:** [src/config/defaults.js](src/config/defaults.js) holds the starting value of every runtime setting.
-- **Look and feel:** [src/config/theme.js](src/config/theme.js) (name and colours) and [src/config/emojis.js](src/config/emojis.js).
-
-> **Custom emojis:** the coin, slot symbols and other custom emojis only render if the bot can use them. Upload them as **application emojis** in the Developer Portal (they then work in every server) and paste the new IDs into `src/config/emojis.js`, or replace them with standard Unicode emojis.
+> **Custom emojis:** standard Unicode emojis are used so the bot looks right everywhere. To use your own art, upload it as **application emojis** in the Developer Portal and paste the markup into `emojis.ts`.
 
 ---
 
-## ⬆️ Upgrading from v1
+## 🏗️ Architecture
 
-Version 2 uses a new database file. To bring over balances, loans, shop items, inventories, role income and settings from the old `database.sqlite`:
+SpaceBet is a monorepo (npm workspaces) so the bot and a future web dashboard share the same rules and data.
 
-```bash
-npm run migrate:legacy                    # reads ./database.sqlite
-npm run migrate:legacy -- path/to/old.db  # custom location
+```
+packages/
+├── i18n/            @spacebet/i18n — English and Spanish texts, pure TypeScript
+└── core/            @spacebet/core — database, migrations and domain logic, no Discord code
+    └── src/
+        ├── db/          SQLite connection and versioned migrations
+        ├── services/    accounts, ledger, settings, shop, loans, raffle, rob, audit...
+        ├── games/       pure game rules and the betting flow
+        └── config/      defaults, game tables and the settings schema
+apps/
+└── bot/             @spacebet/bot — the Discord bot
+    └── src/
+        ├── commands/    one file per slash command, grouped by category
+        ├── panels/      the /config panel, one file per section
+        ├── framework/   command loader, router context, mentions
+        ├── events/      ready and interactionCreate (the router)
+        ├── jobs/        loan collection, raffle draws, cleanup
+        ├── ui/          Components V2 cards, theme and emojis
+        └── i18n/        Discord command translations
+scripts/             maintenance scripts (translation check, imports, seeding)
 ```
 
-Then redeploy the commands with `npm run deploy`. Several commands were renamed or merged (for example `/additem` is now part of the `/config` panel, and `/loanstatus` is now `/loan status`), so the old ones must be replaced.
+Every command is a typed module. The router hands each handler a context with the server and a translator in the right language:
+
+```ts
+export default defineCommand({
+  data: new SlashCommandBuilder().setName('ping').setDescription('Pong!'),
+  async execute(interaction, { t, guildId }) {
+    return interaction.reply(ui.success(t('common.pong')));
+  },
+});
+```
+
+Buttons, menus and forms use custom IDs shaped `command:action:args`; the router sends them to the `components` handlers of the command that created them and enforces admin permissions on them too.
 
 ---
 
-## 🗂️ Project structure
+## 🧪 Development
 
-```
-src/
-├── index.js            Entry point: client, events, graceful shutdown
-├── deploy.js           Registers slash commands (guild or global)
-├── commands/           One file per slash command, grouped by category
-├── events/             ready and interactionCreate (commands, autocomplete, buttons, modals)
-├── services/           Business logic: economy, games, loans, raffle, shop, settings...
-├── database/           SQLite connection and versioned migrations
-├── jobs/               Background tasks: loan collection, raffle draws, cleanup
-├── panels/config/      The /config panel: one file per section (members, work, shop...)
-├── ui/                 Components V2 card builder and notices
-├── i18n/               Translations: locales/en.js, locales/es.js and command translations
-├── config/             Environment, defaults, settings schema, game tables, theme and emojis
-├── core/               Loader, logger and helpers
-└── utils/              Formatting, parsing and secure randomness
-scripts/                Legacy import and shop seeding
-```
+| Script                   | Description                                                 |
+| ------------------------ | ----------------------------------------------------------- |
+| `npm start`              | Start the bot.                                              |
+| `npm run dev`            | Start with auto-restart on file changes.                    |
+| `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional). |
+| `npm run check`          | Typecheck, lint, translations and tests — run before a PR.  |
+| `npm test`               | Run the test suite (Vitest).                                |
+| `npm run typecheck`      | Type-check the whole monorepo.                              |
+| `npm run lint`           | Lint with ESLint.                                           |
+| `npm run format`         | Format with Prettier.                                       |
+| `npm run check:i18n`     | Check Discord command translations and help pages.          |
+| `npm run seed:shop`      | Add starter items to a server's shop.                       |
+| `npm run migrate:legacy` | Import data from the original v1 bot.                       |
 
-Buttons, menus and modals use the custom ID format `command:action:args`. The router in `events/interactionCreate.js` sends them to the `components` handlers of the command that created them, and passes every handler a `ctx` with a translator in the right language:
-
-```js
-async execute(interaction, { t }) {
-  await interaction.reply(ui.success(t('pay.title')));
-}
-```
+The tests cover the economy, loans, raffle, shop, migrations, the exact house edge of every game, and an end-to-end run of every command, button, menu and form in both languages. GitHub Actions runs `npm run check` on every push.
 
 ### Adding a language
 
-1. Copy `src/i18n/locales/en.js` to a new file (for example `pt.js`) and translate it.
-2. Register it in `src/i18n/index.js`, and add command translations in `src/i18n/commands/` and `src/i18n/localizeCommand.js`.
-3. Run `npm run check:i18n` to find anything missing, then `npm run deploy`.
+1. Copy `packages/i18n/src/locales/en.ts` (for example to `pt.ts`), translate it and register it in `packages/i18n/src/index.ts`. TypeScript reports any missing key.
+2. Add Discord command translations in `apps/bot/src/i18n/` and run `npm run check:i18n`.
 
 ---
 
-## 📜 Scripts
+## ⬆️ Upgrading
 
-| Script                   | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `npm start`              | Start the bot.                                  |
-| `npm run dev`            | Start with auto-restart on file changes.        |
-| `npm run deploy`         | Register commands (guild if `GUILD_ID` is set). |
-| `npm run deploy:global`  | Register commands globally.                     |
-| `npm run deploy:clear`   | Remove all registered commands.                 |
-| `npm run migrate:legacy` | Import data from the v1 database.               |
-| `npm run seed:shop`      | Add starter items to the shop.                  |
-| `npm run check:i18n`     | Verify that every translation is complete.      |
-|  Lint with ESLint.       |
-| `npm run format`         | Format with Prettier.                           |
+- **From v2:** start the bot — the database upgrades itself. Existing data is assigned to `GUILD_ID` (or to the only server the bot is in). Back up `storage/spacebet.db` first.
+- **From v1:** `npm run migrate:legacy -- <serverId> [path/to/database.sqlite]`, then `npm run deploy`.
 
 ---
 
 ## 📝 License
 
-Licensed under [Creative Commons Attribution-NonCommercial 4.0](LICENSE).
+Released under the [MIT License](LICENSE). Contributions are welcome — run `npm run check` before opening a pull request.
 
 **SpaceBet** — the universe of betting awaits you! 🌠

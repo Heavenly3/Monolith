@@ -1,0 +1,18 @@
+{
+  "name": "@spacebet/bot",
+  "version": "3.0.0",
+  "description": "SpaceBet Discord bot.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.ts",
+    "dev": "node --watch src/index.ts",
+    "deploy": "node src/deploy.ts"
+  },
+  "dependencies": {
+    "@spacebet/core": "*",
+    "@spacebet/i18n": "*",
+    "discord.js": "^14.27.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@spacebet/i18n",
+  "version": "3.0.0",
+  "description": "SpaceBet translations (English and Spanish), shared by the bot and the dashboard.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "license": "MIT"
+}
