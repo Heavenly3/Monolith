@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   check:
-    name: Typecheck, lint and test
+    name: Typecheck, lint, test and build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,3 +30,4 @@ jobs:
       - run: npm run format:check
       - run: npm run check:i18n
       - run: npm test
+      - run: npm run build:web

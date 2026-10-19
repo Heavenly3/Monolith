@@ -1,0 +1,171 @@
+:root {
+  --mc-font-display: 'Cinzel', Georgia, serif;
+  --mc-font-body: 'Inter', system-ui, sans-serif;
+  --mc-bg: #120e0b;
+  --mc-panel: #1c1713;
+  --mc-panel-raised: #241d18;
+  --mc-border: #3e342b;
+  --mc-gold: #c9a227;
+  --mc-gold-soft: #e0c155;
+  --mc-text: #ece4d8;
+  --mc-muted: #a89a88;
+  --mc-radius: 12px;
+  --mc-sidebar: 260px;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(201, 162, 39, 0.08), transparent 60%),
+    var(--mc-bg);
+  color: var(--mc-text);
+  font-family: var(--mc-font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--mc-font-display);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+a {
+  color: var(--mc-gold-soft);
+}
+
+a.p-button {
+  text-decoration: none;
+}
+
+/* Numeric table columns: right-aligned cells and headers. */
+.p-datatable .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.p-datatable .num .p-datatable-column-header-content {
+  justify-content: flex-end;
+}
+
+.muted {
+  color: var(--mc-muted);
+}
+
+.panel {
+  background: var(--mc-panel);
+  border: 1px solid var(--mc-border);
+  border-radius: var(--mc-radius);
+  padding: 1.25rem;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 1100px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-header p {
+  margin: 0.25rem 0 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.field small {
+  color: var(--mc-muted);
+}
+
+.gold {
+  color: var(--mc-gold-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.divider-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--mc-gold);
+  font-family: var(--mc-font-display);
+}
+
+.divider-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mc-border), transparent);
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}

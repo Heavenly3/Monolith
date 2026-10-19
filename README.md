@@ -16,7 +16,7 @@
 - [Commands](#-commands)
 - [Quick start](#%EF%B8%8F-quick-start)
 - [Configuration](#-configuration)
-- [Dashboard API](#-dashboard-api)
+- [Web dashboard](#-web-dashboard)
 - [Architecture](#%EF%B8%8F-architecture)
 - [Development](#-development)
 - [Upgrading](#%EF%B8%8F-upgrading)
@@ -124,13 +124,29 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 
 ---
 
-## 🌐 Dashboard API
+## 🌐 Web dashboard
 
-The web dashboard is in progress. Its API already works and uses the same rules as `/config`, so a change made on the web applies in Discord at once.
+Manage a server from the browser: settings, jobs, wheel prizes, role income, members' gold, the shop, loans and the change history, in English or Spanish. It uses the same rules as `/config`, so every change applies in Discord at once. Built with Vue 3 and PrimeVue 4.
 
-1. In the Developer Portal open **OAuth2**, copy the **Client Secret** into `.env` as `CLIENT_SECRET` and add `http://localhost:3000/auth/callback` under **Redirects**.
-2. Start it next to the bot: `npm run api` (or `npm run dev:api`).
-3. Sign in at `http://localhost:3000/auth/login`.
+**Set up once:** in the Developer Portal open **OAuth2**, copy the **Client Secret** into `.env` as `CLIENT_SECRET` and add `http://localhost:3000/auth/callback` under **Redirects**.
+
+**Development** — run each in its own terminal, next to the bot:
+
+```bash
+npm run api   # dashboard API on http://localhost:3000
+npm run web   # dashboard on http://localhost:5180 (reloads on save)
+```
+
+**Production** — build the dashboard once and the API serves it too, from a single port:
+
+```bash
+npm run build:web
+npm run api
+```
+
+When it runs on a public address, set `API_URL` and `WEB_URL` in `.env` to that address (for example `https://mythcore.example.com`) and add `<API_URL>/auth/callback` to the Redirects.
+
+### API
 
 Only server owners and administrators can manage a server, and only when the bot is in it. Sessions are stored as hashes, changes must come from the dashboard's own address, and every change is recorded in the audit log.
 
@@ -169,6 +185,12 @@ apps/
 │       ├── routes/      auth, settings, economy, shop
 │       ├── access.ts    who can manage which server
 │       └── discord.ts   Discord OAuth2 and REST client
+├── web/             @mythcore/web — the dashboard (Vue 3, PrimeVue 4, Vite)
+│   └── src/
+│       ├── views/       one page per section
+│       ├── components/  settings form, editors, cards
+│       ├── lib/         API client, session, formatting
+│       └── i18n/        dashboard texts (settings labels come from @mythcore/i18n)
 └── bot/             @mythcore/bot — the Discord bot
     └── src/
         ├── commands/    one file per slash command, grouped by category
@@ -203,6 +225,8 @@ Buttons, menus and forms use custom IDs shaped `command:action:args`; the router
 | `npm start`              | Start the bot.                                                 |
 | `npm run dev`            | Start with auto-restart on file changes.                       |
 | `npm run api`            | Start the dashboard API (`npm run dev:api` to auto-restart).   |
+| `npm run web`            | Start the dashboard in development mode.                       |
+| `npm run build:web`      | Build the dashboard; `npm run api` then serves it.             |
 | `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional).    |
 | `npm run check`          | Typecheck, lint, translations and tests — run before a PR.     |
 | `npm test`               | Run the test suite (Vitest).                                   |

@@ -1,0 +1,30 @@
+{
+  "name": "@mythcore/web",
+  "version": "3.0.0",
+  "description": "Mythcore web dashboard.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "vite": "^8.3.4",
+    "vue-tsc": "^3.3.13"
+  },
+  "dependencies": {
+    "@fontsource/cinzel": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@mythcore/core": "*",
+    "@mythcore/i18n": "*",
+    "@primeuix/themes": "^2.0.3",
+    "primeicons": "^7.0.0",
+    "primevue": "~4.5.5",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  }
+}

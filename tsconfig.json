@@ -18,5 +18,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["packages/*/src", "packages/*/test", "apps/*/src", "apps/*/test", "scripts", "*.ts"]
+  "include": ["packages/*/src", "packages/*/test", "apps/*/src", "apps/*/test", "scripts", "*.ts"],
+  // The dashboard has its own config (Vue files), checked with vue-tsc.
+  "exclude": ["apps/web"]
 }
