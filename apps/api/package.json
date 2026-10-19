@@ -1,0 +1,18 @@
+{
+  "name": "@mythcore/api",
+  "version": "3.0.0",
+  "description": "Mythcore web dashboard API.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.ts",
+    "dev": "node --watch src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.1.3",
+    "@mythcore/core": "*",
+    "@mythcore/i18n": "*",
+    "fastify": "^5.12.7"
+  },
+  "license": "MIT"
+}

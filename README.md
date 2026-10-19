@@ -16,6 +16,7 @@
 - [Commands](#-commands)
 - [Quick start](#%EF%B8%8F-quick-start)
 - [Configuration](#-configuration)
+- [Dashboard API](#-dashboard-api)
 - [Architecture](#%EF%B8%8F-architecture)
 - [Development](#-development)
 - [Upgrading](#%EF%B8%8F-upgrading)
@@ -123,9 +124,35 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 
 ---
 
+## 🌐 Dashboard API
+
+The web dashboard is in progress. Its API already works and uses the same rules as `/config`, so a change made on the web applies in Discord at once.
+
+1. In the Developer Portal open **OAuth2**, copy the **Client Secret** into `.env` as `CLIENT_SECRET` and add `http://localhost:3000/auth/callback` under **Redirects**.
+2. Start it next to the bot: `npm run api` (or `npm run dev:api`).
+3. Sign in at `http://localhost:3000/auth/login`.
+
+Only server owners and administrators can manage a server, and only when the bot is in it. Sessions are stored as hashes, changes must come from the dashboard's own address, and every change is recorded in the audit log.
+
+| Area     | Endpoints (under `/api/guilds/:guildId`)                                        |
+| -------- | ------------------------------------------------------------------------------- |
+| Overview | `GET /` — totals, top members, loans, shop and lottery                          |
+| Settings | `GET /settings` · `PUT /settings/:category` · `POST /settings/:category/reset`  |
+| Work     | `GET/POST /work/messages` · `DELETE /work/messages/:index` · `POST /work/reset` |
+| Wheel    | `GET/POST /wheel` · `DELETE /wheel/:index` · `POST /wheel/reset`                |
+| Members  | `GET /members` · `GET /members/:userId` · `POST /members/:userId/adjust`        |
+| Shop     | `GET/POST /shop` · `DELETE /shop/:itemId` · `GET /roles`                        |
+| Income   | `GET /role-income` · `PUT/DELETE /role-income/:roleId`                          |
+| Loans    | `GET /loans` · `DELETE /loans/:userId` · `DELETE /loans`                        |
+| History  | `GET /audit`                                                                    |
+
+Outside a server: `GET /auth/login`, `POST /auth/logout`, `GET /api/me` and `GET /api/guilds`.
+
+---
+
 ## 🏗️ Architecture
 
-Mythcore is a monorepo (npm workspaces) so the bot and a future web dashboard share the same rules and data.
+Mythcore is a monorepo (npm workspaces) so the bot and the web dashboard share the same rules and data.
 
 ```
 packages/
@@ -137,6 +164,11 @@ packages/
         ├── games/       pure game rules and the betting flow
         └── config/      defaults, game tables and the settings schema
 apps/
+├── api/             @mythcore/api — dashboard API (Fastify, Discord login)
+│   └── src/
+│       ├── routes/      auth, settings, economy, shop
+│       ├── access.ts    who can manage which server
+│       └── discord.ts   Discord OAuth2 and REST client
 └── bot/             @mythcore/bot — the Discord bot
     └── src/
         ├── commands/    one file per slash command, grouped by category
@@ -170,6 +202,7 @@ Buttons, menus and forms use custom IDs shaped `command:action:args`; the router
 | ------------------------ | -------------------------------------------------------------- |
 | `npm start`              | Start the bot.                                                 |
 | `npm run dev`            | Start with auto-restart on file changes.                       |
+| `npm run api`            | Start the dashboard API (`npm run dev:api` to auto-restart).   |
 | `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional).    |
 | `npm run check`          | Typecheck, lint, translations and tests — run before a PR.     |
 | `npm test`               | Run the test suite (Vitest).                                   |

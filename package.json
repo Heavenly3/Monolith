@@ -21,6 +21,8 @@
     "start": "npm run start -w @mythcore/bot",
     "dev": "npm run dev -w @mythcore/bot",
     "deploy": "npm run deploy -w @mythcore/bot --",
+    "api": "npm run start -w @mythcore/api",
+    "dev:api": "npm run dev -w @mythcore/api",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
