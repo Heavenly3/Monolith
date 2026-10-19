@@ -3,7 +3,22 @@ import { DEFAULTS, isSettingKey, type SettingKey, type SettingValues } from '../
 
 // guildId → key → value. Settings are read on almost every command.
 const cache = new Map<string, Map<SettingKey, unknown>>();
+let dataVersion: number | null = null;
+
+/**
+ * Forgets cached values when another process (the dashboard) wrote to the
+ * database. SQLite bumps data_version only for changes made by other connections.
+ */
+function syncWithOtherProcesses(): void {
+  const version = one<{ data_version: number }>('PRAGMA data_version')?.data_version ?? 0;
+  if (version !== dataVersion) {
+    cache.clear();
+    dataVersion = version;
+  }
+}
+
 function guildCache(guildId: string): Map<SettingKey, unknown> {
+  syncWithOtherProcesses();
   let entry = cache.get(guildId);
   if (!entry) {
     entry = new Map();
@@ -65,4 +80,5 @@ export function getAll(guildId: string): SettingValues {
 /** Drops cached values (after data is moved between servers). */
 export function clearCache(): void {
   cache.clear();
+  dataVersion = null;
 }
