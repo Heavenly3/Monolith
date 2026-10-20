@@ -73,10 +73,13 @@ export const es: WebMessages = {
   },
   jobs: {
     title: 'Trabajos de /trabajar',
-    subtitle: 'Se elige uno al azar cada vez. Usa {amount} donde va la recompensa.',
+    subtitle:
+      'Se elige uno al azar cada vez. Escribe la historia; la recompensa se añade al final.',
     builtIn: 'Se usan los trabajos integrados. Al añadir o quitar uno empiezas tu propia lista.',
-    placeholder: 'Cazaste un jabalí salvaje y lo vendiste por {amount}.',
-    needsAmount: 'El trabajo debe incluir {amount}.',
+    placeholder: 'Cazaste un jabalí salvaje para el banquete del pueblo.',
+    reward: 'recompensa',
+    insertReward: 'Poner la recompensa aquí',
+    preview: 'Cómo se verá en Discord',
     full: 'Puedes tener como mucho {max} trabajos.',
     removeConfirm: '¿Quitar este trabajo?',
     resetConfirm: '¿Volver a los trabajos, recompensas y espera integrados?',

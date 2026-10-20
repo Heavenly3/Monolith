@@ -168,9 +168,10 @@ describe('settings', () => {
   });
 
   it('manages the jobs of /work', async () => {
+    // The reward is optional: the bot adds it at the end when it is left out.
     expect(
-      (await call('POST', guildUrl('/work/messages'), { message: 'No reward' })).statusCode,
-    ).toBe(422);
+      (await call('POST', guildUrl('/work/messages'), { message: 'You chopped wood' })).statusCode,
+    ).toBe(200);
     const added = await call('POST', guildUrl('/work/messages?lang=es'), {
       message: 'Vendiste pan y ganaste {amount}.',
     });

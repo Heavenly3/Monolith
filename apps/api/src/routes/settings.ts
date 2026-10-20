@@ -114,7 +114,6 @@ export async function settingsRoutes(app: FastifyInstance): Promise<void> {
     async (request) => {
       const { guild, viewer } = scope(request);
       const { message } = request.body as { message: string };
-      if (!message.includes('{amount}')) throw new HttpError(422, 'missing_amount');
       if (work.addMessage(guild.id, message, builtInJobs(request)) === 'full') {
         throw new HttpError(409, 'full', { max: work.MAX_MESSAGES });
       }

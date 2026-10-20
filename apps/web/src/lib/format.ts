@@ -3,6 +3,15 @@ import { lang } from '../i18n/index.ts';
 
 export { formatDuration, formatNumber };
 
+/** 2,775,276,526 → "2.78B" (en) / "2775,28 M" (es); exact below one million. */
+export function compactNumber(value: number): string {
+  if (Math.abs(value) < 1_000_000) return formatNumber(value);
+  return new Intl.NumberFormat(lang.value, {
+    notation: 'compact',
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
 const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ['year', 31_536_000],
   ['month', 2_592_000],

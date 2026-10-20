@@ -452,7 +452,8 @@ export const en = {
       removePlaceholder: 'Remove a job…',
       modalTitle: 'New job',
       messageLabel: 'Job message',
-      messageHint: 'Use {amount} where the reward should appear.',
+      messageHint:
+        'The reward is added at the end. Optional: write {amount} to place it elsewhere.',
       confirmReset: 'This restores the rewards, the cooldown and the built-in jobs.',
     },
     collect: {

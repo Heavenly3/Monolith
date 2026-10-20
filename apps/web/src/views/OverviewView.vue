@@ -29,22 +29,22 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
         <StatCard
           icon="pi pi-users"
           :label="t('web.overview.members')"
-          :value="formatNumber(data.stats.accounts)"
+          :value="data.stats.accounts"
         />
         <StatCard
           icon="pi pi-wallet"
           :label="t('web.overview.wallets')"
-          :value="formatNumber(data.stats.wallets)"
+          :value="data.stats.wallets"
         />
         <StatCard
           icon="pi pi-building-columns"
           :label="t('web.overview.banks')"
-          :value="formatNumber(data.stats.banks)"
+          :value="data.stats.banks"
         />
         <StatCard
           icon="pi pi-chart-line"
           :label="t('web.overview.total')"
-          :value="formatNumber(data.stats.wallets + data.stats.banks)"
+          :value="data.stats.wallets + data.stats.banks"
         />
       </div>
 
@@ -65,7 +65,7 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
           <StatCard
             icon="pi pi-ticket"
             :label="t('web.overview.lottery')"
-            :value="formatNumber(data.raffle.pot)"
+            :value="data.raffle.pot"
             :hint="
               data.raffle.drawAt
                 ? `${t('web.overview.tickets', { count: data.raffle.tickets })} · ${t('web.overview.drawAt', { time: relativeTime(data.raffle.drawAt) })}`
@@ -75,12 +75,12 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
           <StatCard
             icon="pi pi-file-edit"
             :label="t('web.overview.activeLoans')"
-            :value="formatNumber(data.activeLoans)"
+            :value="data.activeLoans"
           />
           <StatCard
             icon="pi pi-shopping-bag"
             :label="t('web.overview.items')"
-            :value="formatNumber(data.products)"
+            :value="data.products"
           />
         </div>
       </div>

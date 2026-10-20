@@ -1,5 +1,12 @@
 <script setup lang="ts">
-defineProps<{ label: string; value: string; icon: string; hint?: string }>();
+import { computed } from 'vue';
+import { compactNumber, formatNumber } from '../lib/format.ts';
+
+const props = defineProps<{ label: string; value: number; icon: string; hint?: string }>();
+
+// Large amounts are shortened to fit the card; the exact one shows on hover.
+const shown = computed(() => compactNumber(props.value));
+const exact = computed(() => formatNumber(props.value));
 </script>
 
 <template>
@@ -7,7 +14,9 @@ defineProps<{ label: string; value: string; icon: string; hint?: string }>();
     <i :class="icon" class="stat-icon" />
     <div class="stat-body">
       <span class="muted label">{{ label }}</span>
-      <strong class="gold value">{{ value }}</strong>
+      <strong v-tooltip.top="shown !== exact ? exact : undefined" class="gold value">{{
+        shown
+      }}</strong>
       <small v-if="hint" class="muted">{{ hint }}</small>
     </div>
   </div>

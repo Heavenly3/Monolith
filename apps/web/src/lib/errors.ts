@@ -10,7 +10,6 @@ const MESSAGES: Record<string, string> = {
   amount_required: 'web.members.amountRequired',
   item_exists: 'web.shop.exists',
   invalid_role: 'web.shop.invalidRole',
-  missing_amount: 'web.jobs.needsAmount',
 };
 
 /** Message to show for a failed request. */

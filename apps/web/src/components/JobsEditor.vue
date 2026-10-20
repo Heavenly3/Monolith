@@ -2,7 +2,7 @@
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 import Textarea from 'primevue/textarea';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { lang, t } from '../i18n/index.ts';
 import { api, guildPath } from '../lib/api.ts';
 import { useAsk, useLoader, useNotify } from '../lib/composables.ts';
@@ -22,12 +22,37 @@ const path = (suffix = '') =>
   guildPath(props.guildId, `/work/messages${suffix}?lang=${lang.value}`);
 const { data, error, reload } = useLoader(() => api.get<Jobs>(path()));
 
+const REWARD = '{amount}';
 const draft = ref('');
 const busy = ref(false);
-const needsAmount = computed(() => draft.value.trim() !== '' && !draft.value.includes('{amount}'));
+const editor = ref<{ $el: HTMLTextAreaElement } | null>(null);
+
+/** Puts the reward where the cursor is (it goes at the end when left out). */
+async function insertReward(): Promise<void> {
+  const textarea = editor.value?.$el;
+  const start = textarea?.selectionStart ?? draft.value.length;
+  const end = textarea?.selectionEnd ?? draft.value.length;
+  draft.value = `${draft.value.slice(0, start)}${REWARD}${draft.value.slice(end)}`;
+  await nextTick();
+  textarea?.focus();
+  textarea?.setSelectionRange(start + REWARD.length, start + REWARD.length);
+}
+
+/**
+ * How a job reads in Discord, split around the reward so it can be shown as
+ * a badge. Jobs without the reward get it appended, like the bot does.
+ */
+function preview(message: string): string[] {
+  const text = message.includes(REWARD)
+    ? message
+    : t('work.fallback', { message: message.trim(), amount: REWARD });
+  return text.split(/(\{amount\})/);
+}
+
+const draftPreview = computed(() => (draft.value.trim() ? preview(draft.value) : null));
 
 async function add(): Promise<void> {
-  if (!draft.value.trim() || needsAmount.value) return;
+  if (!draft.value.trim()) return;
   busy.value = true;
   try {
     await api.post(path(), { message: draft.value.trim() });
@@ -59,9 +84,6 @@ async function useBuiltIn(): Promise<void> {
     notify.failure(failure);
   }
 }
-
-/** Highlights {amount} so admins see where the reward goes. */
-const parts = (message: string): string[] => message.split(/(\{amount\})/);
 </script>
 
 <template>
@@ -91,8 +113,8 @@ const parts = (message: string): string[] => message.split(/(\{amount\})/);
       <ol class="jobs">
         <li v-for="(message, index) in data.messages" :key="`${index}-${message}`">
           <span class="text">
-            <template v-for="(part, i) in parts(message)" :key="i">
-              <strong v-if="part === '{amount}'" class="gold">{amount}</strong>
+            <template v-for="(part, i) in preview(message)" :key="i">
+              <span v-if="part === REWARD" class="reward">🪙 {{ t('web.jobs.reward') }}</span>
               <template v-else>{{ part }}</template>
             </template>
           </span>
@@ -109,25 +131,41 @@ const parts = (message: string): string[] => message.split(/(\{amount\})/);
 
       <form class="add" @submit.prevent="add">
         <Textarea
+          ref="editor"
           v-model="draft"
           :placeholder="t('web.jobs.placeholder')"
-          :invalid="needsAmount"
           :maxlength="300"
           rows="2"
           auto-resize
           fluid
         />
-        <small v-if="needsAmount" class="error">{{ t('web.jobs.needsAmount') }}</small>
-        <small v-else-if="data.messages.length >= data.max" class="muted">
+        <p v-if="draftPreview" class="preview">
+          <span class="muted">{{ t('web.jobs.preview') }}</span>
+          <template v-for="(part, i) in draftPreview" :key="i">
+            <span v-if="part === REWARD" class="reward">🪙 {{ t('web.jobs.reward') }}</span>
+            <template v-else>{{ part }}</template>
+          </template>
+        </p>
+        <small v-if="data.messages.length >= data.max" class="muted">
           {{ t('web.jobs.full', { max: data.max }) }}
         </small>
-        <Button
-          type="submit"
-          :label="t('web.common.add')"
-          icon="pi pi-plus"
-          :loading="busy"
-          :disabled="!draft.trim() || needsAmount || data.messages.length >= data.max"
-        />
+        <div class="row">
+          <Button
+            type="button"
+            :label="t('web.jobs.insertReward')"
+            icon="pi pi-plus-circle"
+            severity="secondary"
+            outlined
+            @click="insertReward"
+          />
+          <Button
+            type="submit"
+            :label="t('web.common.add')"
+            icon="pi pi-plus"
+            :loading="busy"
+            :disabled="!draft.trim() || data.messages.length >= data.max"
+          />
+        </div>
       </form>
     </template>
   </section>
@@ -163,8 +201,29 @@ const parts = (message: string): string[] => message.split(/(\{amount\})/);
   align-items: flex-end;
 }
 
-.error {
-  color: var(--p-red-400);
-  align-self: flex-start;
+.reward {
+  display: inline-block;
+  padding: 0 0.45rem;
+  margin: 0 0.1rem;
+  border-radius: 999px;
+  background: rgba(201, 162, 39, 0.16);
+  color: var(--mc-gold-soft);
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.preview {
+  align-self: stretch;
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  border-left: 3px solid var(--mc-gold);
+  border-radius: 6px;
+  background: var(--mc-panel-raised);
+}
+
+.preview .muted {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.15rem;
 }
 </style>

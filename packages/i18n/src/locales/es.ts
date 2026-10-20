@@ -474,7 +474,8 @@ export const es: Messages = {
       removePlaceholder: 'Quitar un trabajo…',
       modalTitle: 'Nuevo trabajo',
       messageLabel: 'Mensaje del trabajo',
-      messageHint: 'Usa {amount} donde debe aparecer la recompensa.',
+      messageHint:
+        'La recompensa se añade al final. Opcional: escribe {amount} para ponerla en otro sitio.',
       confirmReset: 'Esto restaura las recompensas, la espera y los trabajos integrados.',
     },
     collect: {
