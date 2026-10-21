@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { SETTING_CATEGORIES, type CategoryGroup } from '@mythcore/core/browser';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
 import Message from 'primevue/message';
@@ -12,6 +11,7 @@ import { t } from '../i18n/index.ts';
 import { api } from '../lib/api.ts';
 import { errorMessage } from '../lib/errors.ts';
 import { GUILD } from '../lib/guild.ts';
+import { SECTIONS, SECTION_IDS } from '../lib/sections.ts';
 import type { GuildSummary } from '../lib/types.ts';
 
 const props = defineProps<{ guildId: string }>();
@@ -47,62 +47,16 @@ watch(
   () => (drawer.value = false),
 );
 
-const SETTINGS_ICONS: Record<string, string> = {
-  general: 'pi pi-globe',
-  modules: 'pi pi-th-large',
-  work: 'pi pi-briefcase',
-  collect: 'pi pi-users',
-  wheel: 'pi pi-sync',
-  games: 'pi pi-star',
-  loans: 'pi pi-credit-card',
-  raffle: 'pi pi-ticket',
-  levels: 'pi pi-bolt',
-  levelCurve: 'pi pi-chart-line',
-  levelVoice: 'pi pi-microphone',
-  levelAnnounce: 'pi pi-megaphone',
-  levelFilters: 'pi pi-filter',
-};
-
-const settingsLinks = (group: CategoryGroup) =>
-  Object.entries(SETTING_CATEGORIES)
-    .filter(([, category]) => category.group === group)
-    .map(([category]) => ({
-      to: { name: 'settings', params: { category } },
-      icon: SETTINGS_ICONS[category] ?? 'pi pi-cog',
-      label: t(`config.categories.${category}.label`),
-    }));
-
 const sections = computed<NavSection[]>(() => [
   {
     title: null,
     links: [
-      { to: { name: 'overview' }, icon: 'pi pi-home', label: t('web.nav.overview') },
-      ...settingsLinks('general'),
-    ],
-  },
-  {
-    title: t('web.nav.economy'),
-    links: [
-      { to: { name: 'members' }, icon: 'pi pi-wallet', label: t('web.nav.members') },
-      { to: { name: 'shop' }, icon: 'pi pi-shopping-bag', label: t('web.nav.shop') },
-      { to: { name: 'loans' }, icon: 'pi pi-file-edit', label: t('web.nav.loans') },
-      ...settingsLinks('economy'),
-    ],
-  },
-  {
-    title: t('web.nav.levels'),
-    links: [
-      {
-        to: { name: 'level-members' },
-        icon: 'pi pi-sort-amount-down',
-        label: t('config.categories.levelMembers.label'),
-      },
-      {
-        to: { name: 'level-rewards' },
-        icon: 'pi pi-gift',
-        label: t('config.categories.levelRewards.label'),
-      },
-      ...settingsLinks('levels'),
+      { to: { name: 'overview' }, icon: 'pi pi-home', label: t('web.nav.overview'), exact: true },
+      ...SECTION_IDS.map((section) => ({
+        to: `/g/${props.guildId}/${section}`,
+        icon: SECTIONS[section].icon,
+        label: t(`web.sections.${section}.title`),
+      })),
     ],
   },
   {
@@ -139,7 +93,7 @@ const sections = computed<NavSection[]>(() => [
       <main class="content">
         <Message v-if="error" severity="error" :closable="false">{{ error }}</Message>
         <div v-else-if="!guild" class="loading"><ProgressSpinner /></div>
-        <RouterView v-else :key="route.fullPath" />
+        <RouterView v-else :key="guildId" />
       </main>
     </div>
   </div>

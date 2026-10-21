@@ -18,6 +18,20 @@ export const es: WebMessages = {
     discordDown: 'Discord no respondió. Inténtalo de nuevo en un momento.',
     sessionExpired: 'Tu sesión caducó. Vuelve a iniciar sesión.',
   },
+  sections: {
+    manage: 'Gestión',
+    settings: 'Ajustes',
+    general: { title: 'General', description: 'Idioma del bot y módulos activados.' },
+    economy: {
+      title: 'Economía',
+      description:
+        'Oro de los miembros, tienda, préstamos y todos los ajustes de economía y juegos.',
+    },
+    levels: {
+      title: 'Niveles',
+      description: 'Ranking, roles de recompensa y todos los ajustes de experiencia.',
+    },
+  },
   template: {
     insert: 'Insertar:',
     useBuiltIn: 'Usar el mensaje integrado',

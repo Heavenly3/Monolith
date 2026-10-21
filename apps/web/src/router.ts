@@ -1,5 +1,26 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { SECTIONS, SECTION_IDS, tabRoute } from './lib/sections.ts';
 import { loadMe } from './lib/session.ts';
+
+const SettingsView = () => import('./views/SettingsView.vue');
+
+/** /g/<guild>/<section>/<tab>; the section alone opens its first tab. */
+function sectionRoutes(): RouteRecordRaw[] {
+  return SECTION_IDS.map((section) => ({
+    path: section,
+    component: () => import('./views/SectionLayout.vue'),
+    props: { section },
+    children: [
+      { path: '', redirect: { name: tabRoute(section, SECTIONS[section].tabs[0]!.id) } },
+      ...SECTIONS[section].tabs.map((tab) => ({
+        path: tab.id,
+        name: tabRoute(section, tab.id),
+        component: tab.category ? SettingsView : tab.page!,
+        props: tab.category ? { category: tab.category } : false,
+      })),
+    ],
+  }));
+}
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -12,26 +33,8 @@ export const router = createRouter({
       props: true,
       children: [
         { path: '', name: 'overview', component: () => import('./views/OverviewView.vue') },
-        {
-          path: 'settings/:category',
-          name: 'settings',
-          component: () => import('./views/SettingsView.vue'),
-          props: true,
-        },
-        { path: 'members', name: 'members', component: () => import('./views/MembersView.vue') },
-        { path: 'shop', name: 'shop', component: () => import('./views/ShopView.vue') },
-        { path: 'loans', name: 'loans', component: () => import('./views/LoansView.vue') },
+        ...sectionRoutes(),
         { path: 'history', name: 'history', component: () => import('./views/HistoryView.vue') },
-        {
-          path: 'levels/members',
-          name: 'level-members',
-          component: () => import('./views/LevelMembersView.vue'),
-        },
-        {
-          path: 'levels/rewards',
-          name: 'level-rewards',
-          component: () => import('./views/LevelRewardsView.vue'),
-        },
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },

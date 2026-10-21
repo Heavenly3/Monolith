@@ -6,7 +6,8 @@ import GuildAvatar from './GuildAvatar.vue';
 
 export interface NavSection {
   title: string | null;
-  links: { to: RouteLocationRaw; icon: string; label: string }[];
+  /** `exact` links are only active on their own page (e.g. the overview). */
+  links: { to: RouteLocationRaw; icon: string; label: string; exact?: boolean }[];
 }
 
 defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
@@ -28,7 +29,8 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
         :key="link.label"
         :to="link.to"
         class="nav-link"
-        exact-active-class="active"
+        :active-class="link.exact ? '' : 'active'"
+        :exact-active-class="link.exact ? 'active' : ''"
       >
         <i :class="link.icon" />
         <span>{{ link.label }}</span>

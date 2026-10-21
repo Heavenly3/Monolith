@@ -18,6 +18,19 @@ export const en = {
     discordDown: 'Discord did not answer. Please try again in a moment.',
     sessionExpired: 'Your session expired. Please sign in again.',
   },
+  sections: {
+    manage: 'Manage',
+    settings: 'Settings',
+    general: { title: 'General', description: 'Language of the bot and the modules turned on.' },
+    economy: {
+      title: 'Economy',
+      description: 'Members’ gold, the shop, loans and every economy and game setting.',
+    },
+    levels: {
+      title: 'Levels',
+      description: 'Ranking, role rewards and every experience setting.',
+    },
+  },
   template: {
     insert: 'Insert:',
     useBuiltIn: 'Use the built-in message',
