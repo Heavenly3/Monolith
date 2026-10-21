@@ -21,6 +21,7 @@ export type LedgerReason =
   | 'raffle_ticket'
   | 'raffle_win'
   | 'admin'
+  | 'level'
   | 'import';
 
 export interface LedgerEntry {

@@ -5,10 +5,11 @@ import {
   type Interaction,
   type RepliableInteraction,
 } from 'discord.js';
-import { accounts, logger } from '@mythcore/core';
+import { accounts, logger, settings } from '@mythcore/core';
 import { translator, type Translator } from '@mythcore/i18n';
 import { defineEvent } from '../framework/loader.ts';
 import { translatorFor } from '../framework/context.ts';
+import { mention } from '../framework/mentions.ts';
 import { respond } from '../framework/respond.ts';
 import type { Context, LoadedCommand } from '../framework/types.ts';
 import * as ui from '../ui/index.ts';
@@ -38,6 +39,18 @@ function isAllowed(command: LoadedCommand, interaction: Interaction<'cached'>): 
   return interaction.memberPermissions.has(required);
 }
 
+/** False when the command belongs to a module the server turned off. */
+const moduleOn = (command: LoadedCommand, guildId: string): boolean =>
+  !command.module || settings.get(guildId, `modules.${command.module}`);
+
+const moduleOff = (command: LoadedCommand, t: Translator) =>
+  ui.info(
+    t('common.moduleDisabled', {
+      module: t(`modules.${command.module}`),
+      command: mention('config'),
+    }),
+  );
+
 /** customId format: `<command>:<action>:<arg>:<arg>...` */
 function parseCustomId(customId: string): { commandName: string; action: string; args: string[] } {
   const [commandName = '', action = '', ...args] = customId.split(':');
@@ -61,7 +74,10 @@ export default defineEvent({
 
     if (interaction.isAutocomplete()) {
       try {
-        await commands.get(interaction.commandName)?.autocomplete?.(interaction, ctx);
+        const command = commands.get(interaction.commandName);
+        if (command && !moduleOn(command, interaction.guildId))
+          return await interaction.respond([]);
+        await command?.autocomplete?.(interaction, ctx);
       } catch (error) {
         log.error(`Autocomplete error in /${interaction.commandName}:`, error);
         if (!interaction.responded) await interaction.respond([]).catch(() => {});
@@ -79,6 +95,10 @@ export default defineEvent({
         `/${interaction.commandName} by ${interaction.user.id} in ${interaction.guildId} [${t.lang}]`,
       );
       accounts.rememberProfile(interaction.user, interaction.locale);
+      if (!moduleOn(command, interaction.guildId)) {
+        await interaction.reply(moduleOff(command, t));
+        return;
+      }
       try {
         await command.execute(interaction, ctx);
       } catch (error) {
@@ -97,6 +117,10 @@ export default defineEvent({
       }
       if (!isAllowed(command, interaction)) {
         await interaction.reply(ui.error(t('common.adminOnly')));
+        return;
+      }
+      if (!moduleOn(command, interaction.guildId)) {
+        await interaction.reply(moduleOff(command, t));
         return;
       }
       try {

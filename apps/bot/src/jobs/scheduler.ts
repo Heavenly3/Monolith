@@ -2,6 +2,7 @@ import type { Client } from 'discord.js';
 import { cooldowns, logger } from '@mythcore/core';
 import { collectLoans } from './loanCollector.ts';
 import { drawRaffles } from './raffleDraw.ts';
+import { awardVoiceXp } from './voiceXp.ts';
 
 const log = logger.child('jobs');
 
@@ -14,6 +15,7 @@ interface Job {
 const JOBS: Job[] = [
   { name: 'loans', every: 60_000, run: collectLoans },
   { name: 'raffle', every: 15_000, run: drawRaffles },
+  { name: 'voice-xp', every: 60_000, run: awardVoiceXp },
   { name: 'cooldowns', every: 60 * 60_000, run: () => cooldowns.purgeExpired() },
 ];
 

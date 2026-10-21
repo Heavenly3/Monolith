@@ -4,7 +4,8 @@
 // the English `Messages` shape, so a missing key fails `npm run typecheck`.)
 //   npm run check:i18n
 import { ApplicationCommandOptionType, Locale, type APIApplicationCommandOption } from 'discord.js';
-import { LOCALES } from '@mythcore/i18n';
+import { SETTING_CATEGORIES, type SettingField } from '@mythcore/core';
+import { LOCALES, translate, type Language } from '@mythcore/i18n';
 import { loadCommands } from '../apps/bot/src/framework/loader.ts';
 
 const LOCALE = Locale.SpanishES;
@@ -41,6 +42,28 @@ for (const command of (await loadCommands()).values()) {
   for (const [lang, messages] of Object.entries(LOCALES)) {
     const entry = (messages.help.commands as Record<string, { about?: string }>)[name];
     if (!entry?.about) problems.push(`[${lang}] missing help.commands.${name}.about`);
+  }
+}
+
+// Every settings category, field and choice needs a label in every language.
+for (const lang of Object.keys(LOCALES) as Language[]) {
+  const has = (key: string) => translate(lang, key) !== key;
+  for (const [id, category] of Object.entries(SETTING_CATEGORIES)) {
+    for (const key of [`config.categories.${id}.label`, `config.categories.${id}.description`]) {
+      if (!has(key)) problems.push(`[${lang}] missing ${key}`);
+    }
+    for (const field of category.fields as SettingField[]) {
+      for (const part of ['label', 'help']) {
+        const key = `config.fields.${id}.${field.id}.${part}`;
+        if (!has(key)) problems.push(`[${lang}] missing ${key}`);
+      }
+      for (const option of field.options ?? []) {
+        const key = `config.choices.${field.id}.${option}`;
+        if (!has(key)) problems.push(`[${lang}] missing ${key}`);
+      }
+      if (!has(`config.hints.${field.type}`))
+        problems.push(`[${lang}] missing config.hints.${field.type}`);
+    }
   }
 }
 

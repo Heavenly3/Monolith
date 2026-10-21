@@ -30,6 +30,7 @@ export const theme = {
     inventory: 0x795548, // leather satchel
     config: 0x7b1fa2, // royal purple
     help: 0x6d4c41, // old tome
+    levels: 0x2e9e6b, // emerald of experience
   },
 } as const;
 

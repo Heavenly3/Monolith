@@ -5,6 +5,8 @@ import * as ui from '../../ui/index.ts';
 import { coins, emojis, relativeTime, ticket } from '../../ui/index.ts';
 
 export default defineCommand({
+  module: 'lottery',
+
   data: new SlashCommandBuilder()
     .setName('lottery')
     .setDescription('Lottery: buy a numbered ticket and win the prize.')

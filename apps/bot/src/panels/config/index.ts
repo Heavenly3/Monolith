@@ -25,9 +25,12 @@ import { games } from './sections/games.ts';
 import { shopSection } from './sections/shop.ts';
 import { loansSection } from './sections/loans.ts';
 import { raffleSection } from './sections/raffle.ts';
+import { modulesSection } from './sections/modules.ts';
+import { levelsSection } from './sections/levels.ts';
 
 const SECTIONS: Record<string, Section> = {
   general,
+  modules: modulesSection,
   members,
   work: workSection,
   collect,
@@ -36,23 +39,35 @@ const SECTIONS: Record<string, Section> = {
   shop: shopSection,
   loans: loansSection,
   raffle: raffleSection,
+  levels: levelsSection,
 };
 
 // Actions every section with settings gets for free.
+// The category is the section itself, or the first argument when a section
+// shows several categories (e.g. levels).
+const categoryOf = ({ sectionId, args }: ActionContext): string =>
+  args[0] && isSettingCategory(args[0]) ? args[0] : sectionId;
+
 const GENERIC: Record<string, PanelAction> = {
-  edit({ guildId, t, sectionId }) {
-    return isSettingCategory(sectionId)
-      ? { modal: valuesModal(guildId, sectionId, t) }
+  edit(context) {
+    const { guildId, t, sectionId } = context;
+    const category = categoryOf(context);
+    return isSettingCategory(category)
+      ? { modal: valuesModal(guildId, category, t, sectionId) }
       : { error: t('config.unknown') };
   },
-  save({ guildId, t, fields, sectionId }) {
-    if (!fields || !isSettingCategory(sectionId)) return { error: t('config.unknown') };
-    const problem = saveValues(guildId, sectionId, fields, t);
+  save(context) {
+    const { guildId, t, fields } = context;
+    const category = categoryOf(context);
+    if (!fields || !isSettingCategory(category)) return { error: t('config.unknown') };
+    const problem = saveValues(guildId, category, fields, t);
     return problem ? { error: problem } : { banner: `${emojis.success} ${t('config.saved')}` };
   },
-  reset({ guildId, t, sectionId }) {
-    if (!isSettingCategory(sectionId)) return { error: t('config.unknown') };
-    settingsForm.resetCategory(guildId, sectionId);
+  reset(context) {
+    const { guildId, t } = context;
+    const category = categoryOf(context);
+    if (!isSettingCategory(category)) return { error: t('config.unknown') };
+    settingsForm.resetCategory(guildId, category);
     return { banner: `${emojis.reset} ${t('config.restored')}` };
   },
   cancel: ({ t }) => ({ banner: `${emojis.info} ${t('panel.cancelled')}` }),

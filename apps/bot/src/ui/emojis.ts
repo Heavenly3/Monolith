@@ -28,6 +28,14 @@ const FALLBACK = {
   card: '✍️',
   rank: '🏆',
 
+  // Levels
+  level: '🌟',
+  xp: '✨',
+  message: '💬',
+  voice: '🎙️',
+  levelUp: '⏫',
+  modules: '🧩',
+
   // Deeds
   work: '📜',
   collect: '👑',

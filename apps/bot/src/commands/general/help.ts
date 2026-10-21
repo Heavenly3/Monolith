@@ -37,6 +37,7 @@ const SECTIONS: Record<
   games: { icon: 'slots', color: 'slots', category: 'games' },
   loans: { icon: 'loan', color: 'loans', category: 'loans' },
   shop: { icon: 'shop', color: 'shop', category: 'shop' },
+  levels: { icon: 'level', color: 'levels', category: 'levels' },
   admin: { icon: 'config', color: 'config', category: 'admin', adminOnly: true },
   config: { icon: 'description', color: 'config' },
 };
@@ -63,6 +64,8 @@ const COMMAND_ICONS: Record<string, EmojiName> = {
   inventory: 'inventory',
   help: 'help',
   config: 'config',
+  rank: 'level',
+  levels: 'rank',
 };
 
 // Game commands and the feature they belong to.
@@ -79,6 +82,8 @@ const COMMAND_SETTINGS: Record<string, string> = {
   keno: 'games',
   rob: 'games',
   loan: 'loans',
+  rank: 'levels',
+  levels: 'levels',
   lottery: 'raffle',
 };
 

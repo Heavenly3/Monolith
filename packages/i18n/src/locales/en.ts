@@ -23,6 +23,8 @@ export const en = {
     notYours: 'This message belongs to someone else. Use {command} to open your own.',
     error: 'Something went wrong. Please try again. Reference: `{ref}`',
     invalidDuration: 'That is not a valid time. Use formats like `30m`, `12h` or `1d`.',
+    moduleDisabled:
+      'The **{module}** module is turned off in this server. An administrator can turn it on in {command}.',
   },
 
   // Name of every module, shown in titles
@@ -44,6 +46,37 @@ export const en = {
     inventory: 'Inventory',
     config: 'Settings',
     help: 'Help',
+    levels: 'Levels',
+  },
+
+  modules: {
+    economy: 'Economy',
+    games: 'Games',
+    shop: 'Shop',
+    loans: 'Loans',
+    lottery: 'Lottery',
+    levels: 'Levels',
+  },
+
+  levels: {
+    announce: '{user} rose to **level {level}**!',
+    announceReward: '{user} rose to **level {level}** and earned {role}!',
+    announceTitle: 'Level up',
+    coins: '+{amount} for levelling up',
+    rankSubtitle: 'Experience of {user}',
+    level: 'Level',
+    rank: 'Rank',
+    xp: 'Experience',
+    messages: 'Messages',
+    voice: 'Voice time',
+    progress: '{current} / {needed} XP to level {next}',
+    maxLevel: 'Maximum level reached',
+    noXp: '{user} has no experience yet. Chat to earn some!',
+    nextReward: 'Next reward: {role} at level {level}',
+    boardSubtitle: 'The most experienced members of the server.',
+    boardEmpty: 'No one has experience yet. Start chatting!',
+    boardLine: 'Level {level} · {xp} XP',
+    disabledHint: 'Levels are turned off in this server.',
   },
 
   status: 'Rolling dice in the tavern',
@@ -356,11 +389,41 @@ export const en = {
     modalTitle: '{category} settings',
     languagePlaceholder: 'Choose the language of the bot',
     languageSaved: 'Language updated.',
-    minMax: 'The minimum reward cannot be greater than the maximum.',
+    minMax: 'The minimum cannot be greater than the maximum.',
+    channelRequired: 'Choose the channel where level-ups are announced.',
+    on: 'On',
+    off: 'Off',
+    notSet: 'Not set',
+    builtIn: 'Built-in message',
     hints: {
       coins: 'A whole number, e.g. 2500',
-      percent: 'A whole number from 0 to 1000',
+      percent: 'A whole number, e.g. 150 for 150%',
       duration: 'e.g. 30s, 15m, 1h30m, 2d',
+      number: 'A whole number',
+      language: 'Pick a language',
+      toggle: 'Tick to turn on',
+      choice: 'Pick one',
+      channel: 'Pick a channel (or none)',
+      channels: 'Pick one or more channels',
+      roles: 'Pick one or more roles',
+      template: 'Empty = built-in message. Variables: {variables}',
+    },
+    choices: {
+      curve: {
+        gentle: 'Gentle — levels come quickly',
+        standard: 'Standard — like most level bots',
+        steep: 'Steep — high levels are rare',
+      },
+      mode: {
+        channel: 'In the channel where they chatted',
+        custom: 'In a fixed channel',
+        dm: 'By direct message',
+        off: 'Do not announce',
+      },
+      rewardMode: {
+        stack: 'Keep every reward role',
+        replace: 'Keep only the highest reward role',
+      },
     },
     languages: {
       auto: 'Automatic',
@@ -370,6 +433,7 @@ export const en = {
     },
     categories: {
       general: { label: 'General', description: 'Language of the bot' },
+      modules: { label: 'Modules', description: 'Turn whole systems on or off' },
       members: { label: 'Members', description: 'Change the gold of members and see totals' },
       work: { label: 'Work', description: 'Rewards, cooldown and jobs of /work' },
       collect: { label: 'Role income', description: 'Income per role and cooldown of /collect' },
@@ -378,6 +442,25 @@ export const en = {
       shop: { label: 'Shop', description: 'Add or remove items for sale' },
       loans: { label: 'Loans', description: 'Loan terms and active loans' },
       raffle: { label: 'Lottery', description: 'Ticket price, starting prize and draw time' },
+      levels: { label: 'Experience', description: 'XP per message, cooldown and gold per level' },
+      levelCurve: { label: 'Level curve', description: 'How much XP each level needs' },
+      levelVoice: { label: 'Voice XP', description: 'Experience for time in voice channels' },
+      levelAnnounce: {
+        label: 'Level-up messages',
+        description: 'Where and how level-ups are announced',
+      },
+      levelFilters: {
+        label: 'Filters and roles',
+        description: 'Channels and roles without XP, reward mode',
+      },
+      levelRewards: {
+        label: 'Role rewards',
+        description: 'Roles given when members reach a level',
+      },
+      levelMembers: {
+        label: 'Member XP',
+        description: 'Change or reset the experience of members',
+      },
     },
     fields: {
       general: {
@@ -385,6 +468,55 @@ export const en = {
           label: 'Language',
           help: "Language of every reply. Automatic follows each member's Discord language.",
         },
+      },
+      modules: {
+        economy: {
+          label: 'Economy',
+          help: 'Balance, bank, payments, work, income, wheel and robbing.',
+        },
+        games: { label: 'Games', help: 'Slots, roulette, race and keno.' },
+        shop: { label: 'Shop', help: 'Shop, buying, inventory and using items.' },
+        loans: { label: 'Loans', help: 'Borrowing gold with interest.' },
+        lottery: { label: 'Lottery', help: 'Numbered tickets and the shared prize.' },
+        levels: { label: 'Levels', help: 'Experience for chatting, ranks and role rewards.' },
+      },
+      levels: {
+        min: { label: 'Minimum XP per message', help: 'Least experience a message can give.' },
+        max: { label: 'Maximum XP per message', help: 'Most experience a message can give.' },
+        cooldown: { label: 'Cooldown', help: 'Time before messages give XP again (stops spam).' },
+        coins: { label: 'Gold per level', help: 'Gold paid on every level up (0 = none).' },
+      },
+      levelCurve: {
+        curve: { label: 'Curve', help: 'How fast the XP needed grows from one level to the next.' },
+        difficulty: { label: 'Difficulty (%)', help: '100% is normal, 200% needs twice the XP.' },
+        maxLevel: { label: 'Maximum level', help: 'Members stop levelling up at this level.' },
+      },
+      levelVoice: {
+        enabled: {
+          label: 'Voice XP',
+          help: 'Give experience for time in voice with other people.',
+        },
+        xp: { label: 'XP per minute', help: 'Experience per minute in a voice channel.' },
+      },
+      levelAnnounce: {
+        mode: { label: 'Where to announce', help: 'Where level-up messages are sent.' },
+        channel: {
+          label: 'Announcement channel',
+          help: 'Used when announcing in a fixed channel.',
+        },
+        message: { label: 'Message', help: 'Text of the level-up message.' },
+        every: {
+          label: 'Announce every',
+          help: 'Announce every N levels; reward levels are always announced.',
+        },
+      },
+      levelFilters: {
+        channels: { label: 'Channels without XP', help: 'Messages here never give experience.' },
+        roles: {
+          label: 'Roles without XP',
+          help: 'Members with these roles never earn experience.',
+        },
+        rewardMode: { label: 'Reward roles', help: 'Whether members keep lower reward roles.' },
       },
       work: {
         min: { label: 'Minimum reward', help: 'Least gold /work can pay.' },
@@ -420,8 +552,49 @@ export const en = {
     },
   },
 
+  levelsAdmin: {
+    full: 'You can have at most {max} role rewards.',
+    badRole: 'Pick a normal role (not @everyone or a bot role).',
+    missing: 'That reward does not exist.',
+    rewardAdded: '{role} is now given at level **{level}**.',
+    rewardRemoved: '{role} is no longer a level reward.',
+    adjusted: '{user} is now level **{level}** with {xp} XP.',
+    resetAll: ({ count }: { count: number }) => `Reset the experience of ${s(count, 'member')}.`,
+  },
+
   panel: {
     more: '…and {count} more',
+    modules: {
+      hint: 'Press a button to turn a module on or off. Turned-off commands tell members it is disabled.',
+      enabled: '**{module}** turned on.',
+      disabled: '**{module}** turned off.',
+    },
+    levels: {
+      stats: '{members} members with XP · {xp} XP in total · highest level {top}',
+      noRewards: 'No role rewards yet.',
+      hint: 'XP multipliers per role and channel are set up in the web dashboard.',
+      addReward: 'Add role reward',
+      removeReward: 'Remove a role reward…',
+      rewardTitle: 'New role reward',
+      levelLabel: 'Level',
+      roleLabel: 'Role',
+      adjust: 'Change member XP',
+      adjustTitle: 'Change the experience of a member',
+      member: 'Member',
+      action: 'Action',
+      actions: {
+        add: 'Add XP',
+        remove: 'Remove XP',
+        setXp: 'Set exact XP',
+        setLevel: 'Set level',
+        reset: 'Reset to zero',
+      },
+      amount: 'Amount',
+      amountHint: 'XP, or the level for "Set level". Not needed to reset.',
+      resetAll: 'Reset all XP',
+      confirmResetAll:
+        'This removes the experience of every member. Reward roles stay until they chat again.',
+    },
     confirm: 'Confirm',
     cancel: 'Cancel',
     cancelled: 'Cancelled.',
@@ -553,6 +726,12 @@ export const en = {
         intro:
           '**Permanent** items stay in your inventory; if they give a role you get it right away and can only buy them once. **Consumable** items are used up with /use and can give a role when used.',
       },
+      levels: {
+        label: 'Levels',
+        description: 'Experience, ranks and role rewards',
+        intro:
+          'Members earn experience (XP) for chatting — once per cooldown so spam does not count — and optionally for time in voice. Enough XP raises your level; some levels give a role or gold.',
+      },
       admin: {
         label: 'Administration',
         description: 'The settings panel',
@@ -635,6 +814,11 @@ export const en = {
         about: 'Lists the items you (or another member) own and their total worth.',
       },
       help: { about: 'Opens this guide.' },
+      rank: {
+        about:
+          'Shows the level, progress to the next level, rank, total experience, messages and voice time of you or another member, plus the next role reward.',
+      },
+      levels: { about: 'Ranks the server by experience, 10 members per page.' },
       config: {
         about:
           'Opens the settings panel: language, members’ gold, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans and the lottery — all with buttons, menus and forms. Destructive actions ask for confirmation.',

@@ -43,6 +43,12 @@ export const ICONS: Partial<Record<EmojiName, IconSpec>> & Record<`reel_${SlotSy
     payment: { icon: 'lorc/swap-bag', color: GOLD },
     card: { icon: 'lorc/wax-seal', color: RED },
     rank: { icon: 'lorc/trophy', color: GOLD },
+    level: { icon: 'delapouite/upgrade', color: GREEN },
+    xp: { icon: 'delapouite/star-formation', color: GOLD },
+    message: { icon: 'delapouite/chat-bubble', color: SILVER },
+    voice: { icon: 'delapouite/microphone', color: BLUE },
+    levelUp: { icon: 'delapouite/progression', color: GREEN },
+    modules: { icon: 'lorc/cog', color: SILVER },
 
     work: { icon: 'lorc/scroll-unfurled', color: BROWN },
     collect: { icon: 'lorc/crown-coin', color: GOLD },

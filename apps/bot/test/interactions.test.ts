@@ -6,9 +6,11 @@ import {
   accounts,
   closeDatabase,
   cooldowns,
+  levels,
   loans,
   openDatabase,
   settings,
+  settingsForm,
   shop,
 } from '@mythcore/core';
 
@@ -20,6 +22,7 @@ vi.mock('../src/framework/respond.ts', async (importOriginal) => ({
 
 const { loadCommands } = await import('../src/framework/loader.ts');
 const { default: router } = await import('../src/events/interactionCreate.ts');
+const { default: onMessage } = await import('../src/events/messageCreate.ts');
 const { createHarness, makeUser, role } = await import('./fakeDiscord.ts');
 type FakeUser = ReturnType<typeof makeUser>;
 
@@ -143,6 +146,8 @@ async function suite(locale: string) {
   await cmd('config');
   for (const section of [
     'general',
+    'modules',
+    'levels',
     'members',
     'work',
     'collect',
@@ -202,12 +207,60 @@ async function suite(locale: string) {
   await panel('members', 'adjust', { admin: false });
   await panel('members', 'nope');
 
+  // Modules: a turned-off module answers with a notice, then comes back
+  await panel('modules', 'toggle:games');
+  clearCooldowns();
+  await cmd('slots', { opts: { bet: '500' } });
+  expect(harness.recorder.payloads.at(-1)?.text).toMatch(/turned off|desactivado/);
+  await panel('modules', 'toggle:games');
+  await panel('modules', 'toggle:nope');
+
+  // Levels: every settings form, rewards, member XP, ranking and level-ups
+  for (const category of ['levels', 'levelCurve', 'levelVoice', 'levelAnnounce', 'levelFilters']) {
+    await panel('levels', `edit:${category}`);
+  }
+  await panel('levels', 'save:levels', {
+    fields: { min: '400', max: '400', cooldown: '1m', coins: '250' },
+  });
+  await panel('levels', 'save:levelCurve', {
+    fields: { curve: 'gentle', difficulty: '120', maxLevel: '300' },
+  });
+  await panel('levels', 'save:levelVoice', { fields: { enabled: true, xp: '8' } });
+  await panel('levels', 'save:levelAnnounce', {
+    fields: { mode: 'custom', channel: [], message: '', every: '1' },
+  });
+  await panel('levels', 'save:levelAnnounce', {
+    fields: { mode: 'channel', channel: [], message: 'GG {user}, level {level}!', every: '1' },
+  });
+  await panel('levels', 'save:levelFilters', {
+    fields: { channels: [], roles: [], rewardMode: 'replace' },
+  });
+  await panel('levels', 'addReward');
+  await panel('levels', 'saveReward', { fields: { level: '2', role: [role] } });
+  await panel('levels', 'saveReward', { fields: { level: 'x', role: [role] } });
+  await panel('levels', 'adjust');
+  await panel('levels', 'saveXp', { fields: { user: [bob], action: 'setLevel', amount: '3' } });
+  await panel('levels', 'saveXp', { fields: { user: [bob], action: 'add', amount: '' } });
+  levels.resetAll(GUILD);
+  await onMessage.execute(harness.message(alice) as never);
+  expect(harness.recorder.payloads.at(-1)?.text).toContain('GG <@alice>, level 2!');
+  await cmd('rank');
+  await cmd('rank', { opts: { user: bob } });
+  await cmd('levels');
+  await act('levels:page:alice:0');
+  await act('levels:page:alice:0', { user: bob });
+  await panel('levels', 'removeReward', { values: [role.id] });
+  await panel('levels', 'resetAll');
+  await panel('levels', 'resetAll:yes');
+  await cmd('rank');
+  settingsForm.resetCategory(GUILD, 'levelAnnounce');
+
   // Help: every page
   await cmd('help');
   await cmd('help', { opts: { command: 'lottery' } });
   await cmd('help', { opts: { command: 'config' }, admin: false });
   await harness.autocomplete(execute, 'help', { user: alice, focused: 'lo', locale });
-  for (const section of ['economy', 'games', 'loans', 'shop', 'admin', 'config']) {
+  for (const section of ['economy', 'games', 'loans', 'shop', 'levels', 'admin', 'config']) {
     await act('help:section', { values: [section] });
   }
   for (const name of commandNames) await act('help:command', { values: [name] });

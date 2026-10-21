@@ -5,7 +5,7 @@ import type {
   ModalSubmitInteraction,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord.js';
-import type { SettingKey } from '@mythcore/core';
+import type { ModuleId, SettingKey } from '@mythcore/core';
 import type { Language, Translator } from '@mythcore/i18n';
 
 /** Passed to every handler. */
@@ -32,18 +32,22 @@ export interface CommandDefinition {
   data: { name: string; toJSON(): RESTPostAPIChatInputApplicationCommandsJSONBody };
   /** Setting that holds its cooldown, shown in /help. */
   cooldown?: SettingKey;
+  /** Module it belongs to; defaults to the module of its folder. */
+  module?: ModuleId;
   execute(interaction: CommandInteraction, ctx: Context): Promise<unknown>;
   autocomplete?(interaction: CommandAutocomplete, ctx: Context): Promise<unknown>;
   /** Handlers for custom IDs shaped `<command>:<action>:<args...>`. */
   components?: Record<string, ComponentHandler>;
 }
 
-export interface LoadedCommand extends CommandDefinition {
+export interface LoadedCommand extends Omit<CommandDefinition, 'module'> {
   /** Folder the command lives in (economy, games...). */
   category: string;
   /** Final payload sent to Discord, translations included. */
   json: RESTPostAPIChatInputApplicationCommandsJSONBody;
   adminOnly: boolean;
+  /** Module that must be turned on for the command to work, if any. */
+  module: ModuleId | null;
 }
 
 /** Identity helper that gives command files full type checking. */

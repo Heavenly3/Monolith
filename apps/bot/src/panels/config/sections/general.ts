@@ -36,7 +36,7 @@ export const general: Section = {
     // The panel is rebuilt in the new language right away.
     language({ guildId, value }) {
       const language = parseFieldValue(languageField, value ?? '') as
-        SettingValues['general.language'] | null;
+        SettingValues['general.language'] | undefined;
       settings.set(guildId, 'general.language', language ?? 'auto');
       return { refresh: true, banner: (t) => `${emojis.success} ${t('config.languageSaved')}` };
     },

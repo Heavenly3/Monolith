@@ -205,6 +205,22 @@ export const MIGRATIONS: readonly string[] = [
   );
   CREATE INDEX idx_web_sessions_expiry ON web_sessions (expires_at);
   `,
+
+  // 5 — levels: experience of every member in every server
+  `
+  CREATE TABLE member_levels (
+    guild_id        TEXT NOT NULL,
+    user_id         TEXT NOT NULL,
+    xp              INTEGER NOT NULL DEFAULT 0 CHECK (xp >= 0),
+    level           INTEGER NOT NULL DEFAULT 0,
+    messages        INTEGER NOT NULL DEFAULT 0,
+    voice_minutes   INTEGER NOT NULL DEFAULT 0,
+    last_message_at INTEGER NOT NULL DEFAULT 0,
+    updated_at      INTEGER NOT NULL DEFAULT ${NOW},
+    PRIMARY KEY (guild_id, user_id)
+  );
+  CREATE INDEX idx_member_levels_rank ON member_levels (guild_id, xp DESC);
+  `,
 ];
 
 /** Tables that belong to one server (used to hand legacy data over to a server). */
@@ -220,4 +236,5 @@ export const GUILD_TABLES = [
   'raffle_rounds',
   'ledger',
   'audit_log',
+  'member_levels',
 ] as const;

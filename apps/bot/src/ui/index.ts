@@ -26,7 +26,8 @@ export type Feature =
   | 'shop'
   | 'inventory'
   | 'config'
-  | 'help';
+  | 'help'
+  | 'levels';
 
 const FEATURE_ICONS: Record<Feature, EmojiName> = {
   balance: 'wallet',
@@ -46,6 +47,7 @@ const FEATURE_ICONS: Record<Feature, EmojiName> = {
   inventory: 'inventory',
   config: 'config',
   help: 'help',
+  levels: 'level',
 };
 
 /** Themed title of a feature, e.g. "🎰 Nebula Slots" or "🎰 Nebula Slots — Results". */

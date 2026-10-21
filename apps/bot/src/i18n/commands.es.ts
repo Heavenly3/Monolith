@@ -154,6 +154,13 @@ export const commandsEs: Record<string, CommandTexts> = {
     options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
   },
 
+  rank: {
+    name: 'rango',
+    description: 'Mira tu nivel y experiencia, o los de otro miembro.',
+    options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
+  },
+  levels: { name: 'niveles', description: 'Mira a los miembros con más experiencia del servidor.' },
+
   help: {
     name: 'ayuda',
     description: 'Aprende cómo funciona el bot: comandos, juegos y ajustes.',

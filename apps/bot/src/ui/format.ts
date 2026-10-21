@@ -20,3 +20,9 @@ export function fullTime(date: number | Date): string {
 export function ticket(number: number): string {
   return `\`${String(number).padStart(3, '0')}\``;
 }
+
+/** Text progress bar: 0.42 → `▰▰▰▰▰▱▱▱▱▱▱▱`. */
+export function progressBar(ratio: number, size = 12): string {
+  const filled = Math.round(Math.min(1, Math.max(0, ratio)) * size);
+  return `\`${'▰'.repeat(filled)}${'▱'.repeat(size - filled)}\``;
+}

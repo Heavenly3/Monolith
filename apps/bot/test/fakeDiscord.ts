@@ -33,7 +33,7 @@ export interface Recorder {
 }
 
 const UNTRANSLATED =
-  /\b(common|features|balance|bank|pay|work|collect|wheel|rob|leaderboard|games|slots|roulette|horserace|keno|raffle|loans|shop|use|inventory|moneyAdmin|incomeAdmin|wheelAdmin|workAdmin|shopAdmin|loansAdmin|config|panel|help)\.[a-zA-Z]+(\.[a-zA-Z]+)*\b/;
+  /\b(common|features|balance|bank|pay|work|collect|wheel|rob|leaderboard|games|slots|roulette|horserace|keno|raffle|loans|shop|use|inventory|moneyAdmin|incomeAdmin|wheelAdmin|workAdmin|shopAdmin|loansAdmin|levelsAdmin|levels|modules|config|panel|help)\.[a-zA-Z]+(\.[a-zA-Z]+)*\b/;
 
 type Node = {
   content?: string;
@@ -62,7 +62,31 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
   const recorder: Recorder = { payloads: [], errors: [] };
   const roles = new Collection<string, typeof role>([[role.id, role]]);
   const memberRoles = new Collection<string, typeof role>([[role.id, role]]);
-  const guild = { id: guildId, roles: { cache: roles }, preferredLocale: 'en-US' };
+  const fakeMember = (user: FakeUser) => ({
+    id: user.id,
+    user,
+    displayName: user.username,
+    toString: () => `<@${user.id}>`,
+    displayAvatarURL: () => user.displayAvatarURL(),
+    guild,
+    roles: {
+      cache: memberRoles,
+      add: async (ids: string[]) => ids.forEach((id) => memberRoles.set(id, roles.get(id)!)),
+      remove: async (ids: string[]) => ids.forEach((id) => memberRoles.delete(id)),
+    },
+    send: async (payload: never) => record(payload),
+  });
+  const guild: Record<string, unknown> = {
+    id: guildId,
+    name: 'Test realm',
+    roles: { cache: roles },
+    preferredLocale: 'en-US',
+    channels: { cache: new Collection() },
+  };
+  guild.members = {
+    me: { id: 'bot' },
+    fetch: async (id: string) => fakeMember(makeUser(id, id)),
+  };
   const client = { commands, user: { ...makeUser('bot', 'bot'), setActivity: () => {} } };
   let label = '';
 
@@ -86,8 +110,11 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
     if (/Reference: `|Referencia: `/.test(text)) recorder.errors.push(`${label}: handler error`);
     const key = text.match(UNTRANSLATED);
     if (key) recorder.errors.push(`${label}: untranslated key ${key[0]}`);
-    // Placeholders left unfilled ({amount} is legit: job message templates show it to admins).
-    const placeholder = text.match(/\{(?!amount\})[a-zA-Z]+\}/);
+    // Placeholders left unfilled. Template variables are legit: admins see the
+    // job and level-up templates they typed.
+    const placeholder = text.match(
+      /\{(?!(?:amount|user|username|level|xp|rank|role|server)\})[a-zA-Z]+\}/,
+    );
     if (placeholder) recorder.errors.push(`${label}: unfilled placeholder ${placeholder[0]}`);
     recorder.payloads.push({ label, text, json });
   }
@@ -162,9 +189,31 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
     };
   };
 
+  /** A message in a text channel, to drive the messageCreate event. */
+  function message(user: FakeUser) {
+    label = `message by ${user.id}`;
+    return {
+      inGuild: () => true,
+      author: user,
+      webhookId: null,
+      system: false,
+      guildId,
+      channelId: 'channel-1',
+      member: fakeMember(user),
+      channel: {
+        id: 'channel-1',
+        isThread: () => false,
+        isTextBased: () => true,
+        permissionsFor: () => ({ has: () => true }),
+        send: async (payload: never) => record(payload),
+      },
+    };
+  }
+
   return {
     recorder,
     memberRoles,
+    message,
     async command(
       router: (i: unknown) => Promise<unknown>,
       name: string,
@@ -238,6 +287,12 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
             fields[id]
               ? new Collection((fields[id] as (typeof role)[]).map((r) => [r.id, r]))
               : null,
+          getSelectedChannels: (id: string) =>
+            fields[id]
+              ? new Collection((fields[id] as { id: string }[]).map((c) => [c.id, c]))
+              : null,
+          getCheckbox: (id: string) => Boolean(fields[id]),
+          getRadioGroup: (id: string) => (fields[id] as string | undefined) ?? null,
         },
       };
       await router(interaction);

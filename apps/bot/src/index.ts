@@ -6,8 +6,14 @@ import * as scheduler from './jobs/scheduler.ts';
 
 openDatabase(env.databasePath);
 
+// No privileged intents: levels only need to know who wrote where and who
+// is in voice, never the content of messages.
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
+  ],
   partials: [Partials.Channel],
 });
 

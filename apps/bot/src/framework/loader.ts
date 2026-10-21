@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import type { Client, ClientEvents } from 'discord.js';
-import { logger } from '@mythcore/core';
+import { logger, type ModuleId } from '@mythcore/core';
 import { localizeCommand } from '../i18n/localizeCommand.ts';
 import type { CommandDefinition, LoadedCommand } from './types.ts';
 
@@ -10,6 +10,15 @@ const log = logger.child('loader');
 const SRC_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMMANDS_DIR = path.join(SRC_DIR, 'commands');
 const EVENTS_DIR = path.join(SRC_DIR, 'events');
+
+// Module of the commands in each folder (a command can override it).
+const FOLDER_MODULES: Record<string, ModuleId> = {
+  economy: 'economy',
+  games: 'games',
+  shop: 'shop',
+  loans: 'loans',
+  levels: 'levels',
+};
 
 function tsFiles(dir: string): string[] {
   return fs
@@ -46,6 +55,7 @@ export async function loadCommands(): Promise<Map<string, LoadedCommand>> {
         category,
         json,
         adminOnly: Boolean(json.default_member_permissions),
+        module: command.module ?? FOLDER_MODULES[category] ?? null,
       });
     }
   }

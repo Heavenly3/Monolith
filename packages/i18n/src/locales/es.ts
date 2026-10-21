@@ -25,6 +25,8 @@ export const es: Messages = {
     notYours: 'Este mensaje es de otra persona. Usa {command} para abrir el tuyo.',
     error: 'Algo salió mal. Inténtalo de nuevo. Referencia: `{ref}`',
     invalidDuration: 'Ese no es un tiempo válido. Usa formatos como `30m`, `12h` o `1d`.',
+    moduleDisabled:
+      'El módulo **{module}** está desactivado en este servidor. Un administrador puede activarlo en {command}.',
   },
 
   features: {
@@ -45,6 +47,37 @@ export const es: Messages = {
     inventory: 'Inventario',
     config: 'Ajustes',
     help: 'Ayuda',
+    levels: 'Niveles',
+  },
+
+  modules: {
+    economy: 'Economía',
+    games: 'Juegos',
+    shop: 'Tienda',
+    loans: 'Préstamos',
+    lottery: 'Lotería',
+    levels: 'Niveles',
+  },
+
+  levels: {
+    announce: '¡{user} subió al **nivel {level}**!',
+    announceReward: '¡{user} subió al **nivel {level}** y ganó {role}!',
+    announceTitle: 'Subida de nivel',
+    coins: '+{amount} por subir de nivel',
+    rankSubtitle: 'Experiencia de {user}',
+    level: 'Nivel',
+    rank: 'Puesto',
+    xp: 'Experiencia',
+    messages: 'Mensajes',
+    voice: 'Tiempo en voz',
+    progress: '{current} / {needed} XP para el nivel {next}',
+    maxLevel: 'Nivel máximo alcanzado',
+    noXp: '{user} todavía no tiene experiencia. ¡Chatea para ganarla!',
+    nextReward: 'Próxima recompensa: {role} en el nivel {level}',
+    boardSubtitle: 'Los miembros con más experiencia del servidor.',
+    boardEmpty: 'Nadie tiene experiencia todavía. ¡Empezad a chatear!',
+    boardLine: 'Nivel {level} · {xp} XP',
+    disabledHint: 'Los niveles están desactivados en este servidor.',
   },
 
   status: 'Tirando dados en la taberna',
@@ -360,11 +393,41 @@ export const es: Messages = {
     modalTitle: 'Ajustes: {category}',
     languagePlaceholder: 'Elige el idioma del bot',
     languageSaved: 'Idioma actualizado.',
-    minMax: 'La recompensa mínima no puede ser mayor que la máxima.',
+    minMax: 'El mínimo no puede ser mayor que el máximo.',
+    channelRequired: 'Elige el canal donde se anuncian las subidas de nivel.',
+    on: 'Activado',
+    off: 'Desactivado',
+    notSet: 'Sin elegir',
+    builtIn: 'Mensaje integrado',
     hints: {
       coins: 'Un número entero, p. ej. 2500',
       percent: 'Un número entero de 0 a 1000',
       duration: 'p. ej. 30s, 15m, 1h30m, 2d',
+      number: 'Un número entero',
+      language: 'Elige un idioma',
+      toggle: 'Márcalo para activarlo',
+      choice: 'Elige una opción',
+      channel: 'Elige un canal (o ninguno)',
+      channels: 'Elige uno o varios canales',
+      roles: 'Elige uno o varios roles',
+      template: 'Vacío = mensaje integrado. Variables: {variables}',
+    },
+    choices: {
+      curve: {
+        gentle: 'Suave — los niveles llegan rápido',
+        standard: 'Estándar — como la mayoría de bots de niveles',
+        steep: 'Empinada — los niveles altos son raros',
+      },
+      mode: {
+        channel: 'En el canal donde escribió',
+        custom: 'En un canal fijo',
+        dm: 'Por mensaje privado',
+        off: 'No anunciar',
+      },
+      rewardMode: {
+        stack: 'Conservar todos los roles de recompensa',
+        replace: 'Conservar solo el rol de recompensa más alto',
+      },
     },
     languages: {
       auto: 'Automático',
@@ -374,6 +437,7 @@ export const es: Messages = {
     },
     categories: {
       general: { label: 'General', description: 'Idioma del bot' },
+      modules: { label: 'Módulos', description: 'Activa o desactiva sistemas completos' },
       members: {
         label: 'Miembros',
         description: 'Cambia el oro de los miembros y mira los totales',
@@ -391,12 +455,92 @@ export const es: Messages = {
         label: 'Lotería',
         description: 'Precio del boleto, premio inicial y hora del sorteo',
       },
+      levels: { label: 'Experiencia', description: 'XP por mensaje, espera y oro por nivel' },
+      levelCurve: { label: 'Curva de niveles', description: 'Cuánta XP necesita cada nivel' },
+      levelVoice: { label: 'XP de voz', description: 'Experiencia por estar en canales de voz' },
+      levelAnnounce: {
+        label: 'Mensajes de nivel',
+        description: 'Dónde y cómo se anuncian las subidas',
+      },
+      levelFilters: {
+        label: 'Filtros y roles',
+        description: 'Canales y roles sin XP, modo de recompensas',
+      },
+      levelRewards: {
+        label: 'Roles de recompensa',
+        description: 'Roles que se dan al llegar a un nivel',
+      },
+      levelMembers: {
+        label: 'XP de miembros',
+        description: 'Cambia o reinicia la experiencia de los miembros',
+      },
     },
     fields: {
       general: {
         language: {
           label: 'Idioma',
           help: 'Idioma de todas las respuestas. Automático sigue el idioma de Discord de cada miembro.',
+        },
+      },
+      modules: {
+        economy: {
+          label: 'Economía',
+          help: 'Saldo, banco, pagos, trabajo, ingresos, rueda y robos.',
+        },
+        games: { label: 'Juegos', help: 'Tragaperras, ruleta, carrera y keno.' },
+        shop: { label: 'Tienda', help: 'Tienda, compras, inventario y uso de objetos.' },
+        loans: { label: 'Préstamos', help: 'Pedir oro prestado con interés.' },
+        lottery: { label: 'Lotería', help: 'Boletos numerados y el premio compartido.' },
+        levels: {
+          label: 'Niveles',
+          help: 'Experiencia por chatear, rangos y roles de recompensa.',
+        },
+      },
+      levels: {
+        min: { label: 'XP mínima por mensaje', help: 'Lo mínimo que puede dar un mensaje.' },
+        max: { label: 'XP máxima por mensaje', help: 'Lo máximo que puede dar un mensaje.' },
+        cooldown: {
+          label: 'Espera',
+          help: 'Tiempo antes de que los mensajes vuelvan a dar XP (evita el spam).',
+        },
+        coins: {
+          label: 'Oro por nivel',
+          help: 'Oro que se paga en cada subida de nivel (0 = nada).',
+        },
+      },
+      levelCurve: {
+        curve: { label: 'Curva', help: 'Cuánto crece la XP necesaria de un nivel al siguiente.' },
+        difficulty: {
+          label: 'Dificultad (%)',
+          help: '100% es lo normal; 200% necesita el doble de XP.',
+        },
+        maxLevel: { label: 'Nivel máximo', help: 'Los miembros dejan de subir en este nivel.' },
+      },
+      levelVoice: {
+        enabled: {
+          label: 'XP de voz',
+          help: 'Da experiencia por estar en voz con otras personas.',
+        },
+        xp: { label: 'XP por minuto', help: 'Experiencia por minuto en un canal de voz.' },
+      },
+      levelAnnounce: {
+        mode: { label: 'Dónde anunciar', help: 'Dónde se envían los mensajes de subida de nivel.' },
+        channel: { label: 'Canal de anuncios', help: 'Se usa al anunciar en un canal fijo.' },
+        message: { label: 'Mensaje', help: 'Texto del mensaje de subida de nivel.' },
+        every: {
+          label: 'Anunciar cada',
+          help: 'Anuncia cada N niveles; los niveles con recompensa siempre se anuncian.',
+        },
+      },
+      levelFilters: {
+        channels: { label: 'Canales sin XP', help: 'Los mensajes aquí nunca dan experiencia.' },
+        roles: {
+          label: 'Roles sin XP',
+          help: 'Los miembros con estos roles nunca ganan experiencia.',
+        },
+        rewardMode: {
+          label: 'Roles de recompensa',
+          help: 'Si los miembros conservan los roles de recompensa inferiores.',
         },
       },
       work: {
@@ -442,8 +586,50 @@ export const es: Messages = {
     },
   },
 
+  levelsAdmin: {
+    full: 'Puedes tener como mucho {max} roles de recompensa.',
+    badRole: 'Elige un rol normal (no @everyone ni un rol de bot).',
+    missing: 'Esa recompensa no existe.',
+    rewardAdded: '{role} se da ahora en el nivel **{level}**.',
+    rewardRemoved: '{role} ya no es una recompensa de nivel.',
+    adjusted: '{user} ahora es nivel **{level}** con {xp} XP.',
+    resetAll: ({ count }: { count: number }) =>
+      `Se reinició la experiencia de ${s(count, 'miembro')}.`,
+  },
+
   panel: {
     more: '…y {count} más',
+    modules: {
+      hint: 'Pulsa un botón para activar o desactivar un módulo. Los comandos desactivados avisan a los miembros.',
+      enabled: '**{module}** activado.',
+      disabled: '**{module}** desactivado.',
+    },
+    levels: {
+      stats: '{members} miembros con XP · {xp} XP en total · nivel más alto {top}',
+      noRewards: 'Todavía no hay roles de recompensa.',
+      hint: 'Los multiplicadores de XP por rol y canal se configuran en el panel web.',
+      addReward: 'Añadir rol de recompensa',
+      removeReward: 'Quitar un rol de recompensa…',
+      rewardTitle: 'Nuevo rol de recompensa',
+      levelLabel: 'Nivel',
+      roleLabel: 'Rol',
+      adjust: 'Cambiar XP de un miembro',
+      adjustTitle: 'Cambiar la experiencia de un miembro',
+      member: 'Miembro',
+      action: 'Acción',
+      actions: {
+        add: 'Añadir XP',
+        remove: 'Quitar XP',
+        setXp: 'Fijar XP exacta',
+        setLevel: 'Fijar nivel',
+        reset: 'Reiniciar a cero',
+      },
+      amount: 'Cantidad',
+      amountHint: 'XP, o el nivel para "Fijar nivel". No hace falta para reiniciar.',
+      resetAll: 'Reiniciar toda la XP',
+      confirmResetAll:
+        'Esto borra la experiencia de todos los miembros. Los roles de recompensa se ajustan cuando vuelvan a chatear.',
+    },
     confirm: 'Confirmar',
     cancel: 'Cancelar',
     cancelled: 'Cancelado.',
@@ -576,6 +762,12 @@ export const es: Messages = {
         intro:
           'Los objetos **permanentes** se quedan en tu inventario; si dan un rol lo recibes al momento y solo se pueden comprar una vez. Los **consumibles** se gastan con /usar y pueden dar un rol al usarlos.',
       },
+      levels: {
+        label: 'Niveles',
+        description: 'Experiencia, rangos y roles de recompensa',
+        intro:
+          'Los miembros ganan experiencia (XP) por chatear — una vez por cada espera, así el spam no cuenta — y, si se activa, por estar en voz. Con suficiente XP subes de nivel; algunos niveles dan un rol u oro.',
+      },
       admin: {
         label: 'Administración',
         description: 'El panel de ajustes',
@@ -660,6 +852,11 @@ export const es: Messages = {
         about: 'Muestra los objetos que tienes tú (u otro miembro) y su valor total.',
       },
       help: { about: 'Abre esta guía.' },
+      rank: {
+        about:
+          'Muestra el nivel, el progreso al siguiente nivel, el puesto, la experiencia total, los mensajes y el tiempo en voz tuyos o de otro miembro, además de la próxima recompensa.',
+      },
+      levels: { about: 'Ordena el servidor por experiencia, 10 miembros por página.' },
       config: {
         about:
           'Abre el panel de ajustes: idioma, oro de los miembros, trabajo, ingresos por rol, la Rueda de la Fortuna, esperas de los juegos, objetos de la tienda, préstamos y la lotería — todo con botones, menús y formularios. Las acciones destructivas piden confirmación.',

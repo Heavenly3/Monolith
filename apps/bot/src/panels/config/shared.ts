@@ -1,18 +1,23 @@
 import {
   ButtonBuilder,
   ButtonStyle,
+  ChannelSelectMenuBuilder,
+  ChannelType,
+  CheckboxBuilder,
   LabelBuilder,
   ModalBuilder,
+  RadioGroupBuilder,
+  RoleSelectMenuBuilder,
   StringSelectMenuBuilder,
   TextInputBuilder,
   TextInputStyle,
   type ModalSubmitFields,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
-import { settingsForm, truncate, type SettingCategoryId } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { settingsForm, truncate, type SettingCategoryId, type SettingField } from '@mythcore/core';
+import { LANGUAGES, type Translator } from '@mythcore/i18n';
 import { emojis } from '../../ui/index.ts';
-import { inputValue, settingLines } from '../../ui/settings.ts';
+import { displayField, inputValue, readField, settingLines } from '../../ui/settings.ts';
 
 export { ButtonStyle };
 
@@ -101,25 +106,132 @@ export const categoryLines = (
   t: Translator,
 ): string => settingLines(guildId, categoryId, settingsForm.fieldsOf(categoryId), t);
 
-/** Form to edit every value of a settings category. */
+const TEXT_CHANNELS = [ChannelType.GuildText, ChannelType.GuildAnnouncement];
+
+/** Explanation under a form field: what to type, or which variables a message can use. */
+function fieldHint(field: SettingField, t: Translator): string {
+  if (field.type === 'template') {
+    const variables = (field.variables ?? []).map((name) => `{${name}}`).join(' ');
+    return t('config.hints.template', { variables });
+  }
+  return t(`config.hints.${field.type}`);
+}
+
+/** The input that edits one field: text, checkbox, options or a channel/role picker. */
+function fieldInput(guildId: string, categoryId: string, field: SettingField, t: Translator) {
+  const label = t(`config.fields.${categoryId}.${field.id}.label`);
+  const value = readField(guildId, field);
+  const labelled = () =>
+    new LabelBuilder()
+      .setLabel(truncate(label, 45))
+      .setDescription(truncate(fieldHint(field, t), 100));
+
+  switch (field.type) {
+    case 'toggle':
+      return labelled().setCheckboxComponent(
+        new CheckboxBuilder().setCustomId(field.id).setDefault(Boolean(value)),
+      );
+    case 'choice':
+    case 'language': {
+      const options =
+        field.type === 'language' ? ['auto', ...LANGUAGES] : [...(field.options ?? [])];
+      const optionLabel = (option: string) =>
+        field.type === 'language'
+          ? t(`config.languages.${option}`)
+          : t(`config.choices.${field.id}.${option}`);
+      return labelled().setRadioGroupComponent(
+        new RadioGroupBuilder().setCustomId(field.id).addOptions(
+          options.map((option) => ({
+            label: truncate(optionLabel(option), 100),
+            value: option,
+            default: option === value,
+          })),
+        ),
+      );
+    }
+    case 'channel':
+    case 'channels': {
+      const many = field.type === 'channels';
+      const current = many ? (value as string[]) : value ? [String(value)] : [];
+      const select = new ChannelSelectMenuBuilder()
+        .setCustomId(field.id)
+        .setChannelTypes(...TEXT_CHANNELS)
+        .setRequired(false)
+        .setMinValues(0)
+        .setMaxValues(many ? (field.limit ?? 25) : 1);
+      if (current.length) select.setDefaultChannels(...current);
+      return labelled().setChannelSelectMenuComponent(select);
+    }
+    case 'roles': {
+      const select = new RoleSelectMenuBuilder()
+        .setCustomId(field.id)
+        .setRequired(false)
+        .setMinValues(0)
+        .setMaxValues(field.limit ?? 25);
+      const current = value as string[];
+      if (current.length) select.setDefaultRoles(...current);
+      return labelled().setRoleSelectMenuComponent(select);
+    }
+    case 'template':
+      return textField(field.id, label, {
+        description: fieldHint(field, t),
+        value: inputValue(guildId, field),
+        required: !field.optional,
+        paragraph: true,
+        max: field.limit ?? 500,
+      });
+    default:
+      return textField(field.id, label, {
+        description: fieldHint(field, t),
+        value: inputValue(guildId, field),
+        max: 20,
+      });
+  }
+}
+
+/** Value submitted for one field, read the way its input stores it. */
+function submittedValue(fields: ModalSubmitFields, field: SettingField): unknown {
+  switch (field.type) {
+    case 'toggle':
+      return fields.getCheckbox(field.id);
+    case 'choice':
+    case 'language':
+      return fields.getRadioGroup(field.id) ?? undefined;
+    case 'channel':
+      return fields.getSelectedChannels(field.id)?.first()?.id ?? '';
+    case 'channels':
+      return [...(fields.getSelectedChannels(field.id)?.keys() ?? [])];
+    case 'roles':
+      return [...(fields.getSelectedRoles(field.id)?.keys() ?? [])];
+    default:
+      return fields.getTextInputValue(field.id);
+  }
+}
+
+/**
+ * Form to edit every value of a settings category (up to five fields). A
+ * section showing several categories passes its own id so the form returns to it.
+ */
 export function valuesModal(
   guildId: string,
   categoryId: SettingCategoryId,
   t: Translator,
+  sectionId: string = categoryId,
 ): ModalBuilder {
-  return modal(
-    categoryId,
-    'save',
-    t('config.modalTitle', { category: t(`config.categories.${categoryId}.label`) }),
-  ).addLabelComponents(
-    settingsForm.fieldsOf(categoryId).map((field) =>
-      textField(field.id, t(`config.fields.${categoryId}.${field.id}.label`), {
-        description: t(`config.hints.${field.type}`),
-        value: inputValue(guildId, field),
-        max: 20,
-      }),
-    ),
-  );
+  return new ModalBuilder()
+    .setCustomId(actionId(sectionId, 'save', categoryId))
+    .setTitle(
+      truncate(
+        t('config.modalTitle', { category: t(`config.categories.${categoryId}.label`) }),
+        45,
+      ),
+    )
+    .addLabelComponents(
+      settingsForm
+        .fieldsOf(categoryId)
+        .slice(0, 5)
+        .map((field) => fieldInput(guildId, categoryId, field, t)),
+    );
 }
 
 /** Validates and stores the values form. Returns an error message or null. */
@@ -129,17 +241,47 @@ export function saveValues(
   fields: ModalSubmitFields,
   t: Translator,
 ): string | null {
-  const result = settingsForm.applyForm(guildId, categoryId, (id) => fields.getTextInputValue(id));
+  const byId = new Map(settingsForm.fieldsOf(categoryId).map((field) => [field.id, field]));
+  const result = settingsForm.applyForm(guildId, categoryId, (id) =>
+    byId.has(id) ? submittedValue(fields, byId.get(id)!) : undefined,
+  );
   if (result.ok) return null;
   if (result.reason === 'rule') return t(result.messageKey);
   return t('config.invalid', {
     field: t(`config.fields.${categoryId}.${result.field.id}.label`),
-    hint: t(`config.hints.${result.field.type}`),
+    hint: fieldHint(result.field, t),
   });
 }
 
 export const editButton = (t: Translator, categoryId: string): ButtonBuilder =>
   button(categoryId, 'edit', t('config.edit'), emojis.edit, ButtonStyle.Primary);
+
+/** Button of a section that edits one of several categories it shows. */
+export const editCategoryButton = (
+  t: Translator,
+  sectionId: string,
+  categoryId: SettingCategoryId,
+  emoji: string,
+): ButtonBuilder =>
+  new ButtonBuilder()
+    .setCustomId(actionId(sectionId, 'edit', categoryId))
+    .setLabel(truncate(t(`config.categories.${categoryId}.label`), 80))
+    .setEmoji(emoji)
+    .setStyle(ButtonStyle.Secondary);
+
+/** Compact "Label · value" lines, without explanations. */
+export const compactLines = (
+  guildId: string,
+  categoryId: SettingCategoryId,
+  t: Translator,
+): string =>
+  settingsForm
+    .fieldsOf(categoryId)
+    .map(
+      (field) =>
+        `${t(`config.fields.${categoryId}.${field.id}.label`)} · ${displayField(guildId, field, t)}`,
+    )
+    .join('\n');
 
 export const resetButton = (
   t: Translator,
