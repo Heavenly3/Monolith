@@ -22,6 +22,16 @@ export const router = createRouter({
         { path: 'shop', name: 'shop', component: () => import('./views/ShopView.vue') },
         { path: 'loans', name: 'loans', component: () => import('./views/LoansView.vue') },
         { path: 'history', name: 'history', component: () => import('./views/HistoryView.vue') },
+        {
+          path: 'levels/members',
+          name: 'level-members',
+          component: () => import('./views/LevelMembersView.vue'),
+        },
+        {
+          path: 'levels/rewards',
+          name: 'level-rewards',
+          component: () => import('./views/LevelRewardsView.vue'),
+        },
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },

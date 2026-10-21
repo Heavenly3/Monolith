@@ -29,6 +29,15 @@ export interface GuildRole {
   managed: boolean;
 }
 
+export interface GuildChannel {
+  id: string;
+  name: string;
+  /** 0 text, 2 voice, 5 announcement, 13 stage. */
+  type: number;
+  parentId: string | null;
+  position: number;
+}
+
 export interface DiscordApi {
   authorizeUrl(state: string): string;
   exchangeCode(code: string): Promise<string>;
@@ -36,6 +45,8 @@ export interface DiscordApi {
   userGuilds(accessToken: string): Promise<UserGuild[]>;
   botGuildIds(): Promise<Set<string>>;
   guildRoles(guildId: string): Promise<GuildRole[]>;
+  /** Text, announcement and voice channels, in the order Discord shows them. */
+  guildChannels(guildId: string): Promise<GuildChannel[]>;
   guildMember(guildId: string, userId: string): Promise<DiscordUser | null>;
 }
 
@@ -146,6 +157,22 @@ export function createDiscordApi(config: ApiConfig): DiscordApi {
       return roles
         .map(({ id, name, color, position, managed }) => ({ id, name, color, position, managed }))
         .sort((a, b) => b.position - a.position);
+    },
+
+    async guildChannels(guildId) {
+      const channels = await bot<
+        { id: string; name: string; type: number; parent_id?: string | null; position: number }[]
+      >(`/guilds/${guildId}/channels`);
+      return channels
+        .filter((channel) => [0, 2, 5, 13].includes(channel.type))
+        .map(({ id, name, type, parent_id, position }) => ({
+          id,
+          name,
+          type,
+          parentId: parent_id ?? null,
+          position,
+        }))
+        .sort((a, b) => a.position - b.position);
     },
 
     async guildMember(guildId, userId) {

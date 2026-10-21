@@ -1,5 +1,5 @@
 // Shapes of the dashboard API responses (apps/api).
-import type { FieldType } from '@mythcore/core/browser';
+import type { CategoryGroup, FieldType, ModuleId } from '@mythcore/core/browser';
 
 export interface Me {
   id: string;
@@ -35,13 +35,54 @@ export interface SettingFieldValue {
   id: string;
   type: FieldType;
   min: number | null;
+  max: number | null;
+  options: string[] | null;
+  variables: string[] | null;
+  limit: number | null;
+  optional: boolean;
   value: unknown;
   custom: boolean;
 }
 
 export interface SettingCategoryValues {
   id: string;
+  group: CategoryGroup;
+  module: ModuleId | null;
   fields: SettingFieldValue[];
+}
+
+export interface Channel {
+  id: string;
+  name: string;
+  /** 0 text, 2 voice, 5 announcement, 13 stage. */
+  type: number;
+  parentId: string | null;
+  position: number;
+}
+
+export interface LevelProgress {
+  level: number;
+  current: number;
+  needed: number;
+  ratio: number;
+}
+
+export interface LevelMember {
+  userId: string;
+  username: string | null;
+  xp: number;
+  level: number;
+  messages: number;
+  voiceMinutes: number;
+  progress: LevelProgress;
+}
+
+export interface LevelsOverview {
+  stats: { members: number; totalXp: number; topLevel: number };
+  rewards: { level: number; roleId: string }[];
+  multipliers: { type: 'role' | 'channel'; id: string; percent: number }[];
+  maxRewards: number;
+  maxMultipliers: number;
 }
 
 export interface Role {

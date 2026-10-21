@@ -4,6 +4,7 @@ import Fastify, { type FastifyInstance } from 'fastify';
 import { access, type Access } from './access.ts';
 import { authRoutes } from './routes/auth.ts';
 import { economyRoutes } from './routes/economy.ts';
+import { levelRoutes } from './routes/levels.ts';
 import { settingsRoutes } from './routes/settings.ts';
 import { protectGuildRoutes } from './routes/scope.ts';
 import { shopRoutes } from './routes/shop.ts';
@@ -83,6 +84,7 @@ export async function buildApp({
       await guild.register(settingsRoutes);
       await guild.register(economyRoutes);
       await guild.register(shopRoutes);
+      await guild.register(levelRoutes);
     },
     { prefix: '/api/guilds/:guildId' },
   );

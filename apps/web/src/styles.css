@@ -112,6 +112,10 @@ a.p-button {
   gap: 1rem;
 }
 
+.stack > p {
+  margin: 0;
+}
+
 .row {
   display: flex;
   align-items: center;

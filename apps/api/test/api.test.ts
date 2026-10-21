@@ -1,4 +1,13 @@
-import { accounts, audit, closeDatabase, openDatabase, settings, shop, work } from '@mythcore/core';
+import {
+  accounts,
+  audit,
+  closeDatabase,
+  levels,
+  openDatabase,
+  settings,
+  shop,
+  work,
+} from '@mythcore/core';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -16,6 +25,7 @@ const MANAGED_ROLE = '200000000000000002';
 const ALICE = '300000000000000001';
 const BOB = '300000000000000002';
 const BOT = '300000000000000009';
+const CHANNEL = '400000000000000001';
 
 const config: ApiConfig = {
   clientId: 'client',
@@ -51,6 +61,9 @@ const fakeDiscord: DiscordApi = {
     { id: guildId, name: '@everyone', color: 0, position: 0, managed: false },
   ],
   guildMember: async (_guildId, userId) => users[userId] ?? null,
+  guildChannels: async () => [
+    { id: CHANNEL, name: 'general', type: 0, parentId: null, position: 0 },
+  ],
 };
 
 let app: FastifyInstance;
@@ -258,5 +271,79 @@ describe('dashboard files', () => {
     expect(missing.statusCode).toBe(404);
     expect(missing.json()).toEqual({ error: 'not_found' });
     await web.close();
+  });
+});
+
+describe('levels', () => {
+  it('saves every kind of setting from the dashboard', async () => {
+    const saved = await call('PUT', guildUrl('/settings/levelAnnounce'), {
+      values: { mode: 'custom', channel: CHANNEL, message: 'GG {user}!', every: 2 },
+    });
+    expect(saved.statusCode).toBe(200);
+    expect(settings.get(ADMIN_GUILD, 'levels.announceChannel')).toBe(CHANNEL);
+
+    const partial = await call('PUT', guildUrl('/settings/modules'), { values: { games: false } });
+    expect(partial.statusCode).toBe(200);
+    expect(settings.get(ADMIN_GUILD, 'modules.games')).toBe(false);
+    expect(settings.get(ADMIN_GUILD, 'modules.economy')).toBe(true);
+
+    const badRoles = await call('PUT', guildUrl('/settings/levelFilters'), {
+      values: { roles: ['not-an-id'] },
+    });
+    expect(badRoles.json()).toEqual({ error: 'invalid_value', field: 'roles' });
+
+    const { categories } = (await call('GET', guildUrl('/settings'))).json();
+    const announce = categories.find((c: { id: string }) => c.id === 'levelAnnounce');
+    expect(announce.group).toBe('levels');
+    expect(announce.fields.find((f: { id: string }) => f.id === 'message').variables).toContain(
+      'level',
+    );
+  });
+
+  it('manages rewards, multipliers and member XP', async () => {
+    expect(
+      (await call('POST', guildUrl('/levels/rewards'), { level: 5, roleId: MANAGED_ROLE })).json(),
+    ).toEqual({ error: 'invalid_role' });
+    expect(
+      (await call('POST', guildUrl('/levels/rewards'), { level: 5, roleId: ROLE })).statusCode,
+    ).toBe(200);
+    expect(
+      (
+        await call('PUT', guildUrl('/levels/multipliers'), {
+          type: 'channel',
+          id: CHANNEL,
+          percent: 150,
+        })
+      ).statusCode,
+    ).toBe(200);
+    expect(
+      (
+        await call('PUT', guildUrl('/levels/multipliers'), {
+          type: 'channel',
+          id: ROLE,
+          percent: 150,
+        })
+      ).json(),
+    ).toEqual({ error: 'invalid_channel' });
+
+    const adjusted = await call('POST', guildUrl(`/levels/members/${BOB}/adjust`), {
+      action: 'setLevel',
+      amount: 3,
+    });
+    expect(adjusted.json()).toMatchObject({ ok: true, level: 3 });
+
+    const overview = (await call('GET', guildUrl('/levels'))).json();
+    expect(overview.rewards).toEqual([{ level: 5, roleId: ROLE }]);
+    expect(overview.stats.members).toBe(1);
+
+    const { members } = (await call('GET', guildUrl('/levels/members'))).json();
+    expect(members[0]).toMatchObject({ userId: BOB, level: 3, progress: { level: 3 } });
+
+    expect((await call('DELETE', guildUrl(`/levels/rewards/${ROLE}`))).statusCode).toBe(200);
+    expect(
+      (await call('DELETE', guildUrl(`/levels/multipliers/channel/${CHANNEL}`))).statusCode,
+    ).toBe(200);
+    expect((await call('POST', guildUrl('/levels/reset'))).json()).toEqual({ ok: true, count: 1 });
+    expect(levels.leaderboardSize(ADMIN_GUILD)).toBe(0);
   });
 });

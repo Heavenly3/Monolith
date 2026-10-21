@@ -14,11 +14,6 @@ import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { HttpError, indexParam } from '../http.ts';
 import { scope } from './scope.ts';
 
-function fieldValue(guildId: string, field: SettingField): unknown {
-  const value = settings.get(guildId, field.key);
-  return field.path ? (value as Record<string, unknown>)[field.path] : value;
-}
-
 /** Built-in job messages in the language the dashboard is shown in. */
 function builtInJobs(request: FastifyRequest): string[] {
   const { lang } = request.query as { lang?: string };
@@ -37,11 +32,18 @@ export async function settingsRoutes(app: FastifyInstance): Promise<void> {
     return {
       categories: Object.entries(SETTING_CATEGORIES).map(([id, category]) => ({
         id,
+        group: category.group,
+        module: 'module' in category ? category.module : null,
         fields: (category.fields as SettingField[]).map((field) => ({
           id: field.id,
           type: field.type,
           min: field.min ?? null,
-          value: fieldValue(guild.id, field),
+          max: field.max ?? null,
+          options: field.options ?? null,
+          variables: field.variables ?? null,
+          limit: field.limit ?? null,
+          optional: field.optional ?? false,
+          value: settingsForm.currentValue(guild.id, field),
           custom: settings.isCustom(guild.id, field.key),
         })),
       })),
@@ -56,9 +58,14 @@ export async function settingsRoutes(app: FastifyInstance): Promise<void> {
           type: 'object',
           required: ['values'],
           properties: {
+            // Text, numbers, booleans, null or ID lists; parseFieldValue validates each field.
             values: {
               type: 'object',
-              additionalProperties: { type: ['string', 'number'] },
+              additionalProperties: {
+                type: ['string', 'number', 'boolean', 'array', 'null'],
+                items: { type: 'string' },
+                maxItems: 50,
+              },
             },
           },
         },
@@ -67,8 +74,11 @@ export async function settingsRoutes(app: FastifyInstance): Promise<void> {
     async (request) => {
       const { guild, viewer } = scope(request);
       const category = categoryOf(request);
-      const { values } = request.body as { values: Record<string, string | number> };
-      const result = settingsForm.applyForm(guild.id, category, (id) => String(values[id] ?? ''));
+      const { values } = request.body as { values: Record<string, unknown> };
+      // Fields left out keep their value, so a page may save only what it shows.
+      const result = settingsForm.applyForm(guild.id, category, (id) =>
+        id in values ? (values[id] ?? '') : undefined,
+      );
       if (!result.ok) {
         throw result.reason === 'invalid'
           ? new HttpError(422, 'invalid_value', { field: result.field.id })
