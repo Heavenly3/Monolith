@@ -29,7 +29,9 @@
 - **One economy per server** — balances, shop, settings and leaderboard are separate in every server the bot joins.
 - **Clear commands, medieval flavour** — commands have the names people expect (`/balance`, `/work`, `/slots`, `/shop`...), while texts, colours and custom icons from [game-icons.net](https://game-icons.net) set a medieval fantasy mood.
 - **English and Spanish** — replies follow each member's Discord language, or a language chosen by the admins. Command names, options and descriptions are translated in the Discord client too (`/saldo`, `/trabajar`, `/tragaperras`...).
-- **Settings panel (`/config`)** — set up everything without typing commands: language, members' gold, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans and the lottery. Destructive actions ask for confirmation, and every change is recorded in an audit log.
+- **Levels** — experience for chatting (with an anti-spam cooldown) and for time in voice, three level curves with an adjustable difficulty, XP multipliers per role and channel, channels and roles without XP, role rewards that stack or replace each other, gold per level and level-up messages in the same channel, a fixed channel or by DM. `/rank` shows a progress card and `/levels` the ranking.
+- **Modules** — turn the economy, games, shop, loans, lottery or levels on and off per server; turned-off commands tell members so.
+- **Settings panel (`/config`)** — set up everything without typing commands, with checkboxes, option lists and channel and role pickers: language, modules, members' gold and XP, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans, the lottery and every level setting. Destructive actions ask for confirmation, and every change is recorded in an audit log.
 - **Built-in guide (`/help`)** — explains every command, option, game payout and setting, with live values and clickable commands.
 - **Fair tavern games** — Dragon's Hoard, Wizard's Roulette, the Royal Joust and Oracle's Runes, with animations, cryptographically secure randomness and a house edge verified by tests.
 - **Transaction ledger** — every coin that moves is recorded with its reason and resulting balance.
@@ -48,9 +50,10 @@ Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Use
 | 📃 Loans   | `/loan request` `/loan status` `/loan repay`                                               |
 | 🏪 Shop    | `/shop` `/buy` `/use` `/inventory`                                                         |
 | ⚙️ Admin   | `/config`                                                                                  |
+| 🌟 Levels  | `/rank` `/levels`                                                                          |
 | 📖 Help    | `/help`                                                                                    |
 
-Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/ayuda` `/config`.
+Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/rango` `/niveles` `/ayuda` `/config`.
 
 `/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → Mythcore**.
 
@@ -126,7 +129,7 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 
 ## 🌐 Web dashboard
 
-Manage a server from the browser: settings, jobs, wheel prizes, role income, members' gold, the shop, loans and the change history, in English or Spanish. It uses the same rules as `/config`, so every change applies in Discord at once. Built with Vue 3 and PrimeVue 4.
+Manage a server from the browser: modules, every setting, jobs, wheel prizes, role income, members' gold and XP, level rewards and multipliers (with a live preview of the level curve), the shop, loans and the change history, in English or Spanish. Messages such as level-ups are written with variable buttons and a Discord-like preview, so nobody types `{placeholders}`. It uses the same rules as `/config`, so every change applies in Discord at once. Built with Vue 3 and PrimeVue 4.
 
 **Set up once:** in the Developer Portal open **OAuth2**, copy the **Client Secret** into `.env` as `CLIENT_SECRET` and add `http://localhost:3000/auth/callback` under **Redirects**.
 
@@ -150,17 +153,19 @@ When it runs on a public address, set `API_URL` and `WEB_URL` in `.env` to that 
 
 Only server owners and administrators can manage a server, and only when the bot is in it. Sessions are stored as hashes, changes must come from the dashboard's own address, and every change is recorded in the audit log.
 
-| Area     | Endpoints (under `/api/guilds/:guildId`)                                        |
-| -------- | ------------------------------------------------------------------------------- |
-| Overview | `GET /` — totals, top members, loans, shop and lottery                          |
-| Settings | `GET /settings` · `PUT /settings/:category` · `POST /settings/:category/reset`  |
-| Work     | `GET/POST /work/messages` · `DELETE /work/messages/:index` · `POST /work/reset` |
-| Wheel    | `GET/POST /wheel` · `DELETE /wheel/:index` · `POST /wheel/reset`                |
-| Members  | `GET /members` · `GET /members/:userId` · `POST /members/:userId/adjust`        |
-| Shop     | `GET/POST /shop` · `DELETE /shop/:itemId` · `GET /roles`                        |
-| Income   | `GET /role-income` · `PUT/DELETE /role-income/:roleId`                          |
-| Loans    | `GET /loans` · `DELETE /loans/:userId` · `DELETE /loans`                        |
-| History  | `GET /audit`                                                                    |
+| Area     | Endpoints (under `/api/guilds/:guildId`)                                                                                                                  |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overview | `GET /` — totals, top members, loans, shop and lottery                                                                                                    |
+| Settings | `GET /settings` · `PUT /settings/:category` · `POST /settings/:category/reset`                                                                            |
+| Work     | `GET/POST /work/messages` · `DELETE /work/messages/:index` · `POST /work/reset`                                                                           |
+| Wheel    | `GET/POST /wheel` · `DELETE /wheel/:index` · `POST /wheel/reset`                                                                                          |
+| Members  | `GET /members` · `GET /members/:userId` · `POST /members/:userId/adjust`                                                                                  |
+| Shop     | `GET/POST /shop` · `DELETE /shop/:itemId` · `GET /roles`                                                                                                  |
+| Income   | `GET /role-income` · `PUT/DELETE /role-income/:roleId`                                                                                                    |
+| Loans    | `GET /loans` · `DELETE /loans/:userId` · `DELETE /loans`                                                                                                  |
+| Levels   | `GET /levels` · `POST /levels/rewards` · `PUT /levels/multipliers` · `GET /levels/members` · `POST /levels/members/:userId/adjust` · `POST /levels/reset` |
+| Channels | `GET /channels`                                                                                                                                           |
+| History  | `GET /audit`                                                                                                                                              |
 
 Outside a server: `GET /auth/login`, `POST /auth/logout`, `GET /api/me` and `GET /api/guilds`.
 
