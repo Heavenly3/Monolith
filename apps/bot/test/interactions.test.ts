@@ -220,6 +220,14 @@ async function suite(locale: string) {
     fields: { chance: '45', steal: '40', fine: '25', cooldown: '2h' },
   });
   await panel('economy', 'resetAll');
+  await panel('economy', 'edit:crime');
+  await panel('economy', 'save:crimeFine', { fields: { fineMode: 'fixed', min: '10', max: '5' } });
+  await panel('economy', 'save:crimeFine', {
+    fields: { fineMode: 'percent', min: '5', max: '150' },
+  });
+  await cmd('crime');
+  clearCooldowns();
+  await cmd('crime');
 
   // Modules: a turned-off module answers with a notice, then comes back
   await panel('modules', 'toggle:games');

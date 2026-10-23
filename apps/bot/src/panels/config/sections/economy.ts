@@ -6,6 +6,8 @@ import { confirmed, type Section } from '../types.ts';
 const CATEGORIES = [
   ['economy', 'bank'],
   ['robbery', 'rob'],
+  ['crime', 'busted'],
+  ['crimeFine', 'bill'],
 ] as const;
 
 // Rules of the whole economy: starting and maximum balance, bet limits and

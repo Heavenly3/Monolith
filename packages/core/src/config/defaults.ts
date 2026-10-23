@@ -24,6 +24,10 @@ export interface LevelMessage {
   message: string;
 }
 
+/** A failed /crime costs a fixed amount, or a percent of wallet + bank. */
+export const FINE_MODES = ['fixed', 'percent'] as const;
+export type FineMode = (typeof FINE_MODES)[number];
+
 export const REWARD_MODES = ['stack', 'replace'] as const;
 export type RewardMode = (typeof REWARD_MODES)[number];
 
@@ -93,6 +97,13 @@ export interface SettingValues {
   'rob.steal': number;
   /** Most of the thief's wallet a failed robbery costs, in percent. */
   'rob.fine': number;
+  'crime.range': { min: number; max: number };
+  /** Chance of getting caught, in percent. */
+  'crime.failRate': number;
+  'crime.cooldown': number;
+  'crime.fineMode': FineMode;
+  /** Credits, or percent of the balance with fineMode "percent". */
+  'crime.fine': { min: number; max: number };
   /** null uses the built-in messages, translated to each reply's language. */
   'work.messages': string[] | null;
   'work.range': { min: number; max: number };
@@ -173,6 +184,11 @@ export const DEFAULTS: SettingValues = {
   'rob.chance': 45,
   'rob.steal': 40,
   'rob.fine': 25,
+  'crime.range': { min: 250, max: 1000 },
+  'crime.failRate': 40,
+  'crime.cooldown': 4 * HOUR,
+  'crime.fineMode': 'percent',
+  'crime.fine': { min: 5, max: 15 },
 
   'work.messages': null,
   'work.range': { min: 50, max: 250 },

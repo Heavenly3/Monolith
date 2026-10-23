@@ -70,6 +70,7 @@ export const SECTIONS: Record<SectionId, Section> = {
       settings('wheel', 'wheel', 'pi pi-sync'),
       settings('games', 'games', 'pi pi-star'),
       settings('robbery', 'robbery', 'pi pi-eye-slash'),
+      settings('crime', 'crime', 'pi pi-bolt', 'crimeFine'),
       settings('loan-terms', 'loans', 'pi pi-percentage'),
       settings('lottery', 'raffle', 'pi pi-ticket'),
     ],

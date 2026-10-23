@@ -175,6 +175,38 @@ export const en = {
     next: 'Next robbery',
   },
 
+  crime: {
+    action: 'commit a crime',
+    successTitle: 'Clean getaway',
+    failTitle: 'Caught!',
+    fined: 'You paid a fine of {amount}.',
+    next: 'Next crime',
+    success: [
+      'You siphoned power from a sealed reactor line and sold it on the black market for {amount}.',
+      'You forged a stratum transit pass and sold it to a smuggler for {amount}.',
+      'You cracked a dormant vault terminal and walked away with {amount}.',
+      'You rerouted a cargo lift into your hideout and fenced the crates for {amount}.',
+      'You sold fake sentinel codes to a desperate gang for {amount}.',
+      'You stripped a parked drone for parts before anyone noticed: {amount}.',
+      'You ran an illegal betting ring in the lower vents and kept {amount}.',
+      'You hacked a ration dispenser and resold the stock for {amount}.',
+      'You smuggled a crate of unregistered chips across sector 9 and earned {amount}.',
+      'You looted an abandoned archive and sold the data cores for {amount}.',
+      'You counterfeited credit chits and laundered {amount} before the trace caught up.',
+      'You picked the lock of a maintenance depot and pawned the tools for {amount}.',
+    ],
+    fail: [
+      'A sentinel scanned your forged pass and flagged it on the spot.',
+      'The vault terminal locked down and sealed you in until security arrived.',
+      'Your buyer was an undercover enforcer.',
+      'The cargo lift jammed halfway and the alarms went off.',
+      'A patrol drone recorded your face while you stripped its twin.',
+      'Your accomplice talked the moment a sentinel looked at them.',
+      'You tripped a pressure plate in the archive and woke every defence system.',
+      'The ration dispenser photographed you and sent the picture to the stratum council.',
+    ],
+  },
+
   leaderboard: {
     subtitle: 'The richest members of the server (wallet + bank).',
     empty: 'No one has any credits yet. Be the first!',
@@ -408,6 +440,7 @@ export const en = {
     languagePlaceholder: 'Choose the language of the bot',
     languageSaved: 'Language updated.',
     minMax: 'The minimum cannot be greater than the maximum.',
+    percentMax: 'A percent cannot be above 100.',
     channelRequired: 'Choose the channel where level-ups are announced.',
     formulaEmpty: 'At least one part of the formula must be above zero.',
     on: 'On',
@@ -440,6 +473,10 @@ export const en = {
         custom: 'In a fixed channel',
         dm: 'By direct message',
         off: 'Do not announce',
+      },
+      fineMode: {
+        fixed: 'Fixed — an amount of credits',
+        percent: 'Share of balance — a percent of wallet + bank',
       },
       rewardMode: {
         stack: 'Keep every reward role',
@@ -484,6 +521,8 @@ export const en = {
         description: 'Starting and maximum balance, bet limits',
       },
       robbery: { label: 'Robbing', description: 'Chance, loot, fine and cooldown of /rob' },
+      crime: { label: 'Crime', description: 'Rewards, risk and cooldown of /crime' },
+      crimeFine: { label: 'Crime fines', description: 'What a failed /crime costs' },
       work: { label: 'Work', description: 'Rewards, cooldown and jobs of /work' },
       collect: { label: 'Role income', description: 'Income per role and cooldown of /collect' },
       wheel: { label: 'Wheel of Fortune', description: 'Prizes and cooldown of /wheel' },
@@ -633,6 +672,17 @@ export const en = {
           label: 'Roles without XP',
           help: 'Members with these roles never earn experience.',
         },
+      },
+      crime: {
+        min: { label: 'Minimum reward', help: 'Least credits a successful /crime pays.' },
+        max: { label: 'Maximum reward', help: 'Most credits a successful /crime pays.' },
+        failRate: { label: 'Chance of getting caught (%)', help: 'How often /crime fails.' },
+        cooldown: { label: 'Cooldown', help: 'Time between two /crime for the same member.' },
+      },
+      crimeFine: {
+        fineMode: { label: 'Fine type', help: 'A fixed amount, or a share of wallet + bank.' },
+        min: { label: 'Smallest fine', help: 'In credits, or in percent with "share of balance".' },
+        max: { label: 'Largest fine', help: 'In credits, or in percent (up to 100).' },
       },
       work: {
         min: { label: 'Minimum reward', help: 'Least credits /work can pay.' },
@@ -927,6 +977,10 @@ export const en = {
         about: 'Moves credits from the bank back into your wallet so you can spend them.',
       },
       pay: { about: 'Gives credits from your wallet to another member instantly.' },
+      crime: {
+        about:
+          'Try something illegal for a bigger payout than /work. It can fail: then you pay a fine, fixed or a share of your balance. There is a cooldown between crimes.',
+      },
       work: {
         about:
           'Do a job somewhere in the Structure (salvage, repairs, surveys…) and earn a random reward within the configured range. There is a cooldown between jobs.',

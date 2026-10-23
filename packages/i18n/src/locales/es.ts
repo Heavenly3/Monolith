@@ -178,6 +178,38 @@ export const es: Messages = {
     next: 'Próximo robo',
   },
 
+  crime: {
+    action: 'cometer un crimen',
+    successTitle: 'Huida limpia',
+    failTitle: '¡Te pillaron!',
+    fined: 'Pagaste una multa de {amount}.',
+    next: 'Próximo crimen',
+    success: [
+      'Desviaste energía de una línea de reactor sellada y la vendiste en el mercado negro por {amount}.',
+      'Falsificaste un pase de tránsito entre estratos y se lo vendiste a un contrabandista por {amount}.',
+      'Reventaste un terminal de bóveda inactivo y saliste con {amount}.',
+      'Desviaste un montacargas hasta tu escondite y colocaste las cajas por {amount}.',
+      'Vendiste códigos falsos de centinela a una banda desesperada por {amount}.',
+      'Desmontaste un dron aparcado antes de que nadie se diera cuenta: {amount}.',
+      'Montaste apuestas ilegales en los conductos inferiores y te quedaste {amount}.',
+      'Hackeaste un dispensador de raciones y revendiste el material por {amount}.',
+      'Pasaste una caja de chips sin registrar por el sector 9 y ganaste {amount}.',
+      'Saqueaste un archivo abandonado y vendiste los núcleos de datos por {amount}.',
+      'Falsificaste fichas de crédito y blanqueaste {amount} antes de que te rastrearan.',
+      'Forzaste un almacén de mantenimiento y empeñaste las herramientas por {amount}.',
+    ],
+    fail: [
+      'Un centinela escaneó tu pase falso y lo marcó al instante.',
+      'El terminal de la bóveda se bloqueó y te encerró hasta que llegó seguridad.',
+      'Tu comprador era un agente encubierto.',
+      'El montacargas se atascó a medio camino y saltaron las alarmas.',
+      'Un dron de patrulla grabó tu cara mientras desmontabas a su gemelo.',
+      'Tu cómplice habló en cuanto un centinela le miró.',
+      'Pisaste una placa de presión en el archivo y despertaste todas las defensas.',
+      'El dispensador de raciones te fotografió y envió la imagen al consejo del estrato.',
+    ],
+  },
+
   leaderboard: {
     subtitle: 'Los miembros más ricos del servidor (cartera + banco).',
     empty: 'Nadie tiene créditos todavía. ¡Sé el primero!',
@@ -413,6 +445,7 @@ export const es: Messages = {
     languagePlaceholder: 'Elige el idioma del bot',
     languageSaved: 'Idioma actualizado.',
     minMax: 'El mínimo no puede ser mayor que el máximo.',
+    percentMax: 'Un porcentaje no puede pasar de 100.',
     channelRequired: 'Elige el canal donde se anuncian las subidas de nivel.',
     formulaEmpty: 'Al menos una parte de la fórmula debe ser mayor que cero.',
     on: 'Activado',
@@ -445,6 +478,10 @@ export const es: Messages = {
         custom: 'En un canal fijo',
         dm: 'Por mensaje privado',
         off: 'No anunciar',
+      },
+      fineMode: {
+        fixed: 'Fija — una cantidad de créditos',
+        percent: 'Parte del saldo — un porcentaje de cartera + banco',
       },
       rewardMode: {
         stack: 'Conservar todos los roles de recompensa',
@@ -492,6 +529,8 @@ export const es: Messages = {
         description: 'Saldo inicial y máximo, límites de apuesta',
       },
       robbery: { label: 'Robos', description: 'Probabilidad, botín, multa y espera de /robar' },
+      crime: { label: 'Crimen', description: 'Recompensas, riesgo y espera de /crimen' },
+      crimeFine: { label: 'Multas del crimen', description: 'Lo que cuesta un /crimen fallido' },
       work: { label: 'Trabajo', description: 'Recompensas, espera y trabajos de /trabajar' },
       collect: {
         label: 'Ingresos por rol',
@@ -662,6 +701,23 @@ export const es: Messages = {
           label: 'Roles sin XP',
           help: 'Los miembros con estos roles nunca ganan experiencia.',
         },
+      },
+      crime: {
+        min: { label: 'Recompensa mínima', help: 'Lo mínimo que paga un /crimen con éxito.' },
+        max: { label: 'Recompensa máxima', help: 'Lo máximo que paga un /crimen con éxito.' },
+        failRate: {
+          label: 'Probabilidad de que te pillen (%)',
+          help: 'Con qué frecuencia falla /crimen.',
+        },
+        cooldown: { label: 'Espera', help: 'Tiempo entre dos /crimen del mismo miembro.' },
+      },
+      crimeFine: {
+        fineMode: {
+          label: 'Tipo de multa',
+          help: 'Una cantidad fija o una parte de cartera + banco.',
+        },
+        min: { label: 'Multa mínima', help: 'En créditos, o en porcentaje con "parte del saldo".' },
+        max: { label: 'Multa máxima', help: 'En créditos, o en porcentaje (hasta 100).' },
       },
       work: {
         min: { label: 'Recompensa mínima', help: 'Lo mínimo que puede pagar /trabajar.' },
@@ -971,6 +1027,10 @@ export const es: Messages = {
       },
       withdraw: { about: 'Pasa créditos del banco a tu cartera para poder gastarlos.' },
       pay: { about: 'Da créditos de tu cartera a otro miembro al instante.' },
+      crime: {
+        about:
+          'Intenta algo ilegal para ganar más que con /trabajar. Puede salir mal: entonces pagas una multa, fija o una parte de tu saldo. Hay una espera entre crímenes.',
+      },
       work: {
         about:
           'Haz un trabajo en algún punto de la Estructura (chatarra, reparaciones, mapas…) y gana una recompensa aleatoria dentro del rango configurado. Hay una espera entre trabajos.',

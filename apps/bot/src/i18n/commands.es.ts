@@ -46,6 +46,10 @@ export const commandsEs: Record<string, CommandTexts> = {
   work: { name: 'trabajar', description: 'Haz un trabajo en la Estructura y gana créditos.' },
   collect: { name: 'cobrar', description: 'Cobra los ingresos de tus roles.' },
   wheel: { name: 'rueda', description: 'Gira la Rueda de la Fortuna para ganar un premio gratis.' },
+  crime: {
+    name: 'crimen',
+    description: 'Intenta algo ilegal para ganar más. Puede que te multen.',
+  },
   rob: {
     name: 'robar',
     description: 'Intenta robar créditos de la cartera de otro miembro. ¡Es arriesgado!',

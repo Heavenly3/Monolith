@@ -6,6 +6,7 @@ import { LANGUAGES } from '@monolith/i18n';
 import {
   ANNOUNCE_STYLES,
   CHANNEL_MULTIPLIER_MODES,
+  FINE_MODES,
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,
   REWARD_MODES,
@@ -115,6 +116,29 @@ export const SETTING_CATEGORIES = {
       { id: 'fine', key: 'rob.fine', type: 'percent', min: 0, max: 100 },
       { id: 'cooldown', key: 'rob.cooldown', type: 'duration' },
     ],
+  },
+  crime: {
+    group: 'economy',
+    module: 'economy',
+    fields: [
+      { id: 'min', key: 'crime.range', path: 'min', type: 'coins' },
+      { id: 'max', key: 'crime.range', path: 'max', type: 'coins' },
+      { id: 'failRate', key: 'crime.failRate', type: 'percent', min: 0, max: 100 },
+      { id: 'cooldown', key: 'crime.cooldown', type: 'duration' },
+    ],
+    validate: minBelowMax,
+  },
+  crimeFine: {
+    group: 'economy',
+    module: 'economy',
+    fields: [
+      { id: 'fineMode', key: 'crime.fineMode', type: 'choice', options: FINE_MODES },
+      { id: 'min', key: 'crime.fine', path: 'min', type: 'number', min: 0, max: 1_000_000_000 },
+      { id: 'max', key: 'crime.fine', path: 'max', type: 'number', min: 0, max: 1_000_000_000 },
+    ],
+    validate: (values) =>
+      minBelowMax(values) ??
+      (values.fineMode === 'percent' && Number(values.max) > 100 ? 'config.percentMax' : null),
   },
   work: {
     group: 'economy',

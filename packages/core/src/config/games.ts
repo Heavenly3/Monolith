@@ -3,7 +3,7 @@
 // the economy cannot be farmed (see packages/core/test/games.test.ts).
 
 export type GameName = 'slots' | 'roulette' | 'horserace' | 'keno';
-export type CooldownName = GameName | 'work' | 'collect' | 'wheel' | 'rob';
+export type CooldownName = GameName | 'work' | 'collect' | 'wheel' | 'rob' | 'crime';
 
 export const SLOT_SYMBOLS = ['nut', 'gear', 'chip', 'cell', 'core', 'monolith'] as const;
 export type SlotSymbol = (typeof SLOT_SYMBOLS)[number];

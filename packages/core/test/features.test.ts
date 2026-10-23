@@ -5,6 +5,7 @@ import {
   cooldowns,
   loans,
   raffle,
+  crime,
   rob,
   settings,
   shop,
@@ -91,6 +92,32 @@ describe('economy rules', () => {
     accounts.credit(GUILD, bob.id, 100, 'admin', 'bank');
     expect(accounts.resetAll(GUILD)).toBe(2);
     expect(accounts.stats(GUILD).accounts).toBe(0);
+  });
+});
+
+describe('crime', () => {
+  it('pays on success and fines from wallet then bank on failure', () => {
+    settings.set(GUILD, 'crime.range', { min: 400, max: 400 });
+    expect(crime.attempt(GUILD, alice, 0.99)).toMatchObject({
+      ok: true,
+      success: true,
+      amount: 400,
+    });
+    expect(crime.attempt(GUILD, alice, 0.99)).toMatchObject({ ok: false, reason: 'cooldown' });
+
+    cooldowns.clear(GUILD, alice.id, 'crime');
+    settings.set(GUILD, 'crime.fineMode', 'fixed');
+    settings.set(GUILD, 'crime.fine', { min: 600, max: 600 });
+    accounts.move(GUILD, alice.id, 'wallet', 300);
+    expect(crime.attempt(GUILD, alice, 0)).toMatchObject({ success: false, amount: 400 });
+    expect(accounts.findAccount(GUILD, alice.id)).toMatchObject({ wallet: 0, bank: 0 });
+  });
+
+  it('computes percent fines from the whole balance', () => {
+    accounts.credit(GUILD, bob.id, 1000, 'admin');
+    accounts.credit(GUILD, bob.id, 1000, 'admin', 'bank');
+    settings.set(GUILD, 'crime.fine', { min: 10, max: 10 });
+    expect(crime.fineFor(GUILD, bob.id)).toBe(200);
   });
 });
 
