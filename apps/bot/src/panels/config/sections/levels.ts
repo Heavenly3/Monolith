@@ -39,6 +39,7 @@ const CATEGORIES = [
   ['levelAnnounceRules', 'message'],
   ['levelFilters', 'signal'],
   ['levelRoles', 'role'],
+  ['levelRank', 'rank'],
 ] as const;
 
 const checkbox = (id: string, label: string, description: string) =>

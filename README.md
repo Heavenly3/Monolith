@@ -34,6 +34,7 @@
   - **Multipliers:** per role, channel or whole category, with rules for how several roles combine (largest, smallest, highest role, added or multiplied) and how role and channel combine.
   - **Role rewards:** stack or replace each other; single rewards can be kept when replaced or given only once. Roles are checked on every XP gain, only on level change, or never.
   - **Announcements:** in the same channel, a fixed channel or by DM, as a card or plain text, with or without a mention; every N levels up to a level, or only reward levels; special messages for exact levels.
+  - **Rank card:** `/rank` answers as a drawn image (six accent colours), three short lines of text, or the full card.
   - **Commands:** `/rank` shows progress, the multiplier in the channel, messages left and the cooldown, and fixes drifted roles; `/calculate` estimates the XP and chat a level takes; right-click a member → **Apps → View rank**; `/levels` shows the ranking.
   - **Web:** an optional public ranking page, and XP export (JSON, CSV) and import, including backups from other level bots keyed by user id.
 - **Modules** — turn the economy, games, shop, loans, lottery or levels on and off per server; turned-off commands tell members so.

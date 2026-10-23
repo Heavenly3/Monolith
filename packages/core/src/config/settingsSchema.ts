@@ -7,6 +7,8 @@ import {
   ANNOUNCE_STYLES,
   CHANNEL_MULTIPLIER_MODES,
   FINE_MODES,
+  RANK_COLORS,
+  RANK_STYLES,
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,
   REWARD_MODES,
@@ -297,6 +299,14 @@ export const SETTING_CATEGORIES = {
       { id: 'rewardsOnly', key: 'levels.announceRewardsOnly', type: 'toggle' },
       { id: 'ping', key: 'levels.announcePing', type: 'toggle' },
       { id: 'style', key: 'levels.announceStyle', type: 'choice', options: ANNOUNCE_STYLES },
+    ],
+  },
+  levelRank: {
+    group: 'levels',
+    module: 'levels',
+    fields: [
+      { id: 'rankStyle', key: 'levels.rankStyle', type: 'choice', options: RANK_STYLES },
+      { id: 'rankColor', key: 'levels.rankColor', type: 'choice', options: RANK_COLORS },
     ],
   },
   levelLeaderboard: {

@@ -21,6 +21,11 @@ vi.mock('../src/framework/respond.ts', async (importOriginal) => ({
   wait: async () => {},
 }));
 
+// Rank images try to download the avatar; tests stay offline (the card draws an initial).
+vi.stubGlobal('fetch', async () => {
+  throw new Error('offline');
+});
+
 const { loadCommands } = await import('../src/framework/loader.ts');
 const { default: router } = await import('../src/events/interactionCreate.ts');
 const { default: onMessage } = await import('../src/events/messageCreate.ts');
@@ -296,6 +301,11 @@ async function suite(locale: string) {
   expect(harness.recorder.payloads.at(-1)?.text).toContain('GG <@alice>, level 2!');
   await cmd('rank');
   await cmd('rank', { opts: { user: bob } });
+  for (const style of ['compact', 'detailed', 'image'] as const) {
+    settings.set(GUILD, 'levels.rankStyle', style);
+    await cmd('rank');
+    await harness.userMenu(execute, 'View rank', { user: alice, target: alice, locale });
+  }
   await cmd('calculate', { opts: { level: 50 } });
   await harness.userMenu(execute, 'View rank', { user: alice, target: bob, locale });
   await harness.userMenu(execute, 'View rank', { user: alice, target: alice, locale });

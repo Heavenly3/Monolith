@@ -501,6 +501,19 @@ export const es: Messages = {
         dm: 'Por mensaje privado',
         off: 'No anunciar',
       },
+      rankStyle: {
+        image: 'Imagen — una tarjeta dibujada con avatar y barra de progreso',
+        compact: 'Compacto — tres líneas cortas de texto',
+        detailed: 'Detallado — la tarjeta completa con multiplicador y espera',
+      },
+      rankColor: {
+        cyan: 'Cian',
+        amber: 'Ámbar',
+        teal: 'Turquesa',
+        red: 'Rojo',
+        violet: 'Violeta',
+        green: 'Verde',
+      },
       fineMode: {
         fixed: 'Fija — una cantidad de créditos',
         percent: 'Parte del saldo — un porcentaje de cartera + banco',
@@ -592,6 +605,10 @@ export const es: Messages = {
       levelAnnounceRules: {
         label: 'Cuándo anunciar',
         description: 'Qué niveles se anuncian, menciones y estilo',
+      },
+      levelRank: {
+        label: 'Tarjeta de rango',
+        description: 'Cómo se ve /rango: imagen, texto corto o tarjeta completa',
       },
       levelLeaderboard: {
         label: 'Ranking público',
@@ -714,6 +731,10 @@ export const es: Messages = {
           help: 'El anuncio le envía una notificación.',
         },
         style: { label: 'Estilo', help: 'Cómo se ve el anuncio en Discord.' },
+      },
+      levelRank: {
+        rankStyle: { label: 'Estilo', help: 'Lo que ven los miembros al usar /rango.' },
+        rankColor: { label: 'Color de la imagen', help: 'Color de acento de la imagen de rango.' },
       },
       levelLeaderboard: {
         public: {

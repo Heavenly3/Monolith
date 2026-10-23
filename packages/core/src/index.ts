@@ -9,6 +9,7 @@ export * from './config/defaults.ts';
 export * from './config/games.ts';
 export * from './config/settingsSchema.ts';
 export * from './config/levels.ts';
+export * from './config/rankCard.ts';
 
 export * as accounts from './services/accounts.ts';
 export * as audit from './services/audit.ts';

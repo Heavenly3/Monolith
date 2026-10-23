@@ -84,6 +84,7 @@ const SHOWN_WHEN: Record<string, (values: Record<string, unknown>) => boolean> =
   'chatMoney.cooldown': (values) => values.enabled === true,
   'chatMoney.channels': (values) => values.enabled === true,
   'levelAnnounceRules.until': (values) => Number(values.every) > 1,
+  'levelRank.rankColor': (values) => values.rankStyle === 'image',
 };
 const visibleFields = computed(() =>
   props.category.fields.filter(

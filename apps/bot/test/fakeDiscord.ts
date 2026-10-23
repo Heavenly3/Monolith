@@ -160,6 +160,9 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
         state.replied = true;
         record(payload);
       },
+      deferReply: async () => {
+        state.replied = true;
+      },
       editReply: async (payload: never) => record(payload),
       followUp: async (payload: never) => record(payload),
       update: async (payload: never) => record(payload),

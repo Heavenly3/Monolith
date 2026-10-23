@@ -156,6 +156,13 @@ export const es: WebMessages = {
       'El módulo {module} está desactivado: estos ajustes no hacen nada hasta que lo actives.',
     enableModule: 'Activar',
   },
+  rankCard: {
+    title: 'Vista previa',
+    subtitle: 'Así se ve la imagen de rango con el color que elegiste.',
+    compact: 'Los miembros reciben tres líneas cortas de texto en lugar de una imagen.',
+    detailed:
+      'Los miembros reciben la tarjeta completa con multiplicador, mensajes restantes y espera.',
+  },
   backup: {
     title: 'Copia de seguridad e importación',
     subtitle:

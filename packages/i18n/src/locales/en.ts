@@ -495,6 +495,19 @@ export const en = {
         dm: 'By direct message',
         off: 'Do not announce',
       },
+      rankStyle: {
+        image: 'Image — a drawn card with avatar and progress bar',
+        compact: 'Compact — three short lines of text',
+        detailed: 'Detailed — the full card with multiplier and cooldown',
+      },
+      rankColor: {
+        cyan: 'Cyan',
+        amber: 'Amber',
+        teal: 'Teal',
+        red: 'Red',
+        violet: 'Violet',
+        green: 'Green',
+      },
       fineMode: {
         fixed: 'Fixed — an amount of credits',
         percent: 'Share of balance — a percent of wallet + bank',
@@ -577,6 +590,10 @@ export const en = {
       levelAnnounceRules: {
         label: 'When to announce',
         description: 'Which levels are announced, mentions and style',
+      },
+      levelRank: {
+        label: 'Rank card',
+        description: 'How /rank looks: image, short text or full card',
       },
       levelLeaderboard: {
         label: 'Public ranking',
@@ -681,6 +698,10 @@ export const en = {
         },
         ping: { label: 'Mention the member', help: 'The announcement sends them a notification.' },
         style: { label: 'Style', help: 'How the announcement looks in Discord.' },
+      },
+      levelRank: {
+        rankStyle: { label: 'Style', help: 'What members see when they use /rank.' },
+        rankColor: { label: 'Image colour', help: 'Accent colour of the rank image.' },
       },
       levelLeaderboard: {
         public: {

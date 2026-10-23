@@ -7,6 +7,7 @@ import IncomeEditor from '../components/IncomeEditor.vue';
 import JobsEditor from '../components/JobsEditor.vue';
 import LevelCurveChart from '../components/LevelCurveChart.vue';
 import LevelMessagesEditor from '../components/LevelMessagesEditor.vue';
+import RankCardPreview from '../components/RankCardPreview.vue';
 import PageHeader from '../components/PageHeader.vue';
 import SettingsForm from '../components/SettingsForm.vue';
 import WheelEditor from '../components/WheelEditor.vue';
@@ -124,6 +125,11 @@ const formula = computed(() => ({
         :variables="
           byId.get('levelAnnounce')?.fields.find((f) => f.id === 'message')?.variables ?? []
         "
+      />
+      <RankCardPreview
+        v-if="main === 'levelRank'"
+        :style-id="String(draftOf('levelRank', 'rankStyle') ?? 'image')"
+        :color="String(draftOf('levelRank', 'rankColor') ?? 'cyan')"
       />
       <JobsEditor v-if="main === 'work'" :guild-id="guild.id" />
       <WheelEditor v-if="main === 'wheel'" :guild-id="guild.id" />

@@ -28,6 +28,13 @@ export interface LevelMessage {
 export const FINE_MODES = ['fixed', 'percent'] as const;
 export type FineMode = (typeof FINE_MODES)[number];
 
+/** How /rank looks: a drawn image, a short text, or the full card with every detail. */
+export const RANK_STYLES = ['image', 'compact', 'detailed'] as const;
+export type RankStyle = (typeof RANK_STYLES)[number];
+
+export const RANK_COLORS = ['cyan', 'amber', 'teal', 'red', 'violet', 'green'] as const;
+export type RankColor = (typeof RANK_COLORS)[number];
+
 export const REWARD_MODES = ['stack', 'replace'] as const;
 export type RewardMode = (typeof REWARD_MODES)[number];
 
@@ -167,6 +174,9 @@ export interface SettingValues {
   'levels.announcePing': boolean;
   'levels.announceStyle': AnnounceStyle;
   'levels.levelMessages': LevelMessage[];
+  'levels.rankStyle': RankStyle;
+  /** Accent colour of the rank image. */
+  'levels.rankColor': RankColor;
   /** Anyone with the link can see the ranking on the web, without logging in. */
   'levels.publicLeaderboard': boolean;
   'levels.ignoredChannels': string[];
@@ -254,6 +264,8 @@ export const DEFAULTS: SettingValues = {
   'levels.announceStyle': 'card',
   'levels.levelMessages': [],
   'levels.publicLeaderboard': false,
+  'levels.rankStyle': 'image',
+  'levels.rankColor': 'cyan',
   'levels.ignoredChannels': [],
   'levels.ignoredRoles': [],
   'levels.rewardMode': 'stack',

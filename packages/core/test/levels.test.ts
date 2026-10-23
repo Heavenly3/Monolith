@@ -3,6 +3,7 @@ import {
   accounts,
   levels,
   progressFor,
+  rankCardSvg,
   settings,
   settingsForm,
   totalXpFor,
@@ -276,5 +277,25 @@ describe('settings forms', () => {
     expect(
       settingsForm.applyForm(GUILD, 'levelFormula', (id) => (id === 'rounding' ? undefined : '0')),
     ).toEqual({ ok: false, reason: 'rule', messageKey: 'config.formulaEmpty' });
+  });
+});
+
+describe('rank card', () => {
+  it('escapes names and shortens long ones', () => {
+    const svg = rankCardSvg({
+      name: '<b>Kael & the very long operator</b>',
+      avatar: null,
+      level: 3,
+      rank: null,
+      xp: 10,
+      current: 5,
+      needed: 10,
+      messages: 1,
+      color: 'amber',
+      labels: { level: 'Level', rank: 'Rank', xp: 'XP', messages: 'messages', max: 'Max' },
+    });
+    expect(svg).not.toContain('<b>');
+    expect(svg).toContain('&#60;b&#62;Kael &#38; the v…');
+    expect(svg).toContain('#e8a23c');
   });
 });

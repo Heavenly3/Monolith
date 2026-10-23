@@ -153,6 +153,12 @@ export const en = {
     moduleOff: 'The {module} module is turned off: these settings do nothing until you turn it on.',
     enableModule: 'Turn on',
   },
+  rankCard: {
+    title: 'Preview',
+    subtitle: 'This is how the rank image looks with the colour you picked.',
+    compact: 'Members get three short lines of text instead of an image.',
+    detailed: 'Members get the full card with multiplier, messages left and cooldown.',
+  },
   backup: {
     title: 'Backup and import',
     subtitle:

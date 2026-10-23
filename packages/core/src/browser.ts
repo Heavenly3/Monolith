@@ -3,6 +3,7 @@
 export * from './config/defaults.ts';
 export * from './config/games.ts';
 export * from './config/levels.ts';
+export * from './config/rankCard.ts';
 export * from './config/settingsSchema.ts';
 export * from './utils/format.ts';
 export * from './utils/parse.ts';

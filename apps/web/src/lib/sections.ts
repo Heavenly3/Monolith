@@ -98,6 +98,7 @@ export const SECTIONS: Record<SectionId, Section> = {
       settings('voice', 'levelVoice', 'pi pi-microphone'),
       settings('messages', 'levelAnnounce', 'pi pi-megaphone', 'levelAnnounceRules'),
       settings('filters', 'levelFilters', 'pi pi-filter'),
+      settings('rank-card', 'levelRank', 'pi pi-id-card'),
     ],
   },
 };
