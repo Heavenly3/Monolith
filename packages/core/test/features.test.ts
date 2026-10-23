@@ -7,6 +7,7 @@ import {
   raffle,
   chatMoney,
   crime,
+  ledger,
   rob,
   settings,
   shop,
@@ -128,6 +129,21 @@ describe('balance backups', () => {
     accounts.importBalances(GUILD, [{ userId: ID, wallet: 7, bank: 0 }], 'replace');
     expect(accounts.findAccount(GUILD, ID)).toMatchObject({ wallet: 7, bank: 0 });
     expect(accounts.findAccount(GUILD, alice.id)?.wallet).toBe(0);
+  });
+});
+
+describe('activity', () => {
+  it('sums earned and spent credits per day, skipping internal moves', () => {
+    const longAgo = Date.UTC(2020, 0, 15);
+    accounts.credit(GUILD, alice.id, 500, 'work');
+    accounts.credit(GUILD, bob.id, 1000, 'admin');
+    accounts.debit(GUILD, alice.id, 200, 'bet');
+    accounts.move(GUILD, alice.id, 'wallet', 100);
+    const days = ledger.activity(GUILD, 7, longAgo);
+    expect(days).toHaveLength(7);
+    expect(days.reduce((sum, d) => sum + d.movements, 0)).toBe(0);
+    const today = ledger.activity(GUILD, 7).at(-1)!;
+    expect(today).toMatchObject({ earned: 500, spent: 200, movements: 2, members: 1 });
   });
 });
 

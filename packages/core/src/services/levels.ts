@@ -408,6 +408,17 @@ export function rankOf(guildId: string, userId: string): number | null {
   );
 }
 
+/** Members whose messages earned XP since `since` (ms). */
+export function activeSince(guildId: string, since: number): number {
+  return (
+    one<{ count: number }>(
+      'SELECT COUNT(*) AS count FROM member_levels WHERE guild_id = ? AND last_message_at >= ?',
+      guildId,
+      since,
+    )?.count ?? 0
+  );
+}
+
 export function stats(guildId: string): { members: number; totalXp: number; topLevel: number } {
   return (
     one<{ members: number; totalXp: number; topLevel: number }>(

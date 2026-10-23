@@ -1,9 +1,15 @@
 // Overview of a server, members' credits, loans and the change history.
+const WEEK = 7 * 86_400_000;
 import {
+  MODULES,
   accounts,
   audit,
+  ledger,
+  levels,
   loans,
+  progressFor,
   raffle,
+  settings,
   shop,
   type BalanceImportMode,
   type BalanceRecord,
@@ -22,9 +28,12 @@ function userIdParam(params: unknown): string {
 }
 
 export async function economyRoutes(app: FastifyInstance): Promise<void> {
+  // Everything the overview page shows: economy, levels, modules, the last
+  // week of activity and the latest changes.
   app.get('/', async (request) => {
     const { guild } = scope(request);
     const round = raffle.getRound(guild.id);
+    const curve = levels.curveOf(guild.id);
     return {
       guild: { id: guild.id, name: guild.name, icon: guild.icon },
       stats: accounts.stats(guild.id),
@@ -32,6 +41,23 @@ export async function economyRoutes(app: FastifyInstance): Promise<void> {
       activeLoans: loans.listLoans(guild.id).length,
       products: shop.listProducts(guild.id).length,
       raffle: { pot: round.pot, drawAt: round.drawAt, tickets: raffle.ticketCount(guild.id) },
+      modules: Object.fromEntries(
+        MODULES.map((id) => [id, settings.get(guild.id, `modules.${id}`)]),
+      ),
+      levels: {
+        stats: levels.stats(guild.id),
+        activeWeek: levels.activeSince(guild.id, Date.now() - WEEK),
+        rewards: levels.rewards(guild.id).length,
+        publicLeaderboard: settings.get(guild.id, 'levels.publicLeaderboard'),
+        top: levels
+          .leaderboard(guild.id, 5)
+          .map((member) => ({ ...member, progress: progressFor(member.xp, curve) })),
+      },
+      activity: ledger.activity(guild.id, 7),
+      recent: audit.recent(guild.id, 6).map((entry) => ({
+        ...entry,
+        actorName: accounts.getProfile(entry.actorId)?.username ?? null,
+      })),
     };
   });
 

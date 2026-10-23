@@ -22,6 +22,14 @@ export interface Member {
   netWorth: number;
 }
 
+export interface DayActivity {
+  day: number;
+  earned: number;
+  spent: number;
+  movements: number;
+  members: number;
+}
+
 export interface Overview {
   guild: { id: string; name: string; icon: string | null };
   stats: { accounts: number; wallets: number; banks: number };
@@ -29,6 +37,16 @@ export interface Overview {
   activeLoans: number;
   products: number;
   raffle: { pot: number; drawAt: number | null; tickets: number };
+  modules: Record<ModuleId, boolean>;
+  levels: {
+    stats: { members: number; totalXp: number; topLevel: number };
+    activeWeek: number;
+    rewards: number;
+    publicLeaderboard: boolean;
+    top: LevelMember[];
+  };
+  activity: DayActivity[];
+  recent: AuditEntry[];
 }
 
 export interface SettingFieldValue {

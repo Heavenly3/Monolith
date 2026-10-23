@@ -4,7 +4,8 @@ import DataTable from 'primevue/datatable';
 import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import PageHeader from '../components/PageHeader.vue';
-import { has, t } from '../i18n/index.ts';
+import { t } from '../i18n/index.ts';
+import { describeAudit as describe, fromWeb } from '../lib/audit.ts';
 import { api, guildPath } from '../lib/api.ts';
 import { useLoader } from '../lib/composables.ts';
 import { dateTime, relativeTime } from '../lib/format.ts';
@@ -15,43 +16,6 @@ const guild = useGuild();
 const { data, error, loading } = useLoader(() =>
   api.get<{ entries: AuditEntry[] }>(guildPath(guild.value.id, '/audit?limit=100')),
 );
-
-// Sections named in actions from the bot ("config.work.save") and the dashboard
-// ("settings.work.save", "shop.add"), mapped to readable names.
-const SECTION_NAMES: Record<string, string> = {
-  shop: 'web.nav.shop',
-  members: 'web.nav.members',
-  loans: 'web.nav.loans',
-};
-
-function sectionName(section: string): string {
-  if (has(`config.categories.${section}.label`)) return t(`config.categories.${section}.label`);
-  return SECTION_NAMES[section] ? t(SECTION_NAMES[section]) : section;
-}
-
-// Actions of the bot's /config panel that mean the same as a dashboard action.
-const VERB_ALIASES: Record<string, string> = {
-  saveItem: 'add',
-  saveMessage: 'add',
-  savePrize: 'add',
-  saveRole: 'set',
-  resetPrizes: 'reset',
-  language: 'save',
-};
-
-/** "settings.work.save" → "Saved Work". */
-function describe(entry: AuditEntry): string {
-  const parts = entry.action.split('.');
-  const last = parts.at(-1) ?? '';
-  const verb = VERB_ALIASES[last] ?? last;
-  const section = parts.length > 2 ? parts.at(-2)! : (parts[0] ?? '');
-  const key = `web.history.actions.${verb}`;
-  return has(key)
-    ? t(key, { section: sectionName(section) })
-    : t('web.history.actions.other', { action: entry.action });
-}
-
-const fromWeb = (entry: AuditEntry): boolean => entry.details?.source === 'web';
 </script>
 
 <template>

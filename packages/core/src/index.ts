@@ -33,7 +33,7 @@ export * as bets from './games/bets.ts';
 export * as rules from './games/rules.ts';
 export * as blackjack from './games/blackjack.ts';
 
-export type { LedgerEntry, LedgerReason } from './services/ledger.ts';
+export type { DayActivity, LedgerEntry, LedgerReason } from './services/ledger.ts';
 export type { AuditEntry } from './services/audit.ts';
 export type { CollectedLoan, LoanRequest, RepayResult } from './services/loans.ts';
 export type { DrawResult, TicketPurchase } from './services/raffle.ts';
