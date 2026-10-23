@@ -521,6 +521,7 @@ export const en = {
         description: 'Starting and maximum balance, bet limits',
       },
       robbery: { label: 'Robbing', description: 'Chance, loot, fine and cooldown of /rob' },
+      chatMoney: { label: 'Chat credits', description: 'Credits for chatting, once per cooldown' },
       crime: { label: 'Crime', description: 'Rewards, risk and cooldown of /crime' },
       crimeFine: { label: 'Crime fines', description: 'What a failed /crime costs' },
       work: { label: 'Work', description: 'Rewards, cooldown and jobs of /work' },
@@ -672,6 +673,13 @@ export const en = {
           label: 'Roles without XP',
           help: 'Members with these roles never earn experience.',
         },
+      },
+      chatMoney: {
+        enabled: { label: 'Chat credits', help: 'Members earn credits by chatting, silently.' },
+        min: { label: 'Minimum per message', help: 'Least credits a counted message gives.' },
+        max: { label: 'Maximum per message', help: 'Most credits a counted message gives.' },
+        cooldown: { label: 'Cooldown', help: 'Time before messages pay again (stops spam).' },
+        channels: { label: 'Channels without credits', help: 'Messages here never pay.' },
       },
       crime: {
         min: { label: 'Minimum reward', help: 'Least credits a successful /crime pays.' },

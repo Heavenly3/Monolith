@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { levels, logger, settings } from '@monolith/core';
+import { chatMoney, levels, logger, settings } from '@monolith/core';
 import { defineEvent } from '../framework/loader.ts';
 import { activityOf, afterXpGain } from '../services/levelUp.ts';
 
@@ -11,7 +11,12 @@ export default defineEvent({
   name: Events.MessageCreate,
   async execute(message) {
     if (!message.inGuild() || message.author.bot || message.webhookId || message.system) return;
-    if (!settings.get(message.guildId, 'modules.levels') || !message.member) return;
+    if (!message.member) return;
+    const channelId = message.channel.isThread()
+      ? (message.channel.parentId ?? message.channelId)
+      : message.channelId;
+    chatMoney.award(message.guildId, message.author, channelId);
+    if (!settings.get(message.guildId, 'modules.levels')) return;
 
     const gain = levels.awardMessage(
       message.guildId,

@@ -79,6 +79,10 @@ watch(draft, (values) => emit('draft', values), { immediate: true, deep: true })
 const SHOWN_WHEN: Record<string, (values: Record<string, unknown>) => boolean> = {
   'levelAnnounce.channel': (values) => values.mode === 'custom',
   'levelVoice.xp': (values) => values.enabled === true,
+  'chatMoney.min': (values) => values.enabled === true,
+  'chatMoney.max': (values) => values.enabled === true,
+  'chatMoney.cooldown': (values) => values.enabled === true,
+  'chatMoney.channels': (values) => values.enabled === true,
   'levelAnnounceRules.until': (values) => Number(values.every) > 1,
 };
 const visibleFields = computed(() =>

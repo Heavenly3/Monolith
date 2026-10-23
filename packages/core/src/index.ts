@@ -16,6 +16,7 @@ export * as cooldowns from './services/cooldowns.ts';
 export * as ledger from './services/ledger.ts';
 export * as levels from './services/levels.ts';
 export * as crime from './services/crime.ts';
+export * as chatMoney from './services/chatMoney.ts';
 export * as loans from './services/loans.ts';
 export * as raffle from './services/raffle.ts';
 export * as rob from './services/rob.ts';

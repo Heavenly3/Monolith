@@ -529,6 +529,10 @@ export const es: Messages = {
         description: 'Saldo inicial y máximo, límites de apuesta',
       },
       robbery: { label: 'Robos', description: 'Probabilidad, botín, multa y espera de /robar' },
+      chatMoney: {
+        label: 'Créditos por chatear',
+        description: 'Créditos por hablar, una vez por espera',
+      },
       crime: { label: 'Crimen', description: 'Recompensas, riesgo y espera de /crimen' },
       crimeFine: { label: 'Multas del crimen', description: 'Lo que cuesta un /crimen fallido' },
       work: { label: 'Trabajo', description: 'Recompensas, espera y trabajos de /trabajar' },
@@ -701,6 +705,19 @@ export const es: Messages = {
           label: 'Roles sin XP',
           help: 'Los miembros con estos roles nunca ganan experiencia.',
         },
+      },
+      chatMoney: {
+        enabled: {
+          label: 'Créditos por chatear',
+          help: 'Los miembros ganan créditos hablando, en silencio.',
+        },
+        min: { label: 'Mínimo por mensaje', help: 'Lo mínimo que da un mensaje que cuenta.' },
+        max: { label: 'Máximo por mensaje', help: 'Lo máximo que da un mensaje que cuenta.' },
+        cooldown: {
+          label: 'Espera',
+          help: 'Tiempo hasta que los mensajes vuelven a pagar (evita spam).',
+        },
+        channels: { label: 'Canales sin créditos', help: 'Los mensajes aquí nunca pagan.' },
       },
       crime: {
         min: { label: 'Recompensa mínima', help: 'Lo mínimo que paga un /crimen con éxito.' },

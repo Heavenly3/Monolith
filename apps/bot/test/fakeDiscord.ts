@@ -36,6 +36,7 @@ const UNTRANSLATED =
   /\b(common|features|balance|bank|pay|work|collect|wheel|rob|leaderboard|games|slots|roulette|horserace|keno|raffle|loans|shop|use|inventory|moneyAdmin|incomeAdmin|wheelAdmin|workAdmin|shopAdmin|loansAdmin|levelsAdmin|levels|modules|config|panel|help)\.[a-zA-Z]+(\.[a-zA-Z]+)*\b/;
 
 type Node = {
+  type?: number;
   content?: string;
   label?: string;
   placeholder?: string;
@@ -53,6 +54,11 @@ const textOf = (node: Node): string[] => [
   ...(node.accessory ? textOf(node.accessory) : []),
   ...(node.options ?? []).flatMap(textOf),
 ];
+/** Action rows (type 1) holding more than five components, which Discord rejects. */
+const overfullRows = (node: Node): number =>
+  (node.type === 1 && (node.components?.length ?? 0) > 5 ? 1 : 0) +
+  (node.components ?? []).reduce((sum, child) => sum + overfullRows(child), 0);
+
 const countOf = (node: Node): number =>
   1 +
   (node.components ?? []).reduce((sum, child) => sum + countOf(child), 0) +
@@ -106,6 +112,7 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
     const text = json.flatMap(textOf).join('\n');
     for (const node of json) {
       if (countOf(node) > 40) recorder.errors.push(`${label}: more than 40 components`);
+      if (overfullRows(node)) recorder.errors.push(`${label}: a row with more than 5 components`);
     }
     if (/Reference: `|Referencia: `/.test(text)) recorder.errors.push(`${label}: handler error`);
     const key = text.match(UNTRANSLATED);

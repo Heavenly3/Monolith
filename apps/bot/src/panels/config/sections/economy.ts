@@ -8,10 +8,11 @@ const CATEGORIES = [
   ['robbery', 'rob'],
   ['crime', 'busted'],
   ['crimeFine', 'bill'],
+  ['chatMoney', 'message'],
 ] as const;
 
 // Rules of the whole economy: starting and maximum balance, bet limits and
-// robbing, plus wiping every balance.
+// robbing, crime and chat credits, plus wiping every balance.
 export const economySection: Section = {
   icon: 'bank',
   color: 'brand',
@@ -30,10 +31,10 @@ export const economySection: Section = {
         ).join('\n'),
       ],
       rows: [
+        CATEGORIES.map(([category, icon]) =>
+          editCategoryButton(t, 'economy', category, emojis[icon]),
+        ),
         [
-          ...CATEGORIES.map(([category, icon]) =>
-            editCategoryButton(t, 'economy', category, emojis[icon]),
-          ),
           button(
             'economy',
             'resetAll',

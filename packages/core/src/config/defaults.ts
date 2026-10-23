@@ -97,6 +97,11 @@ export interface SettingValues {
   'rob.steal': number;
   /** Most of the thief's wallet a failed robbery costs, in percent. */
   'rob.fine': number;
+  /** Credits for chatting. */
+  'chat.enabled': boolean;
+  'chat.range': { min: number; max: number };
+  'chat.cooldown': number;
+  'chat.ignoredChannels': string[];
   'crime.range': { min: number; max: number };
   /** Chance of getting caught, in percent. */
   'crime.failRate': number;
@@ -184,6 +189,10 @@ export const DEFAULTS: SettingValues = {
   'rob.chance': 45,
   'rob.steal': 40,
   'rob.fine': 25,
+  'chat.enabled': false,
+  'chat.range': { min: 5, max: 15 },
+  'chat.cooldown': MINUTE,
+  'chat.ignoredChannels': [],
   'crime.range': { min: 250, max: 1000 },
   'crime.failRate': 40,
   'crime.cooldown': 4 * HOUR,

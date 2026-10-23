@@ -117,6 +117,18 @@ export const SETTING_CATEGORIES = {
       { id: 'cooldown', key: 'rob.cooldown', type: 'duration' },
     ],
   },
+  chatMoney: {
+    group: 'economy',
+    module: 'economy',
+    fields: [
+      { id: 'enabled', key: 'chat.enabled', type: 'toggle' },
+      { id: 'min', key: 'chat.range', path: 'min', type: 'coins' },
+      { id: 'max', key: 'chat.range', path: 'max', type: 'coins' },
+      { id: 'cooldown', key: 'chat.cooldown', type: 'duration' },
+      { id: 'channels', key: 'chat.ignoredChannels', type: 'channels', limit: 25 },
+    ],
+    validate: minBelowMax,
+  },
   crime: {
     group: 'economy',
     module: 'economy',

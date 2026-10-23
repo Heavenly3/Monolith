@@ -66,6 +66,7 @@ export const SECTIONS: Record<SectionId, Section> = {
       },
       settings('rules', 'economy', 'pi pi-sliders-h'),
       settings('work', 'work', 'pi pi-briefcase'),
+      settings('chat', 'chatMoney', 'pi pi-comments'),
       settings('income', 'collect', 'pi pi-id-card'),
       settings('wheel', 'wheel', 'pi pi-sync'),
       settings('games', 'games', 'pi pi-star'),

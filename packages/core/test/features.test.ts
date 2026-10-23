@@ -5,6 +5,7 @@ import {
   cooldowns,
   loans,
   raffle,
+  chatMoney,
   crime,
   rob,
   settings,
@@ -92,6 +93,19 @@ describe('economy rules', () => {
     accounts.credit(GUILD, bob.id, 100, 'admin', 'bank');
     expect(accounts.resetAll(GUILD)).toBe(2);
     expect(accounts.stats(GUILD).accounts).toBe(0);
+  });
+});
+
+describe('chat money', () => {
+  it('pays once per cooldown outside excluded channels, only when on', () => {
+    settings.set(GUILD, 'chat.range', { min: 10, max: 10 });
+    expect(chatMoney.award(GUILD, alice, 'general')).toBe(0);
+    settings.set(GUILD, 'chat.enabled', true);
+    settings.set(GUILD, 'chat.ignoredChannels', ['spam']);
+    expect(chatMoney.award(GUILD, alice, 'spam')).toBe(0);
+    expect(chatMoney.award(GUILD, alice, 'general')).toBe(10);
+    expect(chatMoney.award(GUILD, alice, 'general')).toBe(0);
+    expect(accounts.findAccount(GUILD, alice.id)?.wallet).toBe(10);
   });
 });
 
