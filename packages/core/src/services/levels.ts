@@ -33,8 +33,18 @@ export interface XpGain {
 
 export interface ActivityContext {
   channelId: string;
+  /** Category of the channel, for category multipliers. */
+  categoryId?: string | null;
+  /** The member's roles, highest first (the "highest" multiplier mode relies on it). */
   roleIds: readonly string[];
   now?: number;
+}
+
+/** Multipliers in percent; null when nothing applies. */
+export interface MultiplierBreakdown {
+  role: number | null;
+  channel: number | null;
+  total: number;
 }
 
 interface Row {
@@ -60,6 +70,8 @@ export function curveOf(guildId: string): CurveSettings {
     curve: settings.get(guildId, 'levels.curve'),
     difficulty: settings.get(guildId, 'levels.difficulty'),
     maxLevel: settings.get(guildId, 'levels.maxLevel'),
+    formula: settings.get(guildId, 'levels.formula'),
+    rounding: settings.get(guildId, 'levels.rounding'),
   };
 }
 
@@ -84,17 +96,63 @@ export function progressOf(guildId: string, userId: string) {
 
 // ── Earning XP ──────────────────────────────────────────────────────────────
 
-/** Multiplier for a member: their best role multiplier times the channel's (percent). */
-export function multiplierFor(guildId: string, { channelId, roleIds }: ActivityContext): number {
-  const multipliers = settings.get(guildId, 'levels.multipliers');
-  const roles = new Set(roleIds);
-  const rolePercents = multipliers
-    .filter((m) => m.type === 'role' && roles.has(m.id))
-    .map((m) => m.percent);
-  const role = rolePercents.length ? Math.max(...rolePercents) : 100;
-  const channel =
-    multipliers.find((m) => m.type === 'channel' && m.id === channelId)?.percent ?? 100;
-  return (role * channel) / 100;
+const sumPercents = (percents: number[]): number =>
+  Math.max(0, 100 + percents.reduce((sum, percent) => sum + percent - 100, 0));
+
+/** Role multipliers combined the way the server chose. */
+function roleMultiplier(guildId: string, roleIds: readonly string[]): number | null {
+  const byRole = new Map(
+    settings
+      .get(guildId, 'levels.multipliers')
+      .filter((m) => m.type === 'role')
+      .map((m) => [m.id, m.percent]),
+  );
+  const percents = roleIds.filter((id) => byRole.has(id)).map((id) => byRole.get(id)!);
+  if (!percents.length) return null;
+  switch (settings.get(guildId, 'levels.roleMultiplierMode')) {
+    case 'largest':
+      return Math.max(...percents);
+    case 'smallest':
+      return Math.min(...percents);
+    case 'highest':
+      return percents[0]!;
+    case 'add':
+      return sumPercents(percents);
+    case 'multiply':
+      return percents.reduce((total, percent) => (total * percent) / 100, 100);
+  }
+}
+
+/** Multiplier of the channel, or of its category when the channel has none. */
+function channelMultiplier(guildId: string, { channelId, categoryId }: ActivityContext) {
+  const channels = settings.get(guildId, 'levels.multipliers').filter((m) => m.type === 'channel');
+  return (
+    channels.find((m) => m.id === channelId)?.percent ??
+    (categoryId ? channels.find((m) => m.id === categoryId)?.percent : undefined) ??
+    null
+  );
+}
+
+/** Multipliers of a member in a channel (percent), and how they combine. */
+export function multiplierFor(guildId: string, context: ActivityContext): MultiplierBreakdown {
+  const role = roleMultiplier(guildId, context.roleIds);
+  const channel = channelMultiplier(guildId, context);
+  const present = [role, channel].filter((value) => value !== null);
+  const total = (() => {
+    switch (settings.get(guildId, 'levels.channelMultiplierMode')) {
+      case 'multiply':
+        return ((role ?? 100) * (channel ?? 100)) / 100;
+      case 'add':
+        return sumPercents(present);
+      case 'largest':
+        return present.length ? Math.max(...present) : 100;
+      case 'channel':
+        return channel ?? role ?? 100;
+      case 'role':
+        return role ?? channel ?? 100;
+    }
+  })();
+  return { role, channel, total: Math.round(total * 100) / 100 };
 }
 
 /** True when the channel or one of the roles is excluded from XP. */
@@ -167,7 +225,9 @@ export function awardMessage(
   );
   accounts.rememberProfile(user);
   const { min, max } = settings.get(guildId, 'levels.xp');
-  const amount = Math.round((randomBetween(min, max) * multiplierFor(guildId, context)) / 100);
+  const amount = Math.round(
+    (randomBetween(min, max) * multiplierFor(guildId, context).total) / 100,
+  );
   return changeXp(guildId, user, amount, { now });
 }
 
@@ -188,7 +248,7 @@ export function awardVoice(
   );
   accounts.rememberProfile(user);
   const perMinute = settings.get(guildId, 'levels.voiceXp');
-  const amount = Math.round((perMinute * minutes * multiplierFor(guildId, context)) / 100);
+  const amount = Math.round((perMinute * minutes * multiplierFor(guildId, context).total) / 100);
   return changeXp(guildId, user, amount);
 }
 
@@ -307,21 +367,49 @@ export function removeReward(guildId: string, roleId: string): boolean {
   return true;
 }
 
+export interface RoleChanges {
+  give: string[];
+  take: string[];
+}
+
 /**
  * Reward roles a member at `level` should have and should not have. With
- * "stack" they keep every role earned; with "replace" only the highest.
+ * "stack" they keep every role earned; with "replace" only the highest (and
+ * the ones marked "keep"). Rewards marked "noSync" are left out of both.
  */
-export function rewardRolesFor(guildId: string, level: number): { give: string[]; take: string[] } {
-  const all = rewards(guildId);
+export function rewardRolesFor(guildId: string, level: number): RoleChanges {
+  const all = rewards(guildId).filter((r) => !r.noSync);
   const earned = all.filter((r) => r.level <= level);
   const top = earned.length ? Math.max(...earned.map((r) => r.level)) : -1;
-  const keep =
+  const kept =
     settings.get(guildId, 'levels.rewardMode') === 'replace'
-      ? earned.filter((r) => r.level === top)
+      ? earned.filter((r) => r.level === top || r.keep)
       : earned;
-  const give = new Set(keep.map((r) => r.roleId));
+  const give = new Set(kept.map((r) => r.roleId));
   const take = all.map((r) => r.roleId).filter((id) => !give.has(id));
   return { give: [...give], take: [...new Set(take)] };
+}
+
+/**
+ * Role changes after a member went from level `before` to `after`, following
+ * the server's sync mode. Null when roles should not be touched.
+ */
+export function roleChangesFor(guildId: string, before: number, after: number): RoleChanges | null {
+  const mode = settings.get(guildId, 'levels.syncMode');
+  if (mode === 'level' && before === after) return null;
+  if (mode === 'never' && after <= before) return null;
+
+  const target = rewardRolesFor(guildId, after);
+  const reached = rewards(guildId).filter((r) => r.level > before && r.level <= after);
+  const reachedOnce = reached.filter((r) => r.noSync).map((r) => r.roleId);
+  if (mode !== 'never') return { give: [...target.give, ...reachedOnce], take: target.take };
+
+  // Never sync: only add what this level-up reached; "replace" still swaps lower roles out.
+  const goal = new Set(target.give);
+  return {
+    give: [...reached.filter((r) => goal.has(r.roleId)).map((r) => r.roleId), ...reachedOnce],
+    take: settings.get(guildId, 'levels.rewardMode') === 'replace' ? target.take : [],
+  };
 }
 
 /** The reward role unlocked exactly at `level`, if any (for announcements). */

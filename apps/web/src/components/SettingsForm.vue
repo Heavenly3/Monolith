@@ -35,7 +35,7 @@ const flags = reactive<Record<string, boolean>>({});
 const singles = reactive<Record<string, string | null>>({});
 const lists = reactive<Record<string, string[]>>({});
 
-const NUMBER_TYPES = new Set(['coins', 'percent', 'number']);
+const NUMBER_TYPES = new Set(['coins', 'percent', 'number', 'decimal']);
 const LIST_TYPES = new Set(['channels', 'roles']);
 const needsChannels = computed(() =>
   props.category.fields.some((f) => f.type === 'channel' || f.type === 'channels'),
@@ -179,6 +179,8 @@ async function reset(): Promise<void> {
           :max="field.max ?? (field.type === 'percent' ? 1000 : Number.MAX_SAFE_INTEGER)"
           :invalid="invalid === field.id"
           :suffix="field.type === 'coins' ? ' 💠' : field.type === 'percent' ? ' %' : undefined"
+          :max-fraction-digits="field.type === 'decimal' ? 2 : 0"
+          :step="field.type === 'decimal' && (numbers[field.id] ?? 0) < 10 ? 0.1 : 1"
           locale="en-US"
           show-buttons
           button-layout="horizontal"

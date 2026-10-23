@@ -13,8 +13,8 @@ export interface SectionTab {
   label: string;
   /** "manage" tabs (members, shop...) come before "settings" tabs. */
   kind: 'manage' | 'settings';
-  /** Settings category shown by the tab, or the page it opens. */
-  category?: string;
+  /** Settings categories shown by the tab (stacked), or the page it opens. */
+  categories?: string[];
   page?: () => Promise<Component | { default: Component }>;
 }
 
@@ -23,12 +23,13 @@ export interface Section {
   tabs: SectionTab[];
 }
 
-const settings = (id: string, category: string, icon: string): SectionTab => ({
+/** A tab with the settings form of one category, plus any related ones below it. */
+const settings = (id: string, category: string, icon: string, ...more: string[]): SectionTab => ({
   id,
   icon,
   label: `config.categories.${category}.label`,
   kind: 'settings',
-  category,
+  categories: [category, ...more],
 });
 
 export const SECTIONS: Record<SectionId, Section> = {
@@ -89,7 +90,7 @@ export const SECTIONS: Record<SectionId, Section> = {
         page: () => import('../views/LevelRewardsView.vue'),
       },
       settings('experience', 'levels', 'pi pi-bolt'),
-      settings('curve', 'levelCurve', 'pi pi-chart-line'),
+      settings('curve', 'levelCurve', 'pi pi-chart-line', 'levelFormula'),
       settings('voice', 'levelVoice', 'pi pi-microphone'),
       settings('messages', 'levelAnnounce', 'pi pi-megaphone'),
       settings('filters', 'levelFilters', 'pi pi-filter'),

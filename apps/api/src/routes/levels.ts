@@ -1,6 +1,6 @@
 // Levels of a server: role rewards, XP multipliers and members' experience.
 // Reward roles are applied by the bot the next time each member earns XP.
-import { audit, levels, progressFor, type XpAction } from '@monolith/core';
+import { audit, levels, progressFor, type LevelReward, type XpAction } from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import { HttpError } from '../http.ts';
 import { scope } from './scope.ts';
@@ -40,13 +40,21 @@ export async function levelRoutes(app: FastifyInstance): Promise<void> {
           properties: {
             level: { type: 'integer', minimum: 1, maximum: 1000 },
             roleId: { type: 'string', pattern: SNOWFLAKE },
+            keep: { type: 'boolean' },
+            noSync: { type: 'boolean' },
           },
         },
       },
     },
     async (request) => {
       const { guild, viewer } = scope(request);
-      const reward = request.body as { level: number; roleId: string };
+      const body = request.body as LevelReward;
+      const reward: LevelReward = {
+        level: body.level,
+        roleId: body.roleId,
+        keep: body.keep || undefined,
+        noSync: body.noSync || undefined,
+      };
       if (!(await roleExists(guild.id, reward.roleId))) throw new HttpError(422, 'invalid_role');
       if (levels.addReward(guild.id, reward) === 'full') {
         throw new HttpError(409, 'full', { max: levels.MAX_REWARDS });

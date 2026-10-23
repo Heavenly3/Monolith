@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { LEVEL_CURVES, totalXpFor, type LevelCurve } from '@monolith/core/browser';
+import {
+  LEVEL_CURVES,
+  totalXpFor,
+  type LevelCurve,
+  type LevelFormula,
+} from '@monolith/core/browser';
 import { computed } from 'vue';
 import { t } from '../i18n/index.ts';
 import { compactNumber, formatDuration, formatNumber } from '../lib/format.ts';
@@ -10,6 +15,9 @@ const props = defineProps<{
   curve: string;
   difficulty: number;
   maxLevel: number;
+  /** Coefficients used by the "custom" curve. */
+  formula: LevelFormula;
+  rounding: number;
   /** Average XP of one message and the cooldown between counted messages. */
   xpPerMessage: number;
   cooldown: number;
@@ -21,6 +29,8 @@ const settings = computed(() => ({
     : 'standard') as LevelCurve,
   difficulty: Math.max(10, props.difficulty || 100),
   maxLevel: Math.max(1, props.maxLevel || 1),
+  formula: props.formula,
+  rounding: props.rounding,
 }));
 
 const axisLabel = (value: number): string =>

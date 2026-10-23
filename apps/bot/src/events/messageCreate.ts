@@ -1,7 +1,7 @@
 import { Events } from 'discord.js';
 import { levels, logger, settings } from '@monolith/core';
 import { defineEvent } from '../framework/loader.ts';
-import { afterXpGain } from '../services/levelUp.ts';
+import { activityOf, afterXpGain } from '../services/levelUp.ts';
 
 const log = logger.child('levels');
 
@@ -13,14 +13,11 @@ export default defineEvent({
     if (!message.inGuild() || message.author.bot || message.webhookId || message.system) return;
     if (!settings.get(message.guildId, 'modules.levels') || !message.member) return;
 
-    // Threads count as their parent channel for ignore lists and multipliers.
-    const channelId = message.channel.isThread()
-      ? (message.channel.parentId ?? message.channelId)
-      : message.channelId;
-    const gain = levels.awardMessage(message.guildId, message.author, {
-      channelId,
-      roleIds: [...message.member.roles.cache.keys()],
-    });
+    const gain = levels.awardMessage(
+      message.guildId,
+      message.author,
+      activityOf(message.member, message.channel),
+    );
     if (!gain) return;
 
     try {

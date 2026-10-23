@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
+import Checkbox from 'primevue/checkbox';
 import InputNumber from 'primevue/inputnumber';
 import Message from 'primevue/message';
 import Select from 'primevue/select';
 import SelectButton from 'primevue/selectbutton';
 import Skeleton from 'primevue/skeleton';
+import Tag from 'primevue/tag';
 import { computed, ref } from 'vue';
 import PageHeader from '../components/PageHeader.vue';
 import RoleTag from '../components/RoleTag.vue';
@@ -14,7 +16,8 @@ import { useChannels } from '../lib/channels.ts';
 import { useAsk, useLoader, useNotify } from '../lib/composables.ts';
 import { useGuild } from '../lib/guild.ts';
 import { useRoles } from '../lib/roles.ts';
-import type { LevelsOverview } from '../lib/types.ts';
+import type { Channel, LevelsOverview } from '../lib/types.ts';
+import SettingsView from './SettingsView.vue';
 
 const guild = useGuild();
 const notify = useNotify();
@@ -23,7 +26,7 @@ const path = (suffix = '') => guildPath(guild.value.id, `/levels${suffix}`);
 
 const { data, error, reload } = useLoader(() => api.get<LevelsOverview>(path()));
 const { roles, byId: rolesById } = useRoles(guild.value.id);
-const { textChannels, byId: channelsById } = useChannels(guild.value.id);
+const { channels, byId: channelsById } = useChannels(guild.value.id);
 
 async function run(action: () => Promise<unknown>): Promise<void> {
   try {
@@ -37,10 +40,19 @@ async function run(action: () => Promise<unknown>): Promise<void> {
 // Role rewards
 const rewardLevel = ref<number | null>(5);
 const rewardRole = ref<string | null>(null);
+const rewardKeep = ref(false);
+const rewardOnce = ref(false);
 const addReward = () =>
   run(async () => {
-    await api.post(path('/rewards'), { level: rewardLevel.value, roleId: rewardRole.value });
+    await api.post(path('/rewards'), {
+      level: rewardLevel.value,
+      roleId: rewardRole.value,
+      keep: rewardKeep.value,
+      noSync: rewardOnce.value,
+    });
     rewardRole.value = null;
+    rewardKeep.value = false;
+    rewardOnce.value = false;
   });
 const removeReward = async (roleId: string) => {
   if (await ask(t('web.levels.removeRewardConfirm')))
@@ -58,7 +70,7 @@ const typeOptions = computed(() => [
 const targets = computed(() =>
   multiplierType.value === 'role'
     ? roles.value.map((role) => ({ id: role.id, name: role.name }))
-    : textChannels.value.map((channel) => ({ id: channel.id, name: `# ${channel.name}` })),
+    : channels.value.map((channel) => ({ id: channel.id, name: channelLabel(channel) })),
 );
 const addMultiplier = () =>
   run(async () => {
@@ -71,6 +83,13 @@ const addMultiplier = () =>
   });
 const removeMultiplier = (type: string, id: string) =>
   run(() => api.delete(path(`/multipliers/${type}/${id}`)));
+
+// Categories in capitals, voice channels with a speaker, text channels with #.
+function channelLabel(channel: Channel | undefined, fallback = ''): string {
+  if (!channel) return fallback;
+  if (channel.type === 4) return `▸ ${channel.name.toUpperCase()}`;
+  return `${channel.type === 2 || channel.type === 13 ? '🔊' : '#'} ${channel.name}`;
+}
 
 const percentLabel = (percent: number) =>
   percent === 0 ? t('web.levels.noXp') : `×${(percent / 100).toLocaleString()}`;
@@ -95,7 +114,11 @@ const percentLabel = (percent: number) =>
         <ol v-else class="timeline">
           <li v-for="reward in data.rewards" :key="reward.roleId">
             <span class="level-badge">{{ t('levels.level') }} {{ reward.level }}</span>
-            <RoleTag :role="rolesById.get(reward.roleId)" :fallback="reward.roleId" />
+            <span class="row grow-tight">
+              <RoleTag :role="rolesById.get(reward.roleId)" :fallback="reward.roleId" />
+              <Tag v-if="reward.keep" :value="t('web.levels.keep')" severity="secondary" />
+              <Tag v-if="reward.noSync" :value="t('web.levels.noSync')" severity="warn" />
+            </span>
             <Button
               icon="pi pi-trash"
               severity="danger"
@@ -132,8 +155,21 @@ const percentLabel = (percent: number) =>
             icon="pi pi-plus"
             :disabled="!rewardRole || !rewardLevel || data.rewards.length >= data.maxRewards"
           />
+          <div class="flags">
+            <label class="flag" :title="t('web.levels.keepHint')">
+              <Checkbox v-model="rewardKeep" binary />
+              <span>{{ t('web.levels.keep') }}</span>
+              <small class="muted">{{ t('web.levels.keepHint') }}</small>
+            </label>
+            <label class="flag" :title="t('web.levels.noSyncHint')">
+              <Checkbox v-model="rewardOnce" binary />
+              <span>{{ t('web.levels.noSync') }}</span>
+              <small class="muted">{{ t('web.levels.noSyncHint') }}</small>
+            </label>
+          </div>
         </form>
       </section>
+      <SettingsView :categories="['levelRoles']" embedded />
 
       <section class="panel stack">
         <div>
@@ -145,7 +181,7 @@ const percentLabel = (percent: number) =>
           <li v-for="m in data.multipliers" :key="`${m.type}-${m.id}`">
             <i :class="m.type === 'role' ? 'pi pi-shield' : 'pi pi-hashtag'" class="muted" />
             <RoleTag v-if="m.type === 'role'" :role="rolesById.get(m.id)" :fallback="m.id" />
-            <span v-else># {{ channelsById.get(m.id)?.name ?? m.id }}</span>
+            <span v-else>{{ channelLabel(channelsById.get(m.id), m.id) }}</span>
             <strong class="amount">{{ percentLabel(m.percent) }}</strong>
             <Button
               icon="pi pi-trash"
@@ -199,6 +235,7 @@ const percentLabel = (percent: number) =>
           />
         </form>
       </section>
+      <SettingsView :categories="['levelMultipliers']" embedded />
     </template>
   </div>
 </template>
@@ -242,5 +279,28 @@ const percentLabel = (percent: number) =>
 .grow {
   flex: 1;
   min-width: 200px;
+}
+
+.grow-tight {
+  gap: 0.4rem;
+}
+
+.flags {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.flag {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.5rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.flag small {
+  grid-column: 2;
 }
 </style>

@@ -36,6 +36,17 @@ describe('level curve', () => {
     expect(progressFor(255, STANDARD)).toMatchObject({ level: 2, current: 0 });
     expect(progressFor(10 ** 9, { ...STANDARD, maxLevel: 5 }).level).toBe(5);
   });
+
+  it('uses the custom formula and rounding', () => {
+    const custom = {
+      ...STANDARD,
+      curve: 'custom',
+      formula: { cubic: 1, quadratic: 0, linear: 0, constant: 7 },
+    } as const;
+    expect(xpToNext(2, custom)).toBe(15);
+    expect(xpToNext(2, { ...custom, rounding: 10 })).toBe(20);
+    expect(xpToNext(0, { ...custom, formula: { ...custom.formula, constant: 0 } })).toBe(1);
+  });
 });
 
 describe('earning XP', () => {
@@ -60,6 +71,30 @@ describe('earning XP', () => {
     expect(levels.awardMessage(GUILD, alice, chat(0, ['vip', 'booster'], 'events'))?.gained).toBe(
       60,
     );
+  });
+
+  it('combines multipliers the way the server chose', () => {
+    levels.setMultiplier(GUILD, { type: 'role', id: 'booster', percent: 200 });
+    levels.setMultiplier(GUILD, { type: 'role', id: 'vip', percent: 150 });
+    levels.setMultiplier(GUILD, { type: 'channel', id: 'lounges', percent: 50 });
+    const at = { channelId: 'bar', categoryId: 'lounges', roleIds: ['vip', 'booster'] };
+
+    expect(levels.multiplierFor(GUILD, at)).toEqual({ role: 200, channel: 50, total: 100 });
+    settings.set(GUILD, 'levels.roleMultiplierMode', 'highest');
+    expect(levels.multiplierFor(GUILD, at).role).toBe(150);
+    settings.set(GUILD, 'levels.roleMultiplierMode', 'add');
+    expect(levels.multiplierFor(GUILD, at).role).toBe(250);
+    settings.set(GUILD, 'levels.roleMultiplierMode', 'multiply');
+    expect(levels.multiplierFor(GUILD, at).role).toBe(300);
+    settings.set(GUILD, 'levels.channelMultiplierMode', 'channel');
+    expect(levels.multiplierFor(GUILD, at).total).toBe(50);
+    settings.set(GUILD, 'levels.channelMultiplierMode', 'add');
+    expect(levels.multiplierFor(GUILD, at).total).toBe(250);
+    expect(levels.multiplierFor(GUILD, { channelId: 'x', roleIds: [] })).toEqual({
+      role: null,
+      channel: null,
+      total: 100,
+    });
   });
 
   it('levels up and pays gold for each new level', () => {
@@ -117,6 +152,28 @@ describe('role rewards', () => {
     settings.set(GUILD, 'levels.rewardMode', 'replace');
     expect(levels.rewardRolesFor(GUILD, 12)).toEqual({ give: ['knight'], take: ['squire'] });
   });
+
+  it('honours keep and noSync rewards', () => {
+    settings.set(GUILD, 'levels.rewardMode', 'replace');
+    levels.addReward(GUILD, { level: 5, roleId: 'squire', keep: true });
+    levels.addReward(GUILD, { level: 3, roleId: 'badge', noSync: true });
+    expect(levels.rewardRolesFor(GUILD, 12)).toEqual({ give: ['squire', 'knight'], take: [] });
+    expect(levels.roleChangesFor(GUILD, 2, 3)).toEqual({
+      give: ['badge'],
+      take: ['squire', 'knight'],
+    });
+    expect(levels.roleChangesFor(GUILD, 3, 3)?.give).toEqual([]);
+  });
+
+  it('follows the sync mode', () => {
+    settings.set(GUILD, 'levels.syncMode', 'level');
+    expect(levels.roleChangesFor(GUILD, 7, 7)).toBeNull();
+    expect(levels.roleChangesFor(GUILD, 9, 10)).toEqual({ give: ['squire', 'knight'], take: [] });
+
+    settings.set(GUILD, 'levels.syncMode', 'never');
+    expect(levels.roleChangesFor(GUILD, 12, 4)).toBeNull();
+    expect(levels.roleChangesFor(GUILD, 9, 10)).toEqual({ give: ['knight'], take: [] });
+  });
 });
 
 describe('settings forms', () => {
@@ -147,5 +204,15 @@ describe('settings forms', () => {
       settingsForm.applyForm(GUILD, 'modules', (id) => (id === 'games' ? false : undefined)),
     ).toMatchObject({ ok: true, changed: ['modules.games'] });
     expect(settings.get(GUILD, 'modules.economy')).toBe(true);
+  });
+
+  it('parses decimals and rejects an empty formula', () => {
+    expect(
+      settingsForm.applyForm(GUILD, 'levelFormula', (id) => (id === 'cubic' ? '0,5' : undefined)),
+    ).toMatchObject({ ok: true });
+    expect(settings.get(GUILD, 'levels.formula').cubic).toBe(0.5);
+    expect(
+      settingsForm.applyForm(GUILD, 'levelFormula', (id) => (id === 'rounding' ? undefined : '0')),
+    ).toEqual({ ok: false, reason: 'rule', messageKey: 'config.formulaEmpty' });
   });
 });

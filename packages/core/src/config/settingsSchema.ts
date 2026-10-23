@@ -4,9 +4,12 @@
 // under config.categories.<id> and config.fields.<id>.<field>.
 import { LANGUAGES } from '@monolith/i18n';
 import {
+  CHANNEL_MULTIPLIER_MODES,
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,
   REWARD_MODES,
+  ROLE_MULTIPLIER_MODES,
+  SYNC_MODES,
   type ModuleId,
   type SettingKey,
 } from './defaults.ts';
@@ -18,6 +21,7 @@ export type FieldType =
   | 'duration'
   | 'language'
   | 'number'
+  | 'decimal'
   | 'toggle'
   | 'choice'
   | 'channel'
@@ -152,6 +156,47 @@ export const SETTING_CATEGORIES = {
       { id: 'maxLevel', key: 'levels.maxLevel', type: 'number', min: 1, max: 1000 },
     ],
   },
+  levelFormula: {
+    group: 'levels',
+    module: 'levels',
+    fields: [
+      { id: 'cubic', key: 'levels.formula', path: 'cubic', type: 'decimal', max: 1000 },
+      { id: 'quadratic', key: 'levels.formula', path: 'quadratic', type: 'decimal', max: 10_000 },
+      { id: 'linear', key: 'levels.formula', path: 'linear', type: 'decimal', max: 100_000 },
+      { id: 'constant', key: 'levels.formula', path: 'constant', type: 'decimal', max: 1_000_000 },
+      { id: 'rounding', key: 'levels.rounding', type: 'number', min: 1, max: 10_000 },
+    ],
+    validate: (values) =>
+      ['cubic', 'quadratic', 'linear', 'constant'].every((id) => Number(values[id]) === 0)
+        ? 'config.formulaEmpty'
+        : null,
+  },
+  levelMultipliers: {
+    group: 'levels',
+    module: 'levels',
+    fields: [
+      {
+        id: 'roleMode',
+        key: 'levels.roleMultiplierMode',
+        type: 'choice',
+        options: ROLE_MULTIPLIER_MODES,
+      },
+      {
+        id: 'channelMode',
+        key: 'levels.channelMultiplierMode',
+        type: 'choice',
+        options: CHANNEL_MULTIPLIER_MODES,
+      },
+    ],
+  },
+  levelRoles: {
+    group: 'levels',
+    module: 'levels',
+    fields: [
+      { id: 'rewardMode', key: 'levels.rewardMode', type: 'choice', options: REWARD_MODES },
+      { id: 'syncMode', key: 'levels.syncMode', type: 'choice', options: SYNC_MODES },
+    ],
+  },
   levelVoice: {
     group: 'levels',
     module: 'levels',
@@ -185,7 +230,6 @@ export const SETTING_CATEGORIES = {
     fields: [
       { id: 'channels', key: 'levels.ignoredChannels', type: 'channels', limit: 25 },
       { id: 'roles', key: 'levels.ignoredRoles', type: 'roles', limit: 25 },
-      { id: 'rewardMode', key: 'levels.rewardMode', type: 'choice', options: REWARD_MODES },
     ],
   },
 } satisfies Record<string, SettingCategory>;
@@ -229,6 +273,12 @@ export function parseFieldValue(field: SettingField, raw: unknown): unknown {
       return inRange(parseWholeNumber(input), field, Number.MAX_SAFE_INTEGER) ?? undefined;
     case 'number':
       return inRange(parseWholeNumber(input), field, 1_000_000) ?? undefined;
+    case 'decimal': {
+      const value = Number(input.replace(',', '.'));
+      if (!input || !Number.isFinite(value)) return undefined;
+      const rounded = Math.round(value * 100) / 100;
+      return inRange(rounded, field, 1_000_000) ?? undefined;
+    }
     case 'percent': {
       const value = Number(input.replace('%', ''));
       return Number.isInteger(value) ? (inRange(value, field, 1000) ?? undefined) : undefined;

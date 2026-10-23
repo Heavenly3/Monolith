@@ -32,6 +32,8 @@ export function displayField(guildId: string, field: SettingField, t: Translator
       return coins(Number(value));
     case 'number':
       return `**${formatNumber(Number(value))}**`;
+    case 'decimal':
+      return `**${Number(value).toLocaleString('en-US', { maximumFractionDigits: 2 })}**`;
     case 'percent':
       return `**${value}%**`;
     case 'duration':

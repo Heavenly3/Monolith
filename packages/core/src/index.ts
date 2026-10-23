@@ -37,7 +37,15 @@ export type { RobResult } from './services/rob.ts';
 export type { RoleReward } from './services/roleRewards.ts';
 export type { NewProduct } from './services/shop.ts';
 export type { WebSession } from './services/webSessions.ts';
-export type { LevelRow, MemberLevel, XpAction, XpGain } from './services/levels.ts';
+export type {
+  ActivityContext,
+  LevelRow,
+  MemberLevel,
+  MultiplierBreakdown,
+  RoleChanges,
+  XpAction,
+  XpGain,
+} from './services/levels.ts';
 export type { Adjustment, MoneyAction } from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';
 export type { BetResult, Settlement } from './games/bets.ts';

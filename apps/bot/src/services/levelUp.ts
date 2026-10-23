@@ -1,7 +1,16 @@
 // What happens in Discord after a member earns XP: reward roles are kept in
 // sync with their level, and level-ups are announced where the server chose.
-import type { GuildMember, GuildTextBasedChannel } from 'discord.js';
-import { accounts, formatNumber, levels, logger, settings, type XpGain } from '@monolith/core';
+import type { GuildBasedChannel, GuildMember, GuildTextBasedChannel } from 'discord.js';
+import {
+  accounts,
+  formatNumber,
+  levels,
+  logger,
+  settings,
+  type ActivityContext,
+  type RoleChanges,
+  type XpGain,
+} from '@monolith/core';
 import { translatorFor } from '../framework/context.ts';
 import * as ui from '../ui/index.ts';
 import { coins, emojis } from '../ui/index.ts';
@@ -9,23 +18,44 @@ import { coins, emojis } from '../ui/index.ts';
 const log = logger.child('levels');
 
 /**
- * Gives the reward roles the member's level earns and removes the ones it no
- * longer does. Only touches roles the bot can manage; costs no API call when
- * nothing changes, so it runs after every XP gain and heals any drift (for
- * example after an admin changes XP from the dashboard).
+ * Where a member is earning XP, for ignore lists and multipliers. Threads
+ * count as their parent channel; roles go highest first.
  */
-export async function syncRewardRoles(member: GuildMember, level: number): Promise<void> {
-  const { give, take } = levels.rewardRolesFor(member.guild.id, level);
+export function activityOf(member: GuildMember, channel: GuildBasedChannel): ActivityContext {
+  const base = channel.isThread() ? (channel.parent ?? channel) : channel;
+  return {
+    channelId: base.id,
+    categoryId: base.parentId,
+    roleIds: [...member.roles.cache.sort((a, b) => b.position - a.position).keys()],
+  };
+}
+
+/** Role changes the bot can actually make for this member (missing roles only, editable only). */
+export function pendingRoles(member: GuildMember, { give, take }: RoleChanges): RoleChanges {
   const manageable = (id: string) => member.guild.roles.cache.get(id)?.editable ?? false;
-  const add = give.filter((id) => !member.roles.cache.has(id) && manageable(id));
-  const remove = take.filter((id) => member.roles.cache.has(id) && manageable(id));
+  return {
+    give: [...new Set(give)].filter((id) => !member.roles.cache.has(id) && manageable(id)),
+    take: [...new Set(take)].filter((id) => member.roles.cache.has(id) && manageable(id)),
+  };
+}
+
+async function applyRoles(member: GuildMember, changes: RoleChanges, level: number) {
+  const { give, take } = pendingRoles(member, changes);
   try {
-    if (add.length) await member.roles.add(add, `Level ${level} reward`);
-    if (remove.length) await member.roles.remove(remove, `Level ${level} reward`);
+    if (give.length) await member.roles.add(give, `Level ${level} reward`);
+    if (take.length) await member.roles.remove(take, `Level ${level} reward`);
   } catch (error) {
     log.warn(`Could not update reward roles in ${member.guild.id}:`, (error as Error).message);
   }
 }
+
+/**
+ * Gives every reward role the member's level earns and removes the ones it
+ * no longer does, whatever the sync mode (admin changes and the sync button).
+ * Costs no API call when nothing changes.
+ */
+export const syncRewardRoles = (member: GuildMember, level: number): Promise<void> =>
+  applyRoles(member, levels.rewardRolesFor(member.guild.id, level), level);
 
 /** Replaces {name} placeholders; unknown ones are left as typed. */
 export function fillTemplate(template: string, values: Record<string, string>): string {
@@ -100,6 +130,7 @@ export async function afterXpGain(
   gain: XpGain,
   source: GuildTextBasedChannel | null,
 ): Promise<void> {
-  await syncRewardRoles(member, gain.after);
+  const changes = levels.roleChangesFor(member.guild.id, gain.before, gain.after);
+  if (changes) await applyRoles(member, changes, gain.after);
   if (gain.levelsGained > 0) await announce(member, gain, source);
 }

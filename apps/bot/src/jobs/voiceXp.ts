@@ -1,6 +1,6 @@
 import type { Client } from 'discord.js';
 import { levels, settings } from '@monolith/core';
-import { afterXpGain } from '../services/levelUp.ts';
+import { activityOf, afterXpGain } from '../services/levelUp.ts';
 
 /**
  * Every minute, members talking in voice earn XP: at least two people who
@@ -18,10 +18,7 @@ export async function awardVoiceXp(client: Client<true>): Promise<void> {
 
       for (const member of people.values()) {
         if (member.voice.deaf) continue;
-        const gain = levels.awardVoice(guild.id, member.user, 1, {
-          channelId: channel.id,
-          roleIds: [...member.roles.cache.keys()],
-        });
+        const gain = levels.awardVoice(guild.id, member.user, 1, activityOf(member, channel));
         if (gain) await afterXpGain(member, gain, null);
       }
     }

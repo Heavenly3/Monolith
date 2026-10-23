@@ -8,7 +8,7 @@ const DAY = 24 * HOUR;
 export const MODULES = ['economy', 'games', 'shop', 'loans', 'lottery', 'levels'] as const;
 export type ModuleId = (typeof MODULES)[number];
 
-export const LEVEL_CURVES = ['gentle', 'standard', 'steep'] as const;
+export const LEVEL_CURVES = ['gentle', 'standard', 'steep', 'custom'] as const;
 export type LevelCurve = (typeof LEVEL_CURVES)[number];
 
 export const LEVEL_ANNOUNCE = ['channel', 'custom', 'dm', 'off'] as const;
@@ -17,16 +17,47 @@ export type LevelAnnounce = (typeof LEVEL_ANNOUNCE)[number];
 export const REWARD_MODES = ['stack', 'replace'] as const;
 export type RewardMode = (typeof REWARD_MODES)[number];
 
+/**
+ * When reward roles are checked against the level: on every XP gain (heals
+ * roles removed by hand), only when the level changes, or never (roles are
+ * only added on level up).
+ */
+export const SYNC_MODES = ['xp', 'level', 'never'] as const;
+export type SyncMode = (typeof SYNC_MODES)[number];
+
+/** How the multipliers of several roles combine. "highest" uses the highest role in the list. */
+export const ROLE_MULTIPLIER_MODES = ['largest', 'smallest', 'highest', 'add', 'multiply'] as const;
+export type RoleMultiplierMode = (typeof ROLE_MULTIPLIER_MODES)[number];
+
+/** How the role and the channel multiplier combine; "channel"/"role" let one replace the other. */
+export const CHANNEL_MULTIPLIER_MODES = ['multiply', 'add', 'largest', 'channel', 'role'] as const;
+export type ChannelMultiplierMode = (typeof CHANNEL_MULTIPLIER_MODES)[number];
+
 export interface LevelReward {
   level: number;
   roleId: string;
+  /** Kept when a higher reward replaces it ("replace" mode). */
+  keep?: boolean;
+  /** Given once on reaching the level and never added back or removed automatically. */
+  noSync?: boolean;
 }
 
-/** XP multiplier for members with a role or messages in a channel (100 = normal). */
+/**
+ * XP multiplier for members with a role, or messages in a channel or a
+ * category of channels (100 = normal, 0 = no XP).
+ */
 export interface XpMultiplier {
   type: 'role' | 'channel';
   id: string;
   percent: number;
+}
+
+/** XP from level L to L+1 = cubic·L³ + quadratic·L² + linear·L + constant. */
+export interface LevelFormula {
+  cubic: number;
+  quadratic: number;
+  linear: number;
+  constant: number;
 }
 
 export interface WheelReward {
@@ -75,6 +106,10 @@ export interface SettingValues {
   /** Scales the XP needed per level (100 = normal). */
   'levels.difficulty': number;
   'levels.maxLevel': number;
+  /** Coefficients of the "custom" curve. */
+  'levels.formula': LevelFormula;
+  /** XP per level is rounded to a multiple of this (1 = exact). */
+  'levels.rounding': number;
   'levels.voice': boolean;
   /** XP per minute in a voice channel with someone else. */
   'levels.voiceXp': number;
@@ -87,8 +122,11 @@ export interface SettingValues {
   'levels.ignoredChannels': string[];
   'levels.ignoredRoles': string[];
   'levels.rewardMode': RewardMode;
+  'levels.syncMode': SyncMode;
   'levels.rewards': LevelReward[];
   'levels.multipliers': XpMultiplier[];
+  'levels.roleMultiplierMode': RoleMultiplierMode;
+  'levels.channelMultiplierMode': ChannelMultiplierMode;
 }
 
 export type SettingKey = keyof SettingValues;
@@ -135,6 +173,8 @@ export const DEFAULTS: SettingValues = {
   'levels.curve': 'standard',
   'levels.difficulty': 100,
   'levels.maxLevel': 500,
+  'levels.formula': { cubic: 0, quadratic: 5, linear: 50, constant: 100 },
+  'levels.rounding': 1,
   'levels.voice': false,
   'levels.voiceXp': 5,
   'levels.announce': 'channel',
@@ -144,8 +184,11 @@ export const DEFAULTS: SettingValues = {
   'levels.ignoredChannels': [],
   'levels.ignoredRoles': [],
   'levels.rewardMode': 'stack',
+  'levels.syncMode': 'xp',
   'levels.rewards': [],
   'levels.multipliers': [],
+  'levels.roleMultiplierMode': 'largest',
+  'levels.channelMultiplierMode': 'multiply',
 };
 
 export const SETTING_KEYS = Object.keys(DEFAULTS) as SettingKey[];

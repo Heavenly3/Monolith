@@ -164,7 +164,7 @@ export function createDiscordApi(config: ApiConfig): DiscordApi {
         { id: string; name: string; type: number; parent_id?: string | null; position: number }[]
       >(`/guilds/${guildId}/channels`);
       return channels
-        .filter((channel) => [0, 2, 5, 13].includes(channel.type))
+        .filter((channel) => [0, 2, 4, 5, 13].includes(channel.type))
         .map(({ id, name, type, parent_id, position }) => ({
           id,
           name,

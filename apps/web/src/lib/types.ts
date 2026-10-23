@@ -79,7 +79,7 @@ export interface LevelMember {
 
 export interface LevelsOverview {
   stats: { members: number; totalXp: number; topLevel: number };
-  rewards: { level: number; roleId: string }[];
+  rewards: { level: number; roleId: string; keep?: boolean; noSync?: boolean }[];
   multipliers: { type: 'role' | 'channel'; id: string; percent: number }[];
   maxRewards: number;
   maxMultipliers: number;

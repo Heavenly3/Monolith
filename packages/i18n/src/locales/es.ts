@@ -396,6 +396,7 @@ export const es: Messages = {
     languageSaved: 'Idioma actualizado.',
     minMax: 'El mínimo no puede ser mayor que el máximo.',
     channelRequired: 'Elige el canal donde se anuncian las subidas de nivel.',
+    formulaEmpty: 'Al menos una parte de la fórmula debe ser mayor que cero.',
     on: 'Activado',
     off: 'Desactivado',
     notSet: 'Sin elegir',
@@ -405,6 +406,7 @@ export const es: Messages = {
       percent: 'Un número entero de 0 a 1000',
       duration: 'p. ej. 30s, 15m, 1h30m, 2d',
       number: 'Un número entero',
+      decimal: 'Un número, con decimales si quieres, p. ej. 0.5',
       language: 'Elige un idioma',
       toggle: 'Márcalo para activarlo',
       choice: 'Elige una opción',
@@ -418,6 +420,7 @@ export const es: Messages = {
         gentle: 'Suave — los niveles llegan rápido',
         standard: 'Estándar — como la mayoría de bots de niveles',
         steep: 'Empinada — los niveles altos son raros',
+        custom: 'Personalizada — tu propia fórmula',
       },
       mode: {
         channel: 'En el canal donde escribió',
@@ -428,6 +431,25 @@ export const es: Messages = {
       rewardMode: {
         stack: 'Conservar todos los roles de recompensa',
         replace: 'Conservar solo el rol de recompensa más alto',
+      },
+      syncMode: {
+        xp: 'Siempre — corrige los roles con cada XP ganada',
+        level: 'Solo al cambiar de nivel',
+        never: 'Nunca — solo añade roles al subir',
+      },
+      roleMode: {
+        largest: 'Usar el mayor',
+        smallest: 'Usar el menor',
+        highest: 'Usar el del rol más alto de la lista',
+        add: 'Sumarlos',
+        multiply: 'Multiplicarlos',
+      },
+      channelMode: {
+        multiply: 'Multiplicar rol × canal',
+        add: 'Sumar rol + canal',
+        largest: 'Usar el mayor',
+        channel: 'El canal sustituye al rol',
+        role: 'El rol sustituye al canal',
       },
     },
     languages: {
@@ -458,14 +480,26 @@ export const es: Messages = {
       },
       levels: { label: 'Experiencia', description: 'XP por mensaje, espera y créditos por nivel' },
       levelCurve: { label: 'Curva de niveles', description: 'Cuánta XP necesita cada nivel' },
+      levelFormula: {
+        label: 'Fórmula propia',
+        description: 'XP por nivel de la curva personalizada, parte por parte',
+      },
+      levelMultipliers: {
+        label: 'Reglas de multiplicadores',
+        description: 'Cómo se combinan varios multiplicadores de XP',
+      },
+      levelRoles: {
+        label: 'Reglas de recompensas',
+        description: 'Si se conservan los roles inferiores y cuándo se revisan',
+      },
       levelVoice: { label: 'XP de voz', description: 'Experiencia por estar en canales de voz' },
       levelAnnounce: {
         label: 'Mensajes de nivel',
         description: 'Dónde y cómo se anuncian las subidas',
       },
       levelFilters: {
-        label: 'Filtros y roles',
-        description: 'Canales y roles sin XP, modo de recompensas',
+        label: 'Filtros',
+        description: 'Canales y roles que nunca ganan XP',
       },
       levelRewards: {
         label: 'Roles de recompensa',
@@ -517,6 +551,39 @@ export const es: Messages = {
         },
         maxLevel: { label: 'Nivel máximo', help: 'Los miembros dejan de subir en este nivel.' },
       },
+      levelFormula: {
+        cubic: {
+          label: 'Nivel³ ×',
+          help: 'Crece muy rápido en niveles altos. Normalmente 0 o menos de 1.',
+        },
+        quadratic: { label: 'Nivel² ×', help: 'Hace cada nivel algo más difícil que el anterior.' },
+        linear: { label: 'Nivel ×', help: 'Añade la misma XP extra en cada nivel.' },
+        constant: { label: 'XP base', help: 'XP que necesita todo nivel, incluso el 1.' },
+        rounding: {
+          label: 'Redondear a',
+          help: 'La XP por nivel se redondea a un múltiplo de esto (1 = exacta).',
+        },
+      },
+      levelMultipliers: {
+        roleMode: {
+          label: 'Varios multiplicadores de rol',
+          help: 'Cuando un miembro tiene más de un rol con multiplicador.',
+        },
+        channelMode: {
+          label: 'Rol y canal',
+          help: 'Cuando tienen multiplicador un rol y el canal (o su categoría).',
+        },
+      },
+      levelRoles: {
+        rewardMode: {
+          label: 'Roles de recompensa',
+          help: 'Si los miembros conservan los roles de recompensa inferiores.',
+        },
+        syncMode: {
+          label: 'Revisión de roles',
+          help: 'Cuándo corrige el bot los roles que no cuadran con el nivel.',
+        },
+      },
       levelVoice: {
         enabled: {
           label: 'XP de voz',
@@ -538,10 +605,6 @@ export const es: Messages = {
         roles: {
           label: 'Roles sin XP',
           help: 'Los miembros con estos roles nunca ganan experiencia.',
-        },
-        rewardMode: {
-          label: 'Roles de recompensa',
-          help: 'Si los miembros conservan los roles de recompensa inferiores.',
         },
       },
       work: {
@@ -614,6 +677,12 @@ export const es: Messages = {
       rewardTitle: 'Nuevo rol de recompensa',
       levelLabel: 'Nivel',
       roleLabel: 'Rol',
+      keepLabel: 'Conservar al reemplazarse',
+      keepHint: 'Con "solo el rol más alto", los miembros conservan este igualmente.',
+      noSyncLabel: 'Dar una sola vez',
+      noSyncHint: 'Se da al llegar al nivel; nunca se vuelve a dar ni se quita.',
+      keepFlag: 'se conserva',
+      noSyncFlag: 'una vez',
       adjust: 'Cambiar XP de un miembro',
       adjustTitle: 'Cambiar la experiencia de un miembro',
       member: 'Miembro',

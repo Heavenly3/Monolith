@@ -1,4 +1,5 @@
 import {
+  CheckboxBuilder,
   LabelBuilder,
   RadioGroupBuilder,
   RoleSelectMenuBuilder,
@@ -23,10 +24,19 @@ import { confirmed, type Section } from '../types.ts';
 const CATEGORIES = [
   ['levels', 'xp'],
   ['levelCurve', 'up'],
+  ['levelFormula', 'edit'],
+  ['levelMultipliers', 'sparkle'],
   ['levelVoice', 'voice'],
   ['levelAnnounce', 'levelUp'],
-  ['levelFilters', 'role'],
+  ['levelFilters', 'signal'],
+  ['levelRoles', 'role'],
 ] as const;
+
+const checkbox = (id: string, label: string, description: string) =>
+  new LabelBuilder()
+    .setLabel(label)
+    .setDescription(description)
+    .setCheckboxComponent(new CheckboxBuilder().setCustomId(id));
 
 function rewardModal(t: Translator) {
   return modal('levels', 'saveReward', t('panel.levels.rewardTitle')).addLabelComponents(
@@ -39,7 +49,19 @@ function rewardModal(t: Translator) {
       .setRoleSelectMenuComponent(
         new RoleSelectMenuBuilder().setCustomId('role').setRequired(true),
       ),
+    checkbox('keep', t('panel.levels.keepLabel'), t('panel.levels.keepHint')),
+    checkbox('noSync', t('panel.levels.noSyncLabel'), t('panel.levels.noSyncHint')),
   );
+}
+
+/** Flags of a reward, as a short suffix for lists. */
+export function rewardFlags(t: Translator, reward: { keep?: boolean; noSync?: boolean }): string {
+  const flags = [
+    reward.keep && t('panel.levels.keepFlag'),
+    reward.noSync && t('panel.levels.noSyncFlag'),
+  ];
+  const shown = flags.filter(Boolean);
+  return shown.length ? ` · *${shown.join(' · ')}*` : '';
 }
 
 function xpModal(t: Translator) {
@@ -74,7 +96,8 @@ export const levelsSection: Section = {
     const stats = levels.stats(guildId);
     const rewards = levels.rewards(guildId);
     const rewardLines = rewards.map(
-      (reward) => `${emojis.level} ${t('levels.level')} **${reward.level}** → <@&${reward.roleId}>`,
+      (reward) =>
+        `${emojis.level} ${t('levels.level')} **${reward.level}** → <@&${reward.roleId}>${rewardFlags(t, reward)}`,
     );
     return {
       blocks: [
@@ -93,7 +116,10 @@ export const levelsSection: Section = {
         `-# ${t('panel.levels.hint')}`,
       ],
       rows: [
-        CATEGORIES.map(([category, icon]) =>
+        CATEGORIES.slice(0, 4).map(([category, icon]) =>
+          editCategoryButton(t, 'levels', category, emojis[icon]),
+        ),
+        CATEGORIES.slice(4).map(([category, icon]) =>
           editCategoryButton(t, 'levels', category, emojis[icon]),
         ),
         [
@@ -151,7 +177,13 @@ export const levelsSection: Section = {
       if (!role || role.id === guildId || ('managed' in role && role.managed)) {
         return { error: t('levelsAdmin.badRole') };
       }
-      if (levels.addReward(guildId, { level, roleId: role.id }) === 'full') {
+      const reward = {
+        level,
+        roleId: role.id,
+        keep: fields.getCheckbox('keep') || undefined,
+        noSync: fields.getCheckbox('noSync') || undefined,
+      };
+      if (levels.addReward(guildId, reward) === 'full') {
         return { error: t('levelsAdmin.full', { max: levels.MAX_REWARDS }) };
       }
       const editable = interaction.guild.roles.cache.get(role.id)?.editable ?? false;

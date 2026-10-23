@@ -67,15 +67,19 @@ export const es: WebMessages = {
     rewardsSubtitle: 'Roles que se ganan al subir de nivel y aumentos de XP por rol o canal.',
     rewardsTitle: 'Roles de recompensa',
     rewardsHint:
-      'Los miembros reciben el rol al llegar al nivel. Si conservan las recompensas inferiores se elige en Filtros y roles.',
+      'Los miembros reciben el rol al llegar al nivel. Las reglas de abajo deciden si conservan las recompensas inferiores.',
     removeRewardConfirm:
       '¿Quitar este rol de recompensa? Los miembros lo conservan hasta que vuelvan a ganar XP.',
     multipliersTitle: 'Multiplicadores de XP',
     multipliersHint:
-      'Da más (o menos) XP a los miembros con un rol o a los mensajes de un canal. 150% = 1,5× XP; se aplica el mejor multiplicador de rol por el del canal.',
+      'Da más (o menos) XP a los miembros con un rol, o en un canal o una categoría entera. 150% = 1,5× XP, 0% = sin XP. Las reglas de abajo deciden cómo se combinan.',
     noMultipliers: 'Todavía no hay multiplicadores: todos ganan XP normal.',
     typeRole: 'Rol',
-    typeChannel: 'Canal',
+    typeChannel: 'Canal o categoría',
+    keep: 'Conservar al reemplazarse',
+    keepHint: 'Se mantiene aunque una recompensa superior reemplace a las inferiores.',
+    noSync: 'Dar una sola vez',
+    noSyncHint: 'Se da al llegar al nivel; nunca se vuelve a dar ni se quita.',
     type: 'Se aplica a',
     target: 'Rol o canal',
     percent: 'Multiplicador',

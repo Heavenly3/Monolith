@@ -391,6 +391,7 @@ export const en = {
     languageSaved: 'Language updated.',
     minMax: 'The minimum cannot be greater than the maximum.',
     channelRequired: 'Choose the channel where level-ups are announced.',
+    formulaEmpty: 'At least one part of the formula must be above zero.',
     on: 'On',
     off: 'Off',
     notSet: 'Not set',
@@ -400,6 +401,7 @@ export const en = {
       percent: 'A whole number, e.g. 150 for 150%',
       duration: 'e.g. 30s, 15m, 1h30m, 2d',
       number: 'A whole number',
+      decimal: 'A number, decimals allowed, e.g. 0.5',
       language: 'Pick a language',
       toggle: 'Tick to turn on',
       choice: 'Pick one',
@@ -413,6 +415,7 @@ export const en = {
         gentle: 'Gentle — levels come quickly',
         standard: 'Standard — like most level bots',
         steep: 'Steep — high levels are rare',
+        custom: 'Custom — your own formula',
       },
       mode: {
         channel: 'In the channel where they chatted',
@@ -423,6 +426,25 @@ export const en = {
       rewardMode: {
         stack: 'Keep every reward role',
         replace: 'Keep only the highest reward role',
+      },
+      syncMode: {
+        xp: 'Always — fix roles on every XP gain',
+        level: 'On level change only',
+        never: 'Never — only add roles on level up',
+      },
+      roleMode: {
+        largest: 'Use the largest',
+        smallest: 'Use the smallest',
+        highest: 'Use the highest role in the list',
+        add: 'Add them together',
+        multiply: 'Multiply them',
+      },
+      channelMode: {
+        multiply: 'Multiply role × channel',
+        add: 'Add role + channel',
+        largest: 'Use the largest',
+        channel: 'Channel replaces role',
+        role: 'Role replaces channel',
       },
     },
     languages: {
@@ -447,14 +469,26 @@ export const en = {
         description: 'XP per message, cooldown and credits per level',
       },
       levelCurve: { label: 'Level curve', description: 'How much XP each level needs' },
+      levelFormula: {
+        label: 'Custom formula',
+        description: 'XP per level for the custom curve, part by part',
+      },
+      levelMultipliers: {
+        label: 'Multiplier rules',
+        description: 'How several XP multipliers combine',
+      },
+      levelRoles: {
+        label: 'Reward rules',
+        description: 'Whether lower roles stay and when roles are checked',
+      },
       levelVoice: { label: 'Voice XP', description: 'Experience for time in voice channels' },
       levelAnnounce: {
         label: 'Level-up messages',
         description: 'Where and how level-ups are announced',
       },
       levelFilters: {
-        label: 'Filters and roles',
-        description: 'Channels and roles without XP, reward mode',
+        label: 'Filters',
+        description: 'Channels and roles that never earn XP',
       },
       levelRewards: {
         label: 'Role rewards',
@@ -494,6 +528,33 @@ export const en = {
         difficulty: { label: 'Difficulty (%)', help: '100% is normal, 200% needs twice the XP.' },
         maxLevel: { label: 'Maximum level', help: 'Members stop levelling up at this level.' },
       },
+      levelFormula: {
+        cubic: { label: 'Level³ ×', help: 'Grows very fast at high levels. Usually 0 or below 1.' },
+        quadratic: { label: 'Level² ×', help: 'Makes each level a bit harder than the last.' },
+        linear: { label: 'Level ×', help: 'Adds the same extra XP on every level.' },
+        constant: { label: 'Base XP', help: 'XP every level needs, even level 1.' },
+        rounding: {
+          label: 'Round to',
+          help: 'XP per level is rounded to a multiple of this (1 = exact).',
+        },
+      },
+      levelMultipliers: {
+        roleMode: {
+          label: 'Several role multipliers',
+          help: 'When a member has more than one role with a multiplier.',
+        },
+        channelMode: {
+          label: 'Role and channel',
+          help: 'When both a role and the channel (or its category) have a multiplier.',
+        },
+      },
+      levelRoles: {
+        rewardMode: { label: 'Reward roles', help: 'Whether members keep lower reward roles.' },
+        syncMode: {
+          label: 'Role checks',
+          help: 'When the bot fixes roles that do not match the level.',
+        },
+      },
       levelVoice: {
         enabled: {
           label: 'Voice XP',
@@ -519,7 +580,6 @@ export const en = {
           label: 'Roles without XP',
           help: 'Members with these roles never earn experience.',
         },
-        rewardMode: { label: 'Reward roles', help: 'Whether members keep lower reward roles.' },
       },
       work: {
         min: { label: 'Minimum reward', help: 'Least credits /work can pay.' },
@@ -581,6 +641,12 @@ export const en = {
       rewardTitle: 'New role reward',
       levelLabel: 'Level',
       roleLabel: 'Role',
+      keepLabel: 'Keep when replaced',
+      keepHint: 'With "only the highest role", members still keep this one.',
+      noSyncLabel: 'Give once',
+      noSyncHint: 'Given on reaching the level; never added back or removed.',
+      keepFlag: 'kept',
+      noSyncFlag: 'given once',
       adjust: 'Change member XP',
       adjustTitle: 'Change the experience of a member',
       member: 'Member',

@@ -15,8 +15,8 @@ function sectionRoutes(): RouteRecordRaw[] {
       ...SECTIONS[section].tabs.map((tab) => ({
         path: tab.id,
         name: tabRoute(section, tab.id),
-        component: tab.category ? SettingsView : tab.page!,
-        props: tab.category ? { category: tab.category } : false,
+        component: tab.categories ? SettingsView : tab.page!,
+        props: tab.categories ? { categories: tab.categories } : false,
       })),
     ],
   }));

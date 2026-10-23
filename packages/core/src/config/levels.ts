@@ -1,11 +1,11 @@
 // Level curve math, shared by the bot and the dashboard chart.
-import type { LevelCurve } from './defaults.ts';
+import type { LevelCurve, LevelFormula } from './defaults.ts';
 
-/** XP to go from level L to L+1 is a·L² + b·L + c, scaled by the difficulty. */
-export const CURVES: Record<LevelCurve, { a: number; b: number; c: number }> = {
-  gentle: { a: 2, b: 30, c: 80 },
-  standard: { a: 5, b: 50, c: 100 },
-  steep: { a: 10, b: 80, c: 150 },
+/** Built-in curves; "custom" uses the server's own formula. */
+export const CURVES: Record<Exclude<LevelCurve, 'custom'>, LevelFormula> = {
+  gentle: { cubic: 0, quadratic: 2, linear: 30, constant: 80 },
+  standard: { cubic: 0, quadratic: 5, linear: 50, constant: 100 },
+  steep: { cubic: 0, quadratic: 10, linear: 80, constant: 150 },
 };
 
 export interface CurveSettings {
@@ -13,12 +13,24 @@ export interface CurveSettings {
   /** 100 = normal; 200 needs twice the XP. */
   difficulty: number;
   maxLevel: number;
+  /** Coefficients of the "custom" curve. */
+  formula?: LevelFormula;
+  /** XP per level is rounded to a multiple of this (1 or less = exact). */
+  rounding?: number;
 }
 
+export const formulaOf = ({ curve, formula }: CurveSettings): LevelFormula =>
+  curve === 'custom' ? (formula ?? CURVES.standard) : CURVES[curve];
+
 /** XP needed to go from `level` to the next one. */
-export function xpToNext(level: number, { curve, difficulty }: CurveSettings): number {
-  const { a, b, c } = CURVES[curve];
-  return Math.max(1, Math.round(((a * level * level + b * level + c) * difficulty) / 100));
+export function xpToNext(level: number, settings: CurveSettings): number {
+  const { cubic, quadratic, linear, constant } = formulaOf(settings);
+  const raw =
+    ((cubic * level ** 3 + quadratic * level ** 2 + linear * level + constant) *
+      settings.difficulty) /
+    100;
+  const step = Math.max(1, Math.floor(settings.rounding ?? 1));
+  return Math.max(1, Math.round(raw / step) * step);
 }
 
 /** Total XP needed to reach `level` from zero. */

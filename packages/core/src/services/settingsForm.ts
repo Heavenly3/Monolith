@@ -16,6 +16,7 @@ import * as settings from './settings.ts';
 const AFTER_SAVE: Partial<Record<SettingCategoryId, (guildId: string) => void>> = {
   // Stored levels depend on the curve.
   levelCurve: levels.recalculate,
+  levelFormula: levels.recalculate,
 };
 
 export type FormResult =
