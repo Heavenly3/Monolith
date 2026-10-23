@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { levels, logger, settings } from '@mythcore/core';
+import { levels, logger, settings } from '@monolith/core';
 import { defineEvent } from '../framework/loader.ts';
 import { afterXpGain } from '../services/levelUp.ts';
 

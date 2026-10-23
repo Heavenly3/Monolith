@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LEVEL_CURVES, totalXpFor, type LevelCurve } from '@mythcore/core/browser';
+import { LEVEL_CURVES, totalXpFor, type LevelCurve } from '@monolith/core/browser';
 import { computed } from 'vue';
 import { t } from '../i18n/index.ts';
 import { compactNumber, formatDuration, formatNumber } from '../lib/format.ts';
@@ -154,14 +154,14 @@ const milestones = computed(() =>
 }
 
 .grid line {
-  stroke: var(--mc-border);
+  stroke: var(--mn-border);
   stroke-dasharray: 3 4;
 }
 
 .axis {
-  fill: var(--mc-muted);
+  fill: var(--mn-muted);
   font-size: 11px;
-  font-family: var(--mc-font-body);
+  font-family: var(--mn-font-body);
 }
 
 .axis.end {
@@ -174,7 +174,7 @@ const milestones = computed(() =>
 
 .line {
   fill: none;
-  stroke: var(--mc-gold);
+  stroke: var(--mn-gold);
   stroke-width: 2.5;
   stroke-linejoin: round;
   transition: d 0.3s ease;
@@ -193,12 +193,12 @@ const milestones = computed(() =>
 .milestones th,
 .milestones td {
   padding: 0.45rem 0.6rem;
-  border-bottom: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mn-border);
   text-align: left;
 }
 
 .milestones th {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
   font-weight: 500;
   font-size: 0.85rem;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Language } from '@mythcore/i18n';
+import type { Language } from '@monolith/i18n';
 import SelectButton from 'primevue/selectbutton';
 import { computed } from 'vue';
 import { lang, languages, setLanguage, t } from '../i18n/index.ts';

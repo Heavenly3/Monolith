@@ -14,8 +14,8 @@ import {
   type ModalSubmitFields,
   type SelectMenuComponentOptionData,
 } from 'discord.js';
-import { settingsForm, truncate, type SettingCategoryId, type SettingField } from '@mythcore/core';
-import { LANGUAGES, type Translator } from '@mythcore/i18n';
+import { settingsForm, truncate, type SettingCategoryId, type SettingField } from '@monolith/core';
+import { LANGUAGES, type Translator } from '@monolith/i18n';
 import { emojis } from '../../ui/index.ts';
 import { displayField, inputValue, readField, settingLines } from '../../ui/settings.ts';
 

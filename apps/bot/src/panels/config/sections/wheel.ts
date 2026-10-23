@@ -1,4 +1,4 @@
-import { formatNumber, parseWholeNumber, wheel } from '@mythcore/core';
+import { formatNumber, parseWholeNumber, wheel } from '@monolith/core';
 import { emojis, rewardLabel } from '../../../ui/index.ts';
 import {
   ButtonStyle,

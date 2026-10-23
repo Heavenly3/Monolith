@@ -1,7 +1,7 @@
 // What happens in Discord after a member earns XP: reward roles are kept in
 // sync with their level, and level-ups are announced where the server chose.
 import type { GuildMember, GuildTextBasedChannel } from 'discord.js';
-import { accounts, formatNumber, levels, logger, settings, type XpGain } from '@mythcore/core';
+import { accounts, formatNumber, levels, logger, settings, type XpGain } from '@monolith/core';
 import { translatorFor } from '../framework/context.ts';
 import * as ui from '../ui/index.ts';
 import { coins, emojis } from '../ui/index.ts';

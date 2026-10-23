@@ -221,7 +221,7 @@ const percentLabel = (percent: number) =>
   gap: 0.75rem;
   padding: 0.35rem 0.35rem 0.35rem 0.85rem;
   border-radius: 8px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .timeline li > :nth-child(2),
@@ -232,7 +232,7 @@ const percentLabel = (percent: number) =>
 .level-badge {
   min-width: 5.5rem;
   font-weight: 600;
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
 }
 
 .add {

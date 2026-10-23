@@ -1,10 +1,10 @@
 // Discord login (OAuth2 authorization code flow) and the logged-in person.
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import { accounts, webSessions } from '@mythcore/core';
+import { accounts, webSessions } from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import { SESSION_COOKIE } from '../access.ts';
 
-const STATE_COOKIE = 'mc_oauth_state';
+const STATE_COOKIE = 'mn_oauth_state';
 
 const sameText = (a: string, b: string): boolean =>
   a.length === b.length && timingSafeEqual(Buffer.from(a), Buffer.from(b));

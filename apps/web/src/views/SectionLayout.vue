@@ -77,7 +77,7 @@ provide(IN_SECTION, true);
   height: 3rem;
   border-radius: 12px;
   background: rgba(201, 162, 39, 0.14);
-  color: var(--mc-gold);
+  color: var(--mn-gold);
   font-size: 1.3rem;
   flex-shrink: 0;
 }
@@ -87,7 +87,7 @@ provide(IN_SECTION, true);
   flex-direction: column;
   gap: 0.6rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mn-border);
 }
 
 .tab-group {
@@ -102,7 +102,7 @@ provide(IN_SECTION, true);
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
-  color: var(--mc-muted);
+  color: var(--mn-muted);
 }
 
 .tab {
@@ -111,8 +111,8 @@ provide(IN_SECTION, true);
   gap: 0.45rem;
   padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  border: 1px solid var(--mc-border);
-  color: var(--mc-muted);
+  border: 1px solid var(--mn-border);
+  color: var(--mn-muted);
   text-decoration: none;
   white-space: nowrap;
   font-size: 0.9rem;
@@ -123,13 +123,13 @@ provide(IN_SECTION, true);
 }
 
 .tab:hover {
-  color: var(--mc-text);
-  border-color: var(--mc-muted);
+  color: var(--mn-text);
+  border-color: var(--mn-muted);
 }
 
 .tab.active {
-  color: var(--mc-gold-soft);
-  border-color: var(--mc-gold);
+  color: var(--mn-gold-soft);
+  border-color: var(--mn-gold);
   background: rgba(201, 162, 39, 0.12);
 }
 

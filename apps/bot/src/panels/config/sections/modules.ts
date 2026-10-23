@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle } from 'discord.js';
-import { MODULES, settings, type ModuleId } from '@mythcore/core';
+import { MODULES, settings, type ModuleId } from '@monolith/core';
 import { emojis, type EmojiName } from '../../../ui/index.ts';
 import { actionId } from '../shared.ts';
 import type { Section } from '../types.ts';

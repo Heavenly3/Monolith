@@ -1,16 +1,16 @@
 :root {
-  --mc-font-display: 'Cinzel', Georgia, serif;
-  --mc-font-body: 'Inter', system-ui, sans-serif;
-  --mc-bg: #120e0b;
-  --mc-panel: #1c1713;
-  --mc-panel-raised: #241d18;
-  --mc-border: #3e342b;
-  --mc-gold: #c9a227;
-  --mc-gold-soft: #e0c155;
-  --mc-text: #ece4d8;
-  --mc-muted: #a89a88;
-  --mc-radius: 12px;
-  --mc-sidebar: 260px;
+  --mn-font-display: 'Cinzel', Georgia, serif;
+  --mn-font-body: 'Inter', system-ui, sans-serif;
+  --mn-bg: #120e0b;
+  --mn-panel: #1c1713;
+  --mn-panel-raised: #241d18;
+  --mn-border: #3e342b;
+  --mn-gold: #c9a227;
+  --mn-gold-soft: #e0c155;
+  --mn-text: #ece4d8;
+  --mn-muted: #a89a88;
+  --mn-radius: 12px;
+  --mn-sidebar: 260px;
   color-scheme: dark;
 }
 
@@ -29,9 +29,9 @@ body {
 body {
   background:
     radial-gradient(1200px 600px at 10% -10%, rgba(201, 162, 39, 0.08), transparent 60%),
-    var(--mc-bg);
-  color: var(--mc-text);
-  font-family: var(--mc-font-body);
+    var(--mn-bg);
+  color: var(--mn-text);
+  font-family: var(--mn-font-body);
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -40,7 +40,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--mc-font-display);
+  font-family: var(--mn-font-display);
   font-weight: 700;
   letter-spacing: 0.02em;
   margin: 0;
@@ -59,7 +59,7 @@ h3 {
 }
 
 a {
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
 }
 
 a.p-button {
@@ -77,13 +77,13 @@ a.p-button {
 }
 
 .muted {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
 }
 
 .panel {
-  background: var(--mc-panel);
-  border: 1px solid var(--mc-border);
-  border-radius: var(--mc-radius);
+  background: var(--mn-panel);
+  border: 1px solid var(--mn-border);
+  border-radius: var(--mn-radius);
   padding: 1.25rem;
 }
 
@@ -141,11 +141,11 @@ a.p-button {
 }
 
 .field small {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
 }
 
 .gold {
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
   font-variant-numeric: tabular-nums;
 }
 
@@ -153,15 +153,15 @@ a.p-button {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--mc-gold);
-  font-family: var(--mc-font-display);
+  color: var(--mn-gold);
+  font-family: var(--mn-font-display);
 }
 
 .divider-title::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, var(--mc-border), transparent);
+  background: linear-gradient(90deg, var(--mn-border), transparent);
 }
 
 @media (max-width: 640px) {

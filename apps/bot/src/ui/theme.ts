@@ -1,6 +1,6 @@
 // Visual identity of the bot. Change these to re-skin every message at once.
 export const theme = {
-  name: 'Mythcore',
+  name: 'Monolith',
 
   colors: {
     // Generic states

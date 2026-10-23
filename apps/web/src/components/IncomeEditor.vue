@@ -123,7 +123,7 @@ async function remove(id: string): Promise<void> {
   gap: 0.75rem;
   padding: 0.35rem 0.35rem 0.35rem 0.85rem;
   border-radius: 8px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .rewards li > :first-child {

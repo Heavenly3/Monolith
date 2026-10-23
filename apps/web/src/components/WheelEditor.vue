@@ -142,13 +142,13 @@ const prizeLabel = (prize: WheelPrize): string => {
   border-radius: 999px;
   background: rgba(201, 162, 39, 0.12);
   border: 1px solid rgba(201, 162, 39, 0.35);
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
 }
 
 .prize.empty {
-  background: var(--mc-panel-raised);
-  border-color: var(--mc-border);
-  color: var(--mc-muted);
+  background: var(--mn-panel-raised);
+  border-color: var(--mn-border);
+  color: var(--mn-muted);
 }
 
 .add {

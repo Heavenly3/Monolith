@@ -1,5 +1,5 @@
 // Texts of the dashboard itself. Settings labels, feature names and other
-// texts shared with the bot come from @mythcore/i18n.
+// texts shared with the bot come from @monolith/i18n.
 export const en = {
   common: {
     save: 'Save',
@@ -84,7 +84,7 @@ export const en = {
     adjusted: 'Now level {level} with {xp} XP.',
   },
   login: {
-    title: 'Mythcore Dashboard',
+    title: 'Monolith Dashboard',
     subtitle: 'Manage the economy of your Discord server from the web.',
     button: 'Sign in with Discord',
     failed: 'The login did not complete. Please try again.',

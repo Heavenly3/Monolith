@@ -18,8 +18,8 @@ import {
   formatDuration,
   settings,
   type SettingField,
-} from '@mythcore/core';
-import type { Language, Translator } from '@mythcore/i18n';
+} from '@monolith/core';
+import type { Language, Translator } from '@monolith/i18n';
 import { defineCommand, type Context, type LoadedCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import { selectedValue } from '../../framework/respond.ts';

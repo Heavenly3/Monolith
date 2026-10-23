@@ -1,5 +1,5 @@
-import type { WheelReward } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import type { WheelReward } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { emojis, type EmojiName } from './emojis.ts';
 import { coins } from './format.ts';
 

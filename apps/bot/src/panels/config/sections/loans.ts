@@ -1,4 +1,4 @@
-import { accounts, formatNumber, loans } from '@mythcore/core';
+import { accounts, formatNumber, loans } from '@monolith/core';
 import { coins, emojis, relativeTime } from '../../../ui/index.ts';
 import {
   ButtonStyle,

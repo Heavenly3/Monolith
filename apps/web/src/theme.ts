@@ -32,7 +32,7 @@ const leather = {
   950: '#120e0b',
 };
 
-export const MythcorePreset = definePreset(Aura, {
+export const MonolithPreset = definePreset(Aura, {
   semantic: {
     primary: gold,
     colorScheme: {

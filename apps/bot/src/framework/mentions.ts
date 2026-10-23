@@ -1,5 +1,5 @@
 import { chatInputApplicationCommandMention, type Client } from 'discord.js';
-import { logger } from '@mythcore/core';
+import { logger } from '@monolith/core';
 import { env } from '../env.ts';
 
 const log = logger.child('mentions');

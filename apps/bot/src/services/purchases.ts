@@ -1,6 +1,6 @@
 import type { GuildMember, Role } from 'discord.js';
-import { accounts, shop, type Product } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { accounts, shop, type Product } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { coins } from '../ui/index.ts';
 
 export type RoleGrant =
@@ -17,7 +17,7 @@ export async function grantRole(
   if (!role.editable) return { ok: false, reason: t('shop.roleNotEditable', { role }) };
   if (member.roles.cache.has(role.id)) return { ok: true, role, alreadyHad: true };
   try {
-    await member.roles.add(role, 'Mythcore shop item');
+    await member.roles.add(role, 'Monolith shop item');
   } catch {
     return { ok: false, reason: t('shop.roleRejected') };
   }

@@ -27,9 +27,9 @@ const image = computed(() => guildIcon(props.guild) ?? undefined);
 .guild-avatar {
   border-radius: 10px;
   overflow: hidden;
-  background: var(--mc-panel-raised);
-  color: var(--mc-gold-soft);
-  font-family: var(--mc-font-display);
+  background: var(--mn-panel-raised);
+  color: var(--mn-gold-soft);
+  font-family: var(--mn-font-display);
   flex-shrink: 0;
 }
 </style>

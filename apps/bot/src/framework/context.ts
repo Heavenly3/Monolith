@@ -1,5 +1,5 @@
-import { settings } from '@mythcore/core';
-import { fromLocale, translator, type Language, type Translator } from '@mythcore/i18n';
+import { settings } from '@monolith/core';
+import { fromLocale, translator, type Language, type Translator } from '@monolith/i18n';
 
 /**
  * Language used to talk to someone in a server: the server setting, or

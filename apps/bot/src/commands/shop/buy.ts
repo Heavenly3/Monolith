@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { accounts, formatNumber, shop } from '@mythcore/core';
+import { accounts, formatNumber, shop } from '@monolith/core';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import { buy } from '../../services/purchases.ts';

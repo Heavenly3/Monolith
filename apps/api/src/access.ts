@@ -1,11 +1,11 @@
 // Who may manage which server: the person must own it or be an administrator
 // (the same rule as /config), and the bot must be in it.
-import { webSessions, type WebSession } from '@mythcore/core';
+import { webSessions, type WebSession } from '@monolith/core';
 import type { FastifyRequest } from 'fastify';
 import type { DiscordApi, UserGuild } from './discord.ts';
 import { HttpError } from './http.ts';
 
-export const SESSION_COOKIE = 'mc_session';
+export const SESSION_COOKIE = 'mn_session';
 const GUILDS_TTL = 60_000;
 const BOT_GUILDS_TTL = 60_000;
 

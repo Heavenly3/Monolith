@@ -2,7 +2,7 @@
 // category. Both apps build their forms from this schema and validate with
 // parseFieldValue, so they always agree. Labels live in the locale files
 // under config.categories.<id> and config.fields.<id>.<field>.
-import { LANGUAGES } from '@mythcore/i18n';
+import { LANGUAGES } from '@monolith/i18n';
 import {
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,

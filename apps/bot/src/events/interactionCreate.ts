@@ -5,8 +5,8 @@ import {
   type Interaction,
   type RepliableInteraction,
 } from 'discord.js';
-import { accounts, logger, settings } from '@mythcore/core';
-import { translator, type Translator } from '@mythcore/i18n';
+import { accounts, logger, settings } from '@monolith/core';
+import { translator, type Translator } from '@monolith/i18n';
 import { defineEvent } from '../framework/loader.ts';
 import { translatorFor } from '../framework/context.ts';
 import { mention } from '../framework/mentions.ts';

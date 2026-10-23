@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseDuration } from '@mythcore/core/browser';
+import { parseDuration } from '@monolith/core/browser';
 import Button from 'primevue/button';
 import InputNumber from 'primevue/inputnumber';
 import InputText from 'primevue/inputtext';
@@ -330,7 +330,7 @@ async function reset(): Promise<void> {
   gap: 1rem;
   padding: 0.75rem 0.9rem;
   border-radius: 10px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .toggle-text {

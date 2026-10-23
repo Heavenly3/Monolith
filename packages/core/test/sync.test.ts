@@ -5,7 +5,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { afterEach, describe, expect, it } from 'vitest';
 import { closeDatabase, openDatabase, settings } from '../src/index.ts';
 
-const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mythcore-'));
+const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'monolith-'));
 afterEach(() => closeDatabase());
 
 describe('settings shared between processes', () => {

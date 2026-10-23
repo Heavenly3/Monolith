@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { HORSERACE, rules } from '@mythcore/core';
+import { HORSERACE, rules } from '@monolith/core';
 import { defineCommand } from '../../framework/types.ts';
 import { wait } from '../../framework/respond.ts';
 import { betError, outcomeColor, placeBet, resultText, settle } from '../../services/games.ts';

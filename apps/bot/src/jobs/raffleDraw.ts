@@ -1,6 +1,6 @@
 import type { Client } from 'discord.js';
-import { logger, raffle, formatNumber, type DrawResult } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { logger, raffle, formatNumber, type DrawResult } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { translatorFor } from '../framework/context.ts';
 import { mention } from '../framework/mentions.ts';
 import * as ui from '../ui/index.ts';

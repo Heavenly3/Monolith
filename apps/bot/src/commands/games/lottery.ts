@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { RAFFLE, accounts, formatDuration, formatNumber, raffle, settings } from '@mythcore/core';
+import { RAFFLE, accounts, formatDuration, formatNumber, raffle, settings } from '@monolith/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { coins, emojis, relativeTime, ticket } from '../../ui/index.ts';

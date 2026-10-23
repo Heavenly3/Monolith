@@ -138,9 +138,9 @@ const preview = computed<PreviewPart[]>(() => {
 
 .preview {
   padding: 0.65rem 0.9rem;
-  border-left: 3px solid var(--mc-gold);
+  border-left: 3px solid var(--mn-gold);
   border-radius: 6px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .preview p {

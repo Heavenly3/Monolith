@@ -31,7 +31,7 @@ const exact = computed(() => formatNumber(props.value));
 
 .stat-icon {
   font-size: 1.1rem;
-  color: var(--mc-gold);
+  color: var(--mn-gold);
   background: rgba(201, 162, 39, 0.12);
   border-radius: 10px;
   padding: 0.65rem;

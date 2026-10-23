@@ -7,7 +7,7 @@ import {
   settings,
   shop,
   work,
-} from '@mythcore/core';
+} from '@monolith/core';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -40,7 +40,7 @@ const config: ApiConfig = {
 const users: Record<string, DiscordUser> = {
   [ALICE]: { id: ALICE, username: 'alice', globalName: 'Alice', avatar: null, bot: false },
   [BOB]: { id: BOB, username: 'bob', globalName: null, avatar: null, bot: false },
-  [BOT]: { id: BOT, username: 'mythcore', globalName: null, avatar: null, bot: true },
+  [BOT]: { id: BOT, username: 'monolith', globalName: null, avatar: null, bot: true },
 };
 
 const fakeDiscord: DiscordApi = {
@@ -84,16 +84,16 @@ const guildUrl = (path = '') => `/api/guilds/${ADMIN_GUILD}${path}`;
 async function login(): Promise<string> {
   const start = await app.inject({ method: 'GET', url: '/auth/login' });
   const state = new URL(start.headers.location as string).searchParams.get('state')!;
-  const stateCookie = start.cookies.find((c) => c.name === 'mc_oauth_state')!;
+  const stateCookie = start.cookies.find((c) => c.name === 'mn_oauth_state')!;
   const callback = await app.inject({
     method: 'GET',
     url: `/auth/callback?code=good-code&state=${state}`,
-    cookies: { mc_oauth_state: stateCookie.value },
+    cookies: { mn_oauth_state: stateCookie.value },
   });
   expect(callback.headers.location).toBe(config.webUrl);
-  const session = callback.cookies.find((c) => c.name === 'mc_session')!;
+  const session = callback.cookies.find((c) => c.name === 'mn_session')!;
   expect(session.httpOnly).toBe(true);
-  return `mc_session=${session.value}`;
+  return `mn_session=${session.value}`;
 }
 
 beforeEach(async () => {
@@ -111,10 +111,10 @@ describe('login', () => {
     const response = await app.inject({
       method: 'GET',
       url: '/auth/callback?code=good-code&state=forged',
-      cookies: { mc_oauth_state: 'real' },
+      cookies: { mn_oauth_state: 'real' },
     });
     expect(response.headers.location).toBe(`${config.webUrl}/?login=failed`);
-    expect(response.cookies.some((c) => c.name === 'mc_session')).toBe(false);
+    expect(response.cookies.some((c) => c.name === 'mn_session')).toBe(false);
   });
 
   it('knows who is logged in and logs out', async () => {
@@ -259,7 +259,7 @@ describe('shop', () => {
 
 describe('dashboard files', () => {
   it('serves the built dashboard and keeps API errors as JSON', async () => {
-    const webDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mythcore-web-'));
+    const webDir = fs.mkdtempSync(path.join(os.tmpdir(), 'monolith-web-'));
     fs.writeFileSync(path.join(webDir, 'index.html'), '<div id="app"></div>');
     const web = await buildApp({ config, discord: fakeDiscord, webDir });
 

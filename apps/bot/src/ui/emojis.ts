@@ -4,7 +4,7 @@
 // the custom icon set is uploaded (`npm run emojis`, see ./icons.ts), the bot
 // loads those application emojis at startup and uses them instead — every
 // `emojis.<name>` lookup returns the custom one automatically.
-import type { SlotSymbol } from '@mythcore/core';
+import type { SlotSymbol } from '@monolith/core';
 
 const FALLBACK = {
   // Realm
@@ -99,7 +99,7 @@ const FALLBACK = {
 
 export type EmojiName = keyof typeof FALLBACK;
 
-/** Faces of the Dragon's Hoard reels (the jackpot symbol lives in @mythcore/core). */
+/** Faces of the Dragon's Hoard reels (the jackpot symbol lives in @monolith/core). */
 const REEL_FALLBACK: Record<SlotSymbol, string> = {
   sword: '🗡️',
   shield: '🛡️',
@@ -109,8 +109,8 @@ const REEL_FALLBACK: Record<SlotSymbol, string> = {
   dragon: '🐉',
 };
 
-/** Application emojis are named `mc_<name>` (reels: `mc_reel_<symbol>`). */
-export const EMOJI_PREFIX = 'mc_';
+/** Application emojis are named `mn_<name>` (reels: `mn_reel_<symbol>`). */
+export const EMOJI_PREFIX = 'mn_';
 
 const custom = new Map<string, string>();
 

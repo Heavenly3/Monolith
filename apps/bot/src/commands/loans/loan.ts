@@ -4,8 +4,8 @@ import {
   InteractionContextType,
   SlashCommandBuilder,
 } from 'discord.js';
-import { accounts, formatDuration, loans, parseAmount, settings, type Loan } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { accounts, formatDuration, loans, parseAmount, settings, type Loan } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { mention } from '../../framework/mentions.ts';
 import * as ui from '../../ui/index.ts';

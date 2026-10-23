@@ -1,6 +1,6 @@
 import { LabelBuilder, StringSelectMenuBuilder, UserSelectMenuBuilder } from 'discord.js';
-import { accounts, formatNumber, parseWholeNumber, type Balance } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { accounts, formatNumber, parseWholeNumber, type Balance } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { coins, emojis } from '../../../ui/index.ts';
 import { ButtonStyle, button, modal, textField } from '../shared.ts';
 import type { Section } from '../types.ts';

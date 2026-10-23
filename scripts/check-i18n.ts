@@ -4,8 +4,8 @@
 // the English `Messages` shape, so a missing key fails `npm run typecheck`.)
 //   npm run check:i18n
 import { ApplicationCommandOptionType, Locale, type APIApplicationCommandOption } from 'discord.js';
-import { SETTING_CATEGORIES, type SettingField } from '@mythcore/core';
-import { LOCALES, translate, type Language } from '@mythcore/i18n';
+import { SETTING_CATEGORIES, type SettingField } from '@monolith/core';
+import { LOCALES, translate, type Language } from '@monolith/i18n';
 import { loadCommands } from '../apps/bot/src/framework/loader.ts';
 
 const LOCALE = Locale.SpanishES;

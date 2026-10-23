@@ -4,8 +4,8 @@ import {
   RoleSelectMenuBuilder,
   UserSelectMenuBuilder,
 } from 'discord.js';
-import { formatNumber, levels, parseWholeNumber, type XpAction } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { formatNumber, levels, parseWholeNumber, type XpAction } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { syncRewardRoles } from '../../../services/levelUp.ts';
 import { emojis } from '../../../ui/index.ts';
 import {

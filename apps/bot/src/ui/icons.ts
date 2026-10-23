@@ -2,7 +2,7 @@
 // Icons by Lorc, Delapouite, Skoll, Caro Asercion and Sbed, from
 // https://game-icons.net — licensed under CC BY 3.0.
 // `npm run emojis` renders them and uploads them as application emojis.
-import type { SlotSymbol } from '@mythcore/core';
+import type { SlotSymbol } from '@monolith/core';
 import type { EmojiName } from './emojis.ts';
 
 const GOLD = '#e8b64c';

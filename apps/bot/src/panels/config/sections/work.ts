@@ -1,4 +1,4 @@
-import { truncate, work } from '@mythcore/core';
+import { truncate, work } from '@monolith/core';
 import { emojis } from '../../../ui/index.ts';
 import {
   ButtonStyle,

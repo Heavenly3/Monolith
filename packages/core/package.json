@@ -1,7 +1,7 @@
 {
-  "name": "@mythcore/core",
+  "name": "@monolith/core",
   "version": "3.0.0",
-  "description": "Mythcore domain logic and database, independent from Discord.",
+  "description": "Monolith domain logic and database, independent from Discord.",
   "private": true,
   "type": "module",
   "exports": {
@@ -9,7 +9,7 @@
     "./browser": "./src/browser.ts"
   },
   "dependencies": {
-    "@mythcore/i18n": "*"
+    "@monolith/i18n": "*"
   },
   "license": "MIT"
 }

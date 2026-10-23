@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { claimLegacyData, logger, settings } from '@mythcore/core';
+import { claimLegacyData, logger, settings } from '@monolith/core';
 import { env } from '../env.ts';
 import { defineEvent } from '../framework/loader.ts';
 import { refreshMentions } from '../framework/mentions.ts';

@@ -1,8 +1,8 @@
-# ⚜️ Mythcore
+# ⚜️ Monolith
 
-**Mythcore** is an economy and casino bot for Discord with a medieval fantasy theme. Members work to earn gold, keep it in the bank, bet it in four tavern games, take loans, play the lottery and spend it in a role shop — all through clear slash commands, Discord's **Components V2** layout and a hand-picked icon set. Every server has its own economy.
+**Monolith** is an economy and casino bot for Discord with a medieval fantasy theme. Members work to earn gold, keep it in the bank, bet it in four tavern games, take loans, play the lottery and spend it in a role shop — all through clear slash commands, Discord's **Components V2** layout and a hand-picked icon set. Every server has its own economy.
 
-![CI](https://github.com/Heavenly3/Mythcore/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Heavenly3/Monolith/actions/workflows/ci.yml/badge.svg)
 ![Node](https://img.shields.io/badge/node-%E2%89%A522.18-339933?logo=node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -55,7 +55,7 @@ Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Use
 
 Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/rango` `/niveles` `/ayuda` `/config`.
 
-`/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → Mythcore**.
+`/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → Monolith**.
 
 ### Payouts
 
@@ -79,8 +79,8 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 1. **Clone and install**
 
    ```bash
-   git clone https://github.com/Heavenly3/Mythcore.git
-   cd Mythcore
+   git clone https://github.com/Heavenly3/Monolith.git
+   cd Monolith
    npm install
    ```
 
@@ -97,7 +97,7 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
    | `TOKEN`         | ✅       | Bot token.                                                             |
    | `CLIENT_ID`     | ✅       | Application ID.                                                        |
    | `GUILD_ID`      |          | Server ID for instant command updates. Leave empty to deploy globally. |
-   | `DATABASE_PATH` |          | SQLite file location. Default: `storage/mythcore.db`.                  |
+   | `DATABASE_PATH` |          | SQLite file location. Default: `storage/monolith.db`.                  |
    | `LOG_LEVEL`     |          | `debug`, `info`, `warn` or `error`. Default: `info`.                   |
 
 4. **Register the slash commands and start the bot**
@@ -147,7 +147,7 @@ npm run build:web
 npm run api
 ```
 
-When it runs on a public address, set `API_URL` and `WEB_URL` in `.env` to that address (for example `https://mythcore.example.com`) and add `<API_URL>/auth/callback` to the Redirects.
+When it runs on a public address, set `API_URL` and `WEB_URL` in `.env` to that address (for example `https://monolith.example.com`) and add `<API_URL>/auth/callback` to the Redirects.
 
 ### API
 
@@ -173,30 +173,30 @@ Outside a server: `GET /auth/login`, `POST /auth/logout`, `GET /api/me` and `GET
 
 ## 🏗️ Architecture
 
-Mythcore is a monorepo (npm workspaces) so the bot and the web dashboard share the same rules and data.
+Monolith is a monorepo (npm workspaces) so the bot and the web dashboard share the same rules and data.
 
 ```
 packages/
-├── i18n/            @mythcore/i18n — English and Spanish texts, pure TypeScript
-└── core/            @mythcore/core — database, migrations and domain logic, no Discord code
+├── i18n/            @monolith/i18n — English and Spanish texts, pure TypeScript
+└── core/            @monolith/core — database, migrations and domain logic, no Discord code
     └── src/
         ├── db/          SQLite connection and versioned migrations
         ├── services/    accounts, ledger, settings, shop, loans, raffle, rob, audit...
         ├── games/       pure game rules and the betting flow
         └── config/      defaults, game tables and the settings schema
 apps/
-├── api/             @mythcore/api — dashboard API (Fastify, Discord login)
+├── api/             @monolith/api — dashboard API (Fastify, Discord login)
 │   └── src/
 │       ├── routes/      auth, settings, economy, shop
 │       ├── access.ts    who can manage which server
 │       └── discord.ts   Discord OAuth2 and REST client
-├── web/             @mythcore/web — the dashboard (Vue 3, PrimeVue 4, Vite)
+├── web/             @monolith/web — the dashboard (Vue 3, PrimeVue 4, Vite)
 │   └── src/
 │       ├── views/       one page per section
 │       ├── components/  settings form, editors, cards
 │       ├── lib/         API client, session, formatting
-│       └── i18n/        dashboard texts (settings labels come from @mythcore/i18n)
-└── bot/             @mythcore/bot — the Discord bot
+│       └── i18n/        dashboard texts (settings labels come from @monolith/i18n)
+└── bot/             @monolith/bot — the Discord bot
     └── src/
         ├── commands/    one file per slash command, grouped by category
         ├── panels/      the settings panel (/config), one file per section
@@ -254,7 +254,7 @@ The tests cover the economy, loans, raffle, shop, migrations, the exact house ed
 
 ## ⬆️ Upgrading
 
-- **From v2:** start the bot — the database upgrades itself. Existing data is assigned to `GUILD_ID` (or to the only server the bot is in). Back up `storage/mythcore.db` first.
+- **From v2:** start the bot — the database upgrades itself. Existing data is assigned to `GUILD_ID` (or to the only server the bot is in). Back up `storage/monolith.db` first.
 - **From v1:** `npm run migrate:legacy -- <serverId> [path/to/database.sqlite]`, then `npm run deploy`.
 
 ---
@@ -265,4 +265,4 @@ Released under the [MIT License](LICENSE).
 
 Icons by [Lorc](https://lorcblog.blogspot.com), [Delapouite](https://delapouite.com), Skoll, Caro Asercion and Sbed, from [game-icons.net](https://game-icons.net), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). They are recoloured and placed on tiles by `npm run emojis`. Contributions are welcome — run `npm run check` before opening a pull request.
 
-**Mythcore** — fortune favours the bold! ⚔️
+**Monolith** — fortune favours the bold! ⚔️

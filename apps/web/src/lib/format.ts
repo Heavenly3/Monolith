@@ -1,4 +1,4 @@
-import { formatDuration, formatNumber } from '@mythcore/core/browser';
+import { formatDuration, formatNumber } from '@monolith/core/browser';
 import { lang } from '../i18n/index.ts';
 
 export { formatDuration, formatNumber };

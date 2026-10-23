@@ -187,7 +187,7 @@ async function useBuiltIn(): Promise<void> {
   gap: 0.5rem;
   padding: 0.35rem 0.35rem 0.35rem 0.85rem;
   border-radius: 8px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .text {
@@ -207,7 +207,7 @@ async function useBuiltIn(): Promise<void> {
   margin: 0 0.1rem;
   border-radius: 999px;
   background: rgba(201, 162, 39, 0.16);
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
   font-weight: 600;
   font-size: 0.9em;
 }
@@ -216,9 +216,9 @@ async function useBuiltIn(): Promise<void> {
   align-self: stretch;
   margin: 0;
   padding: 0.6rem 0.85rem;
-  border-left: 3px solid var(--mc-gold);
+  border-left: 3px solid var(--mn-gold);
   border-radius: 6px;
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .preview .muted {

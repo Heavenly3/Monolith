@@ -5,13 +5,13 @@ import {
   translate,
   type Language,
   type Vars,
-} from '@mythcore/i18n';
+} from '@monolith/i18n';
 import { ref } from 'vue';
 import { en } from './en.ts';
 import { es } from './es.ts';
 
 const WEB = { en, es };
-const STORAGE_KEY = 'mythcore.lang';
+const STORAGE_KEY = 'monolith.lang';
 
 function initialLanguage(): Language {
   try {

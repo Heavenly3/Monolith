@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import { REST, Routes } from 'discord.js';
-import { logger } from '@mythcore/core';
+import { logger } from '@monolith/core';
 import { ROOT_DIR, env } from '../apps/bot/src/env.ts';
 import { EMOJI_PREFIX } from '../apps/bot/src/ui/emojis.ts';
 import { ICONS, ICON_TILE, type IconSpec } from '../apps/bot/src/ui/icons.ts';

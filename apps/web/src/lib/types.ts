@@ -1,5 +1,5 @@
 // Shapes of the dashboard API responses (apps/api).
-import type { CategoryGroup, FieldType, ModuleId } from '@mythcore/core/browser';
+import type { CategoryGroup, FieldType, ModuleId } from '@monolith/core/browser';
 
 export interface Me {
   id: string;

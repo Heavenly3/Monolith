@@ -72,7 +72,7 @@ const sections = computed<NavSection[]>(() => [
       <GuildNav :sections="sections" :guild="guild" />
     </aside>
 
-    <Drawer v-model:visible="drawer" :header="guild?.name ?? 'Mythcore'">
+    <Drawer v-model:visible="drawer" :header="guild?.name ?? 'Monolith'">
       <GuildNav :sections="sections" :guild="null" />
     </Drawer>
 
@@ -87,7 +87,7 @@ const sections = computed<NavSection[]>(() => [
           aria-label="Menu"
           @click="drawer = true"
         />
-        <span class="brand">⚜️ Mythcore</span>
+        <span class="brand">⚜️ Monolith</span>
         <UserMenu />
       </header>
       <main class="content">
@@ -106,17 +106,17 @@ const sections = computed<NavSection[]>(() => [
   /* Paints the sidebar column down to the end of long pages. */
   background: linear-gradient(
     90deg,
-    var(--mc-panel) var(--mc-sidebar),
-    var(--mc-border) var(--mc-sidebar) calc(var(--mc-sidebar) + 1px),
+    var(--mn-panel) var(--mn-sidebar),
+    var(--mn-border) var(--mn-sidebar) calc(var(--mn-sidebar) + 1px),
     transparent 0
   );
 }
 
 .sidebar {
-  width: var(--mc-sidebar);
+  width: var(--mn-sidebar);
   flex-shrink: 0;
-  background: var(--mc-panel);
-  border-right: 1px solid var(--mc-border);
+  background: var(--mn-panel);
+  border-right: 1px solid var(--mn-border);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -137,7 +137,7 @@ const sections = computed<NavSection[]>(() => [
   justify-content: flex-end;
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
-  border-bottom: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mn-border);
 }
 
 .brand,
@@ -175,8 +175,8 @@ const sections = computed<NavSection[]>(() => [
   }
 
   .brand {
-    font-family: var(--mc-font-display);
-    color: var(--mc-gold-soft);
+    font-family: var(--mn-font-display);
+    color: var(--mn-gold-soft);
     font-weight: 700;
     margin-right: auto;
   }

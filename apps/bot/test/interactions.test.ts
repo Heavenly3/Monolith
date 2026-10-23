@@ -12,7 +12,7 @@ import {
   settings,
   settingsForm,
   shop,
-} from '@mythcore/core';
+} from '@monolith/core';
 
 // Skip the small UI animations.
 vi.mock('../src/framework/respond.ts', async (importOriginal) => ({

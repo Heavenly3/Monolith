@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import { accounts, loans, logger } from '@mythcore/core';
+import { accounts, loans, logger } from '@monolith/core';
 import { translatorFor } from '../framework/context.ts';
 import { Card, coins, emojis } from '../ui/index.ts';
 

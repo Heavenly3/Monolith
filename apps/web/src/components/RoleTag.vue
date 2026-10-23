@@ -23,7 +23,7 @@ defineProps<{ role: Role | undefined; fallback?: string }>();
   width: 0.65rem;
   height: 0.65rem;
   border-radius: 50%;
-  background: var(--mc-muted);
+  background: var(--mn-muted);
   flex-shrink: 0;
 }
 </style>

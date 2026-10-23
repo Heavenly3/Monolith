@@ -20,7 +20,7 @@ export const es: Messages = {
     emptyBank: 'Tu banco está vacío.',
     botsNoAccount: 'Los bots no tienen oro.',
     cooldown: 'Podrás {action} de nuevo {time}.',
-    serverOnly: 'Mythcore solo funciona dentro de un servidor.',
+    serverOnly: 'Monolith solo funciona dentro de un servidor.',
     adminOnly: 'Solo los administradores pueden hacer eso.',
     notYours: 'Este mensaje es de otra persona. Usa {command} para abrir el tuyo.',
     error: 'Algo salió mal. Inténtalo de nuevo. Referencia: `{ref}`',
@@ -726,7 +726,7 @@ export const es: Messages = {
     tip: 'Consejo: usa `/ayuda comando:<nombre>` para abrir directamente un comando.',
     home: {
       intro:
-        'Bienvenido a Mythcore, un bot de economía ambientado en un mundo medieval de fantasía. Trabaja para ganar oro, guárdalo en el banco, prueba suerte en los juegos de la taberna y gástalo en la tienda.',
+        'Bienvenido a Monolith, un bot de economía ambientado en un mundo medieval de fantasía. Trabaja para ganar oro, guárdalo en el banco, prueba suerte en los juegos de la taberna y gástalo en la tienda.',
       quickStart: 'Tus primeros pasos',
       steps: [
         '{work} para ganar tu primer oro',

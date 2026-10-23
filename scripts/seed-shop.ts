@@ -1,6 +1,6 @@
 // Adds a few starter wares to the market of a server (skips existing names).
 //   npm run seed:shop -- <serverId>      (defaults to GUILD_ID from .env)
-import { closeDatabase, logger, openDatabase, shop, type NewProduct } from '@mythcore/core';
+import { closeDatabase, logger, openDatabase, shop, type NewProduct } from '@monolith/core';
 import { env } from '../apps/bot/src/env.ts';
 
 const log = logger.child('seed');

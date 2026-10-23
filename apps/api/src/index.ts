@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { closeDatabase, logger, openDatabase, webSessions } from '@mythcore/core';
+import { closeDatabase, logger, openDatabase, webSessions } from '@monolith/core';
 import { buildApp } from './app.ts';
 import { createDiscordApi } from './discord.ts';
 import { ROOT_DIR, loadConfig } from './env.ts';

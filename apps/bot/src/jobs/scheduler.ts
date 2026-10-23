@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import { cooldowns, logger } from '@mythcore/core';
+import { cooldowns, logger } from '@monolith/core';
 import { collectLoans } from './loanCollector.ts';
 import { drawRaffles } from './raffleDraw.ts';
 import { awardVoiceXp } from './voiceXp.ts';

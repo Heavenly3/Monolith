@@ -1,5 +1,5 @@
 import { TimestampStyles, time } from 'discord.js';
-import { formatNumber } from '@mythcore/core';
+import { formatNumber } from '@monolith/core';
 import { emojis } from './emojis.ts';
 
 /** `**1,250** 🪙` — the standard way to show money. */

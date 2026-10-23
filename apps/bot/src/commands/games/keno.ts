@@ -1,6 +1,6 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { KENO, rules } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { KENO, rules } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { defineCommand } from '../../framework/types.ts';
 import { betError, outcomeColor, placeBet, resultText, settle } from '../../services/games.ts';
 import * as ui from '../../ui/index.ts';

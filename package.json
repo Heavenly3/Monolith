@@ -1,5 +1,5 @@
 {
-  "name": "mythcore",
+  "name": "monolith",
   "version": "3.0.0",
   "description": "A medieval fantasy economy and tavern-games bot for Discord.",
   "private": true,
@@ -8,7 +8,7 @@
   "author": "Heavenly3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Heavenly3/Mythcore.git"
+    "url": "https://github.com/Heavenly3/Monolith.git"
   },
   "engines": {
     "node": ">=22.18.0"
@@ -18,14 +18,14 @@
     "apps/*"
   ],
   "scripts": {
-    "start": "npm run start -w @mythcore/bot",
-    "dev": "npm run dev -w @mythcore/bot",
-    "deploy": "npm run deploy -w @mythcore/bot --",
-    "api": "npm run start -w @mythcore/api",
-    "dev:api": "npm run dev -w @mythcore/api",
-    "web": "npm run dev -w @mythcore/web",
-    "build:web": "npm run build -w @mythcore/web",
-    "typecheck": "tsc -p tsconfig.json && npm run typecheck -w @mythcore/web",
+    "start": "npm run start -w @monolith/bot",
+    "dev": "npm run dev -w @monolith/bot",
+    "deploy": "npm run deploy -w @monolith/bot --",
+    "api": "npm run start -w @monolith/api",
+    "dev:api": "npm run dev -w @monolith/api",
+    "web": "npm run dev -w @monolith/web",
+    "build:web": "npm run build -w @monolith/web",
+    "typecheck": "tsc -p tsconfig.json && npm run typecheck -w @monolith/web",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

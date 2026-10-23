@@ -40,7 +40,7 @@ onMounted(() => load());
 <template>
   <div class="guilds-page">
     <header class="topbar">
-      <span class="brand">⚜️ Mythcore</span>
+      <span class="brand">⚜️ Monolith</span>
       <UserMenu />
     </header>
 
@@ -114,7 +114,7 @@ onMounted(() => load());
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1.5rem;
-  border-bottom: 1px solid var(--mc-border);
+  border-bottom: 1px solid var(--mn-border);
   background: rgba(28, 23, 19, 0.7);
   backdrop-filter: blur(8px);
   position: sticky;
@@ -123,10 +123,10 @@ onMounted(() => load());
 }
 
 .brand {
-  font-family: var(--mc-font-display);
+  font-family: var(--mn-font-display);
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
 }
 
 .page {
@@ -146,7 +146,7 @@ onMounted(() => load());
 }
 
 .guild:hover {
-  border-color: var(--mc-gold);
+  border-color: var(--mn-gold);
 }
 
 .guild.off {

@@ -18,7 +18,7 @@ export const en = {
     emptyBank: 'Your bank is empty.',
     botsNoAccount: 'Bots do not have gold.',
     cooldown: 'You can {action} again {time}.',
-    serverOnly: 'Mythcore only works inside a server.',
+    serverOnly: 'Monolith only works inside a server.',
     adminOnly: 'Only administrators can do that.',
     notYours: 'This message belongs to someone else. Use {command} to open your own.',
     error: 'Something went wrong. Please try again. Reference: `{ref}`',
@@ -690,7 +690,7 @@ export const en = {
     tip: 'Tip: use `/help command:<name>` to open one command directly.',
     home: {
       intro:
-        'Welcome to Mythcore, an economy bot set in a medieval fantasy world. Work to earn gold, keep it safe in the bank, try your luck in the tavern games and spend it in the shop.',
+        'Welcome to Monolith, an economy bot set in a medieval fantasy world. Work to earn gold, keep it safe in the bank, try your luck in the tavern games and spend it in the shop.',
       quickStart: 'Your first steps',
       steps: [
         '{work} to earn your first gold',

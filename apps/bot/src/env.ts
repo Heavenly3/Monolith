@@ -38,5 +38,5 @@ export const env = {
   },
   /** Development server: commands deploy there instantly. */
   guildId: optional('GUILD_ID'),
-  databasePath: path.resolve(ROOT_DIR, optional('DATABASE_PATH') ?? 'storage/mythcore.db'),
+  databasePath: path.resolve(ROOT_DIR, optional('DATABASE_PATH') ?? 'storage/monolith.db'),
 };

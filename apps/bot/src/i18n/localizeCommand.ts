@@ -5,7 +5,7 @@ import {
   type LocalizationMap,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord.js';
-import type { Language } from '@mythcore/i18n';
+import type { Language } from '@monolith/i18n';
 import { commandsEs, type CommandTexts, type OptionTexts } from './commands.es.ts';
 
 // Discord locales that receive each translation file.

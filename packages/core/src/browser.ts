@@ -1,4 +1,4 @@
-// Browser-safe part of @mythcore/core (no database, no Node APIs), used by
+// Browser-safe part of @monolith/core (no database, no Node APIs), used by
 // the web dashboard so it formats and validates values like the bot does.
 export * from './config/defaults.ts';
 export * from './config/games.ts';

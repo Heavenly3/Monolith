@@ -1,8 +1,8 @@
 // Spanish names and descriptions shown by the Discord client. The bot always
 // receives the English names, so the code only uses those. Discord limits
 // names to 32 lowercase characters and descriptions to 100.
-import { ROULETTE_BETS } from '@mythcore/core';
-import { LOCALES } from '@mythcore/i18n';
+import { ROULETTE_BETS } from '@monolith/core';
+import { LOCALES } from '@monolith/i18n';
 
 const es = LOCALES.es;
 

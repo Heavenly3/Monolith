@@ -45,9 +45,9 @@ const parts = (text: string) => {
   text-align: left;
   padding: 0.7rem 0.85rem;
   border-radius: 10px;
-  border: 1px solid var(--mc-border);
-  background: var(--mc-panel-raised);
-  color: var(--mc-text);
+  border: 1px solid var(--mn-border);
+  background: var(--mn-panel-raised);
+  color: var(--mn-text);
   font: inherit;
   cursor: pointer;
   transition:
@@ -57,22 +57,22 @@ const parts = (text: string) => {
 }
 
 .choice:hover {
-  border-color: var(--mc-muted);
+  border-color: var(--mn-muted);
   transform: translateY(-1px);
 }
 
 .choice.active {
-  border-color: var(--mc-gold);
+  border-color: var(--mn-gold);
   background: rgba(201, 162, 39, 0.1);
 }
 
 .choice i {
   margin-top: 0.15rem;
-  color: var(--mc-muted);
+  color: var(--mn-muted);
 }
 
 .choice.active i {
-  color: var(--mc-gold);
+  color: var(--mn-gold);
 }
 
 .choice span {
@@ -82,7 +82,7 @@ const parts = (text: string) => {
 }
 
 .choice small {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
 }
 
 .invalid .choice {

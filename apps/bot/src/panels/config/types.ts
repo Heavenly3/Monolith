@@ -4,7 +4,7 @@ import type {
   ModalBuilder,
   ModalSubmitFields,
 } from 'discord.js';
-import type { Translator } from '@mythcore/i18n';
+import type { Translator } from '@monolith/i18n';
 import type { ComponentInteraction } from '../../framework/types.ts';
 import type { ColorName, EmojiName } from '../../ui/index.ts';
 

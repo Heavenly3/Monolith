@@ -1,5 +1,5 @@
 import { REST, Routes, type RESTPutAPIApplicationCommandsResult } from 'discord.js';
-import { logger } from '@mythcore/core';
+import { logger } from '@monolith/core';
 import { env } from './env.ts';
 import { loadCommands } from './framework/loader.ts';
 

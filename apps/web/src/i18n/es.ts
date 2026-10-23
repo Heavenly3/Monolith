@@ -86,7 +86,7 @@ export const es: WebMessages = {
     adjusted: 'Ahora es nivel {level} con {xp} XP.',
   },
   login: {
-    title: 'Panel de Mythcore',
+    title: 'Panel de Monolith',
     subtitle: 'Gestiona la economía de tu servidor de Discord desde la web.',
     button: 'Iniciar sesión con Discord',
     failed: 'No se completó el inicio de sesión. Inténtalo de nuevo.',

@@ -1,4 +1,4 @@
-import type { Translator } from '@mythcore/i18n';
+import type { Translator } from '@monolith/i18n';
 import { Card, type CardMessage } from './card.ts';
 import { emojis } from './emojis.ts';
 import { relativeTime } from './format.ts';

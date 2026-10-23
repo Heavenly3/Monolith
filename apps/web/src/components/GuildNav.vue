@@ -47,14 +47,14 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
 }
 
 .back {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
   text-decoration: none;
   font-size: 0.85rem;
   padding: 0 0.5rem;
 }
 
 .back:hover {
-  color: var(--mc-text);
+  color: var(--mn-text);
 }
 
 .guild-head {
@@ -65,7 +65,7 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
 }
 
 .guild-head strong {
-  font-family: var(--mc-font-display);
+  font-family: var(--mn-font-display);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -81,7 +81,7 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
   text-transform: uppercase;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
-  color: var(--mc-muted);
+  color: var(--mn-muted);
   padding: 0.25rem 0.5rem;
 }
 
@@ -91,26 +91,26 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
   gap: 0.65rem;
   padding: 0.5rem 0.6rem;
   border-radius: 8px;
-  color: var(--mc-text);
+  color: var(--mn-text);
   text-decoration: none;
   font-size: 0.92rem;
 }
 
 .nav-link i {
-  color: var(--mc-muted);
+  color: var(--mn-muted);
   width: 1rem;
 }
 
 .nav-link:hover {
-  background: var(--mc-panel-raised);
+  background: var(--mn-panel-raised);
 }
 
 .nav-link.active {
   background: rgba(201, 162, 39, 0.14);
-  color: var(--mc-gold-soft);
+  color: var(--mn-gold-soft);
 }
 
 .nav-link.active i {
-  color: var(--mc-gold);
+  color: var(--mn-gold);
 }
 </style>

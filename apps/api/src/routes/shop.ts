@@ -1,5 +1,5 @@
 // Shop items, server roles and the income each role pays with /collect.
-import { audit, roleRewards, shop } from '@mythcore/core';
+import { audit, roleRewards, shop } from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import type { GuildRole } from '../discord.ts';
 import { HttpError, indexParam } from '../http.ts';

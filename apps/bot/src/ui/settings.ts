@@ -4,8 +4,8 @@ import {
   settingsForm,
   truncate,
   type SettingField,
-} from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+} from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { emojis } from './emojis.ts';
 import { coins } from './format.ts';
 

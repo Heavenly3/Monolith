@@ -274,7 +274,7 @@ async function resetAll(): Promise<void> {
   place-items: center;
   font-weight: 700;
   color: #1c1713;
-  background: radial-gradient(circle at 30% 30%, #f0d37a, var(--mc-gold));
+  background: radial-gradient(circle at 30% 30%, #f0d37a, var(--mn-gold));
 }
 
 .level-progress {

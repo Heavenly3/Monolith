@@ -1,4 +1,4 @@
-// Public API of @mythcore/core. Everything here is independent from Discord,
+// Public API of @monolith/core. Everything here is independent from Discord,
 // so the bot and the web dashboard share the same rules and data.
 export { logger, createLogger, type Logger } from './logger.ts';
 export { openDatabase, closeDatabase, claimLegacyData, transaction, db } from './db/database.ts';

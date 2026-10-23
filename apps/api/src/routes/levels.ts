@@ -1,6 +1,6 @@
 // Levels of a server: role rewards, XP multipliers and members' experience.
 // Reward roles are applied by the bot the next time each member earns XP.
-import { audit, levels, progressFor, type XpAction } from '@mythcore/core';
+import { audit, levels, progressFor, type XpAction } from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import { HttpError } from '../http.ts';
 import { scope } from './scope.ts';

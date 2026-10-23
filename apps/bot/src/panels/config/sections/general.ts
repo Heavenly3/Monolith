@@ -1,6 +1,6 @@
 import { StringSelectMenuBuilder } from 'discord.js';
-import { parseFieldValue, settings, settingsForm, type SettingValues } from '@mythcore/core';
-import { LANGUAGES, translator, type Translator } from '@mythcore/i18n';
+import { parseFieldValue, settings, settingsForm, type SettingValues } from '@monolith/core';
+import { LANGUAGES, translator, type Translator } from '@monolith/i18n';
 import { emojis } from '../../../ui/index.ts';
 import { ButtonStyle, actionId, categoryLines, resetButton } from '../shared.ts';
 import type { Section } from '../types.ts';

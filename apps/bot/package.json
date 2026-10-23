@@ -1,7 +1,7 @@
 {
-  "name": "@mythcore/bot",
+  "name": "@monolith/bot",
   "version": "3.0.0",
-  "description": "Mythcore Discord bot.",
+  "description": "Monolith Discord bot.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "deploy": "node src/deploy.ts"
   },
   "dependencies": {
-    "@mythcore/core": "*",
-    "@mythcore/i18n": "*",
+    "@monolith/core": "*",
+    "@monolith/i18n": "*",
     "discord.js": "^14.27.0"
   },
   "license": "MIT"

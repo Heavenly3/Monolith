@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import { levels, settings } from '@mythcore/core';
+import { levels, settings } from '@monolith/core';
 import { afterXpGain } from '../services/levelUp.ts';
 
 /**

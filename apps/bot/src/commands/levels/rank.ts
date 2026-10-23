@@ -1,5 +1,5 @@
 import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
-import { formatDuration, formatNumber, levels } from '@mythcore/core';
+import { formatDuration, formatNumber, levels } from '@monolith/core';
 import { defineCommand } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';
 import { emojis, progressBar } from '../../ui/index.ts';

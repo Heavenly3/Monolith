@@ -13,12 +13,12 @@ import Tooltip from 'primevue/tooltip';
 import { createApp } from 'vue';
 import App from './App.vue';
 import { router } from './router.ts';
-import { MythcorePreset } from './theme.ts';
+import { MonolithPreset } from './theme.ts';
 
 createApp(App)
   .use(PrimeVue, {
     theme: {
-      preset: MythcorePreset,
+      preset: MonolithPreset,
       options: { darkModeSelector: '.app-dark', cssLayer: false },
     },
   })

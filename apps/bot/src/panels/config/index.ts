@@ -1,8 +1,8 @@
 // Mission Control: the /config admin panel. Every section lives in
 // ./sections/<id>.ts and implements the Section contract (see ./types.ts).
 import { ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from 'discord.js';
-import { audit, isSettingCategory, settingsForm } from '@mythcore/core';
-import type { Translator } from '@mythcore/i18n';
+import { audit, isSettingCategory, settingsForm } from '@monolith/core';
+import type { Translator } from '@monolith/i18n';
 import { translatorFor } from '../../framework/context.ts';
 import type { ComponentInteraction } from '../../framework/types.ts';
 import * as ui from '../../ui/index.ts';

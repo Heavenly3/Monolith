@@ -10,15 +10,15 @@ describe('custom icons', () => {
     expect(reelEmojis.dragon).toBe('🐉');
   });
 
-  it('uses uploaded application emojis named mc_<name>', () => {
+  it('uses uploaded application emojis named mn_<name>', () => {
     const count = registerApplicationEmojis([
-      { id: '1', name: 'mc_coin', animated: false },
-      { id: '2', name: 'mc_reel_dragon', animated: false },
+      { id: '1', name: 'mn_coin', animated: false },
+      { id: '2', name: 'mn_reel_dragon', animated: false },
       { id: '3', name: 'someone_else', animated: false },
     ]);
     expect(count).toBe(2);
-    expect(emojis.coin).toBe('<:mc_coin:1>');
-    expect(reelEmojis.dragon).toBe('<:mc_reel_dragon:2>');
+    expect(emojis.coin).toBe('<:mn_coin:1>');
+    expect(reelEmojis.dragon).toBe('<:mn_reel_dragon:2>');
     expect(emojis.bank).toBe('🗝️');
   });
 
@@ -26,7 +26,7 @@ describe('custom icons', () => {
     for (const key of Object.keys(ICONS)) {
       expect(key.startsWith('reel_') || (EMOJI_NAMES as string[]).includes(key), key).toBe(true);
       // Discord emoji names: 2-32 characters, letters, numbers and underscores.
-      expect(`mc_${key}`).toMatch(/^\w{2,32}$/);
+      expect(`mn_${key}`).toMatch(/^\w{2,32}$/);
     }
   });
 });

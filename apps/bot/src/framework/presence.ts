@@ -1,5 +1,5 @@
 import { ActivityType, type Client } from 'discord.js';
-import { translate } from '@mythcore/i18n';
+import { translate } from '@monolith/i18n';
 import { emojis } from '../ui/emojis.ts';
 
 /** Status line under the bot's name. */

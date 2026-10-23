@@ -8,8 +8,8 @@ import {
   wheel,
   work,
   type SettingField,
-} from '@mythcore/core';
-import { LOCALES, isLanguage } from '@mythcore/i18n';
+} from '@monolith/core';
+import { LOCALES, isLanguage } from '@monolith/i18n';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { HttpError, indexParam } from '../http.ts';
 import { scope } from './scope.ts';
