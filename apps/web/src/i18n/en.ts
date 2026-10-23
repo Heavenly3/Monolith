@@ -153,6 +153,22 @@ export const en = {
     moduleOff: 'The {module} module is turned off: these settings do nothing until you turn it on.',
     enableModule: 'Turn on',
   },
+  public: {
+    eyebrow: 'Level ranking',
+    count: '{count} members with experience',
+    unknown: 'Unknown member',
+    more: 'Show more',
+    footer: 'Ranking by Monolith · updated live',
+    missingTitle: 'This ranking is private',
+    missing:
+      'The server does not exist, has no Monolith, or its admins have not made the ranking public.',
+    failedTitle: 'The ranking could not load',
+    failed: 'Try again in a moment.',
+    copy: 'Copy link',
+    copied: 'Link copied.',
+    open: 'Open',
+    hint: 'The link only works while the public ranking switch above is on.',
+  },
   levelMessages: {
     title: 'Messages for exact levels',
     subtitle:

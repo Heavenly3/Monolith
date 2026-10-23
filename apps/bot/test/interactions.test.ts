@@ -216,7 +216,18 @@ async function suite(locale: string) {
   await panel('modules', 'toggle:nope');
 
   // Levels: every settings form, rewards, member XP, ranking and level-ups
-  for (const category of ['levels', 'levelCurve', 'levelVoice', 'levelAnnounce', 'levelFilters']) {
+  for (const category of [
+    'levels',
+    'levelCurve',
+    'levelFormula',
+    'levelMultipliers',
+    'levelVoice',
+    'levelAnnounce',
+    'levelAnnounceRules',
+    'levelFilters',
+    'levelRoles',
+    'levelLeaderboard',
+  ]) {
     await panel('levels', `edit:${category}`);
   }
   await panel('levels', 'save:levels', {
@@ -246,6 +257,17 @@ async function suite(locale: string) {
   expect(harness.recorder.payloads.at(-1)?.text).toContain('GG <@alice>, level 2!');
   await cmd('rank');
   await cmd('rank', { opts: { user: bob } });
+  await cmd('calculate', { opts: { level: 50 } });
+  await harness.userMenu(execute, 'View rank', { user: alice, target: bob, locale });
+  await harness.userMenu(execute, 'View rank', { user: alice, target: alice, locale });
+  await cmd('calculate', { opts: { level: 1, user: bob } });
+  await act('rank:sync:alice');
+  await act('rank:sync:alice', { user: bob });
+  await panel('levels', 'addMessage');
+  await panel('levels', 'saveMessage', { fields: { level: '10', message: 'Ten, {user}!' } });
+  await panel('levels', 'saveMessage', { fields: { level: '0', message: 'x' } });
+  await panel('levels', 'removeMessage', { values: ['10'] });
+  await panel('levels', 'preview');
   await cmd('levels');
   await act('levels:page:alice:0');
   await act('levels:page:alice:0', { user: bob });

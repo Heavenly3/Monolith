@@ -7,6 +7,7 @@ import {
 } from 'discord.js';
 import { accounts, logger, settings } from '@monolith/core';
 import { translator, type Translator } from '@monolith/i18n';
+import { userMenuJson } from '../i18n/localizeCommand.ts';
 import { defineEvent } from '../framework/loader.ts';
 import { translatorFor } from '../framework/context.ts';
 import { mention } from '../framework/mentions.ts';
@@ -81,6 +82,25 @@ export default defineEvent({
       } catch (error) {
         log.error(`Autocomplete error in /${interaction.commandName}:`, error);
         if (!interaction.responded) await interaction.respond([]).catch(() => {});
+      }
+      return;
+    }
+
+    if (interaction.isUserContextMenuCommand()) {
+      const command = [...commands.values()].find(
+        (entry) =>
+          entry.userMenu && userMenuJson(entry.userMenu.nameKey).name === interaction.commandName,
+      );
+      if (!command?.userMenu) return;
+      accounts.rememberProfile(interaction.user, interaction.locale);
+      if (!moduleOn(command, interaction.guildId)) {
+        await interaction.reply(moduleOff(command, t));
+        return;
+      }
+      try {
+        await command.userMenu.execute(interaction, ctx);
+      } catch (error) {
+        await handleError(interaction, error, `menu ${interaction.commandName}`, t);
       }
       return;
     }

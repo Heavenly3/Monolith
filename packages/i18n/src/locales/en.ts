@@ -76,6 +76,23 @@ export const en = {
     boardSubtitle: 'The most experienced members of the server.',
     boardEmpty: 'No one has experience yet. Start chatting!',
     boardLine: 'Level {level} · {xp} XP',
+    multiplier: 'Multiplier here',
+    multiplierParts: 'role {role} · channel {channel}',
+    messagesLeft: '≈ {messages} messages to level {level}',
+    nextXpIn: 'Next XP {time}',
+    nextXpNow: 'Your next message gives XP',
+    outOfSync: 'Your reward roles do not match your level.',
+    syncButton: 'Fix my roles',
+    synced: 'Your reward roles now match your level.',
+    calcTitle: 'Level {level}',
+    calcTotal: 'Total XP',
+    calcMissing: 'Still missing',
+    calcMessages: 'Messages',
+    calcTime: 'Active chat',
+    calcReached: '{user} already reached level {level}.',
+    calcFooter: 'Estimated with the average XP per message, the multiplier here and the cooldown.',
+    calcMax: 'The maximum level of this server is {max}.',
+    menuName: 'View rank',
     disabledHint: 'Levels are turned off in this server.',
   },
 
@@ -494,6 +511,10 @@ export const en = {
         label: 'When to announce',
         description: 'Which levels are announced, mentions and style',
       },
+      levelLeaderboard: {
+        label: 'Public ranking',
+        description: 'A ranking page anyone can open, without logging in',
+      },
       levelFilters: {
         label: 'Filters',
         description: 'Channels and roles that never earn XP',
@@ -593,6 +614,12 @@ export const en = {
         },
         ping: { label: 'Mention the member', help: 'The announcement sends them a notification.' },
         style: { label: 'Style', help: 'How the announcement looks in Discord.' },
+      },
+      levelLeaderboard: {
+        public: {
+          label: 'Public ranking page',
+          help: 'Anyone with the link sees the level ranking of this server on the web.',
+        },
       },
       levelFilters: {
         channels: { label: 'Channels without XP', help: 'Messages here never give experience.' },
@@ -920,6 +947,10 @@ export const en = {
       rank: {
         about:
           'Shows the level, progress to the next level, rank, total experience, messages and voice time of you or another member, plus the next role reward.',
+      },
+      calculate: {
+        about:
+          'Calculates the total XP a level needs, how much you (or another member) still miss, and about how many messages and how much chat that takes.',
       },
       levels: { about: 'Ranks the server by experience, 10 members per page.' },
       config: {

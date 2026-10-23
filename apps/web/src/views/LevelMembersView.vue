@@ -18,6 +18,7 @@ import { errorMessage } from '../lib/errors.ts';
 import { formatDuration, formatNumber } from '../lib/format.ts';
 import { useGuild } from '../lib/guild.ts';
 import type { LevelMember, LevelsOverview } from '../lib/types.ts';
+import SettingsView from './SettingsView.vue';
 
 const guild = useGuild();
 const notify = useNotify();
@@ -75,6 +76,17 @@ async function submit(): Promise<void> {
     formError.value = errorMessage(failure);
   } finally {
     saving.value = false;
+  }
+}
+
+// Address of the public ranking page, to share once it is turned on.
+const publicUrl = computed(() => `${window.location.origin}/leaderboard/${guild.value.id}`);
+async function copyPublicUrl(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(publicUrl.value);
+    notify.success(t('web.public.copied'));
+  } catch (failure) {
+    notify.failure(failure);
   }
 }
 
@@ -195,6 +207,30 @@ async function resetAll(): Promise<void> {
       </DataTable>
     </div>
 
+    <SettingsView :categories="['levelLeaderboard']" embedded />
+    <div class="panel row public-link">
+      <i class="pi pi-link muted" />
+      <code class="grow">{{ publicUrl }}</code>
+      <Button
+        :label="t('web.public.copy')"
+        icon="pi pi-copy"
+        severity="secondary"
+        outlined
+        size="small"
+        @click="copyPublicUrl"
+      />
+      <Button
+        as="a"
+        :href="publicUrl"
+        target="_blank"
+        rel="noopener"
+        :label="t('web.public.open')"
+        icon="pi pi-external-link"
+        size="small"
+      />
+      <small class="muted hint">{{ t('web.public.hint') }}</small>
+    </div>
+
     <Dialog
       v-model:visible="dialog"
       :header="t('panel.levels.adjustTitle')"
@@ -246,6 +282,26 @@ async function resetAll(): Promise<void> {
 </template>
 
 <style scoped>
+.public-link {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.public-link code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--mn-font-mono);
+  color: var(--mn-accent-soft);
+}
+
+.public-link .grow {
+  flex: 1;
+}
+
+.public-link .hint {
+  flex-basis: 100%;
+}
+
 .stats {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }

@@ -38,6 +38,12 @@ export interface GuildChannel {
   position: number;
 }
 
+export interface GuildInfo {
+  id: string;
+  name: string;
+  icon: string | null;
+}
+
 export interface DiscordApi {
   authorizeUrl(state: string): string;
   exchangeCode(code: string): Promise<string>;
@@ -48,6 +54,8 @@ export interface DiscordApi {
   /** Text, announcement and voice channels, in the order Discord shows them. */
   guildChannels(guildId: string): Promise<GuildChannel[]>;
   guildMember(guildId: string, userId: string): Promise<DiscordUser | null>;
+  /** Name and icon of a server the bot is in; null when it is not. */
+  guildInfo(guildId: string): Promise<GuildInfo | null>;
 }
 
 export class DiscordError extends Error {
@@ -173,6 +181,18 @@ export function createDiscordApi(config: ApiConfig): DiscordApi {
           position,
         }))
         .sort((a, b) => a.position - b.position);
+    },
+
+    async guildInfo(guildId) {
+      try {
+        const { id, name, icon } = await bot<GuildInfo>(`/guilds/${guildId}`);
+        return { id, name, icon };
+      } catch (error) {
+        if (error instanceof DiscordError && (error.status === 404 || error.status === 403)) {
+          return null;
+        }
+        throw error;
+      }
     },
 
     async guildMember(guildId, userId) {

@@ -2,6 +2,7 @@ import { REST, Routes, type RESTPutAPIApplicationCommandsResult } from 'discord.
 import { logger } from '@monolith/core';
 import { env } from './env.ts';
 import { loadCommands } from './framework/loader.ts';
+import { userMenuJson } from './i18n/localizeCommand.ts';
 
 const log = logger.child('deploy');
 
@@ -10,7 +11,11 @@ const isGlobal = args.has('--global') || !env.guildId;
 const clear = args.has('--clear');
 
 try {
-  const body = clear ? [] : [...(await loadCommands()).values()].map((command) => command.json);
+  const commands = [...(await loadCommands()).values()];
+  const menus = commands.flatMap((command) =>
+    command.userMenu ? [userMenuJson(command.userMenu.nameKey)] : [],
+  );
+  const body = clear ? [] : [...commands.map((command) => command.json), ...menus];
   const rest = new REST().setToken(env.token);
   const route = isGlobal
     ? Routes.applicationCommands(env.clientId)

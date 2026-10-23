@@ -88,6 +88,24 @@ export function getMember(guildId: string, userId: string): MemberLevel {
   return found ? toMember(found) : { userId, xp: 0, level: 0, messages: 0, voiceMinutes: 0 };
 }
 
+/** Milliseconds before the member's next message gives XP (0 = now). */
+export function cooldownLeft(guildId: string, userId: string, now = Date.now()): number {
+  const last = row(guildId, userId)?.last_message_at ?? 0;
+  if (!last) return 0;
+  return Math.max(0, last + settings.get(guildId, 'levels.cooldown') * 1000 - now);
+}
+
+/**
+ * Messages still needed to reach `targetXp`, counting the average XP of a
+ * message times the member's multiplier. Null when messages give no XP.
+ */
+export function messagesUntil(guildId: string, missingXp: number, multiplier = 100): number | null {
+  const { min, max } = settings.get(guildId, 'levels.xp');
+  const perMessage = ((min + max) / 2) * (multiplier / 100);
+  if (perMessage <= 0) return null;
+  return Math.ceil(Math.max(0, missingXp) / perMessage);
+}
+
 /** Level, XP inside the level and XP needed, for a rank card. */
 export function progressOf(guildId: string, userId: string) {
   const member = getMember(guildId, userId);

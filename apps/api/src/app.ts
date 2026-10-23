@@ -5,6 +5,7 @@ import { access, type Access } from './access.ts';
 import { authRoutes } from './routes/auth.ts';
 import { economyRoutes } from './routes/economy.ts';
 import { levelRoutes } from './routes/levels.ts';
+import { publicRoutes } from './routes/public.ts';
 import { settingsRoutes } from './routes/settings.ts';
 import { protectGuildRoutes } from './routes/scope.ts';
 import { shopRoutes } from './routes/shop.ts';
@@ -78,6 +79,7 @@ export async function buildApp({
 
   app.get('/health', async () => ({ ok: true }));
   await app.register(authRoutes);
+  await app.register(publicRoutes);
   await app.register(
     async (guild) => {
       protectGuildRoutes(guild);

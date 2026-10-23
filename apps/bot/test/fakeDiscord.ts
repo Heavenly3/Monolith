@@ -113,7 +113,7 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
     // Placeholders left unfilled. Template variables are legit: admins see the
     // job and level-up templates they typed.
     const placeholder = text.match(
-      /\{(?!(?:amount|user|username|level|xp|rank|role|server)\})[a-zA-Z]+\}/,
+      /\{(?!(?:amount|user|username|level|oldLevel|nextLevel|xp|remaining|rank|role|channel|server)\})[a-zA-Z]+\}/,
     );
     if (placeholder) recorder.errors.push(`${label}: unfilled placeholder ${placeholder[0]}`);
     recorder.payloads.push({ label, text, json });
@@ -123,15 +123,11 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
     const state = { replied: false };
     return {
       user,
-      member: {
-        id: user.id,
-        user,
-        guild,
-        roles: { cache: memberRoles, add: async (r: typeof role) => memberRoles.set(r.id, r) },
-      },
+      member: fakeMember(user),
       guild,
       guildId,
       channelId: 'channel-1',
+      channel: textChannel(),
       client,
       locale,
       memberPermissions: new PermissionsBitField(
@@ -146,6 +142,7 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
       isRepliable: () => true,
       isAutocomplete: () => false,
       isChatInputCommand: () => false,
+      isUserContextMenuCommand: () => false,
       isMessageComponent: () => false,
       isModalSubmit: () => false,
       isButton: () => false,
@@ -183,11 +180,22 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
       getString: get,
       getInteger: get,
       getUser: get,
+      getMember: (name: string) => (opts[name] ? fakeMember(opts[name] as FakeUser) : null),
       getRole: get,
       getBoolean: get,
       getFocused: () => focused,
     };
   };
+
+  const textChannel = () => ({
+    id: 'channel-1',
+    parentId: null,
+    toString: () => '<#channel-1>',
+    isThread: () => false,
+    isTextBased: () => true,
+    permissionsFor: () => ({ has: () => true }),
+    send: async (payload: never) => record(payload),
+  });
 
   /** A message in a text channel, to drive the messageCreate event. */
   function message(user: FakeUser) {
@@ -200,13 +208,7 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
       guildId,
       channelId: 'channel-1',
       member: fakeMember(user),
-      channel: {
-        id: 'channel-1',
-        isThread: () => false,
-        isTextBased: () => true,
-        permissionsFor: () => ({ has: () => true }),
-        send: async (payload: never) => record(payload),
-      },
+      channel: textChannel(),
     };
   }
 
@@ -231,6 +233,20 @@ export function createHarness(commands: Map<string, LoadedCommand>, guildId: str
         commandName: name,
         isChatInputCommand: () => true,
         options: optionsOf(sub, opts),
+      });
+    },
+    async userMenu(
+      router: (i: unknown) => Promise<unknown>,
+      name: string,
+      { user, target, locale = 'en-US' }: { user: FakeUser; target: FakeUser; locale?: string },
+    ) {
+      label = `[${locale}] menu ${name}`;
+      await router({
+        ...base(user, locale, false),
+        commandName: name,
+        isUserContextMenuCommand: () => true,
+        targetUser: target,
+        targetMember: fakeMember(target),
       });
     },
     async autocomplete(

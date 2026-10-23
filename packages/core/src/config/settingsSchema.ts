@@ -239,6 +239,11 @@ export const SETTING_CATEGORIES = {
       { id: 'style', key: 'levels.announceStyle', type: 'choice', options: ANNOUNCE_STYLES },
     ],
   },
+  levelLeaderboard: {
+    group: 'levels',
+    module: 'levels',
+    fields: [{ id: 'public', key: 'levels.publicLeaderboard', type: 'toggle' }],
+  },
   levelFilters: {
     group: 'levels',
     module: 'levels',

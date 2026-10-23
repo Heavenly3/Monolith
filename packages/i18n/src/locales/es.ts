@@ -77,6 +77,23 @@ export const es: Messages = {
     boardSubtitle: 'Los miembros con más experiencia del servidor.',
     boardEmpty: 'Nadie tiene experiencia todavía. ¡Empezad a chatear!',
     boardLine: 'Nivel {level} · {xp} XP',
+    multiplier: 'Multiplicador aquí',
+    multiplierParts: 'rol {role} · canal {channel}',
+    messagesLeft: '≈ {messages} mensajes para el nivel {level}',
+    nextXpIn: 'Próxima XP {time}',
+    nextXpNow: 'Tu próximo mensaje da XP',
+    outOfSync: 'Tus roles de recompensa no cuadran con tu nivel.',
+    syncButton: 'Arreglar mis roles',
+    synced: 'Tus roles de recompensa ya cuadran con tu nivel.',
+    calcTitle: 'Nivel {level}',
+    calcTotal: 'XP total',
+    calcMissing: 'Te falta',
+    calcMessages: 'Mensajes',
+    calcTime: 'Chat activo',
+    calcReached: '{user} ya llegó al nivel {level}.',
+    calcFooter: 'Estimado con la XP media por mensaje, el multiplicador de aquí y la espera.',
+    calcMax: 'El nivel máximo de este servidor es {max}.',
+    menuName: 'Ver rango',
     disabledHint: 'Los niveles están desactivados en este servidor.',
   },
 
@@ -505,6 +522,10 @@ export const es: Messages = {
         label: 'Cuándo anunciar',
         description: 'Qué niveles se anuncian, menciones y estilo',
       },
+      levelLeaderboard: {
+        label: 'Ranking público',
+        description: 'Una página de ranking que cualquiera puede abrir, sin iniciar sesión',
+      },
       levelFilters: {
         label: 'Filtros',
         description: 'Canales y roles que nunca ganan XP',
@@ -622,6 +643,12 @@ export const es: Messages = {
           help: 'El anuncio le envía una notificación.',
         },
         style: { label: 'Estilo', help: 'Cómo se ve el anuncio en Discord.' },
+      },
+      levelLeaderboard: {
+        public: {
+          label: 'Página de ranking pública',
+          help: 'Cualquiera con el enlace ve el ranking de niveles de este servidor en la web.',
+        },
       },
       levelFilters: {
         channels: { label: 'Canales sin XP', help: 'Los mensajes aquí nunca dan experiencia.' },
@@ -961,6 +988,10 @@ export const es: Messages = {
       rank: {
         about:
           'Muestra el nivel, el progreso al siguiente nivel, el puesto, la experiencia total, los mensajes y el tiempo en voz tuyos o de otro miembro, además de la próxima recompensa.',
+      },
+      calculate: {
+        about:
+          'Calcula la XP total que necesita un nivel, cuánta te falta (o a otro miembro) y cuántos mensajes y cuánto chat supone más o menos.',
       },
       levels: { about: 'Ordena el servidor por experiencia, 10 miembros por página.' },
       config: {

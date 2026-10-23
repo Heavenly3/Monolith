@@ -26,6 +26,13 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/login', name: 'login', component: () => import('./views/LoginView.vue') },
+    {
+      path: '/leaderboard/:guildId',
+      name: 'leaderboard',
+      component: () => import('./views/PublicLeaderboardView.vue'),
+      props: true,
+      meta: { public: true },
+    },
     { path: '/', name: 'guilds', component: () => import('./views/GuildsView.vue') },
     {
       path: '/g/:guildId',
@@ -43,6 +50,7 @@ export const router = createRouter({
 
 // Everything except the login page needs a session.
 router.beforeEach(async (to) => {
+  if (to.meta.public) return true;
   const me = await loadMe();
   if (!me && to.name !== 'login') return { name: 'login', query: to.query };
   if (me && to.name === 'login') return { name: 'guilds' };

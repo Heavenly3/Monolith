@@ -156,6 +156,22 @@ export const es: WebMessages = {
       'El módulo {module} está desactivado: estos ajustes no hacen nada hasta que lo actives.',
     enableModule: 'Activar',
   },
+  public: {
+    eyebrow: 'Ranking de niveles',
+    count: '{count} miembros con experiencia',
+    unknown: 'Miembro desconocido',
+    more: 'Mostrar más',
+    footer: 'Ranking de Monolith · se actualiza al momento',
+    missingTitle: 'Este ranking es privado',
+    missing:
+      'El servidor no existe, no tiene Monolith o sus administradores no han hecho público el ranking.',
+    failedTitle: 'No se pudo cargar el ranking',
+    failed: 'Inténtalo de nuevo en un momento.',
+    copy: 'Copiar enlace',
+    copied: 'Enlace copiado.',
+    open: 'Abrir',
+    hint: 'El enlace solo funciona mientras el interruptor de ranking público esté activado.',
+  },
   levelMessages: {
     title: 'Mensajes para niveles concretos',
     subtitle:

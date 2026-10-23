@@ -137,6 +137,8 @@ export interface SettingValues {
   'levels.announcePing': boolean;
   'levels.announceStyle': AnnounceStyle;
   'levels.levelMessages': LevelMessage[];
+  /** Anyone with the link can see the ranking on the web, without logging in. */
+  'levels.publicLeaderboard': boolean;
   'levels.ignoredChannels': string[];
   'levels.ignoredRoles': string[];
   'levels.rewardMode': RewardMode;
@@ -204,6 +206,7 @@ export const DEFAULTS: SettingValues = {
   'levels.announcePing': true,
   'levels.announceStyle': 'card',
   'levels.levelMessages': [],
+  'levels.publicLeaderboard': false,
   'levels.ignoredChannels': [],
   'levels.ignoredRoles': [],
   'levels.rewardMode': 'stack',

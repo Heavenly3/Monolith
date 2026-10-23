@@ -160,6 +160,14 @@ export const commandsEs: Record<string, CommandTexts> = {
     options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
   },
   levels: { name: 'niveles', description: 'Mira a los miembros con más experiencia del servidor.' },
+  calculate: {
+    name: 'calcular',
+    description: 'Mira cuánta XP y cuánto chat necesita un nivel.',
+    options: {
+      level: { name: 'nivel', description: 'Nivel a calcular' },
+      user: { name: 'usuario', description: 'Miembro para el que calcular' },
+    },
+  },
 
   help: {
     name: 'ayuda',

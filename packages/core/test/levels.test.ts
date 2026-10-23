@@ -105,6 +105,16 @@ describe('earning XP', () => {
     expect(accounts.findAccount(GUILD, bob.id)?.wallet).toBe(1000);
   });
 
+  it('reports the cooldown and the messages still needed', () => {
+    levels.awardMessage(GUILD, alice, chat(1000));
+    expect(levels.cooldownLeft(GUILD, alice.id, 31_000)).toBe(30_000);
+    expect(levels.cooldownLeft(GUILD, alice.id, 90_000)).toBe(0);
+    expect(levels.cooldownLeft(GUILD, bob.id)).toBe(0);
+    expect(levels.messagesUntil(GUILD, 100)).toBe(5);
+    expect(levels.messagesUntil(GUILD, 100, 200)).toBe(3);
+    expect(levels.messagesUntil(GUILD, 100, 0)).toBeNull();
+  });
+
   it('only gives voice XP when voice levelling is on', () => {
     expect(levels.awardVoice(GUILD, alice, 3, chat(0))).toBeNull();
     settings.set(GUILD, 'levels.voice', true);

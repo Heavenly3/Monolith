@@ -61,6 +61,8 @@ const fakeDiscord: DiscordApi = {
     { id: guildId, name: '@everyone', color: 0, position: 0, managed: false },
   ],
   guildMember: async (_guildId, userId) => users[userId] ?? null,
+  guildInfo: async (guildId) =>
+    guildId === ADMIN_GUILD ? { id: guildId, name: 'Realm', icon: null } : null,
   guildChannels: async () => [
     { id: CHANNEL, name: 'general', type: 0, parentId: null, position: 0 },
   ],
@@ -343,6 +345,21 @@ describe('levels', () => {
     expect(
       (await call('DELETE', guildUrl(`/levels/multipliers/channel/${CHANNEL}`))).statusCode,
     ).toBe(200);
+    const publicUrl = `/api/public/${ADMIN_GUILD}/leaderboard`;
+    expect((await app.inject({ method: 'GET', url: publicUrl })).statusCode).toBe(404);
+    settings.set(ADMIN_GUILD, 'levels.publicLeaderboard', true);
+    const board = (await app.inject({ method: 'GET', url: publicUrl })).json();
+    expect(board.guild.name).toBe('Realm');
+    expect(board.members[0]).toMatchObject({ rank: 1, userId: BOB, level: 3 });
+
+    expect(
+      (await call('PUT', guildUrl('/levels/messages'), { level: 10, message: 'Ten!' })).statusCode,
+    ).toBe(200);
+    expect((await call('GET', guildUrl('/levels'))).json().messages).toEqual([
+      { level: 10, message: 'Ten!' },
+    ]);
+    expect((await call('DELETE', guildUrl('/levels/messages/10'))).statusCode).toBe(200);
+
     expect((await call('POST', guildUrl('/levels/reset'))).json()).toEqual({ ok: true, count: 1 });
     expect(levels.leaderboardSize(ADMIN_GUILD)).toBe(0);
   });

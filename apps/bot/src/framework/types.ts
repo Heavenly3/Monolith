@@ -4,6 +4,7 @@ import type {
   MessageComponentInteraction,
   ModalSubmitInteraction,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
+  UserContextMenuCommandInteraction,
 } from 'discord.js';
 import type { ModuleId, SettingKey } from '@monolith/core';
 import type { Language, Translator } from '@monolith/i18n';
@@ -28,6 +29,15 @@ export type ComponentHandler = (
   ctx: Context,
 ) => Promise<unknown>;
 
+export type UserMenuInteraction = UserContextMenuCommandInteraction<'cached'>;
+
+/** Entry of the right-click "Apps" menu on a member, run by its command. */
+export interface UserMenuDefinition {
+  /** Translation key of the menu name (also its Spanish name). */
+  nameKey: string;
+  execute(interaction: UserMenuInteraction, ctx: Context): Promise<unknown>;
+}
+
 export interface CommandDefinition {
   data: { name: string; toJSON(): RESTPostAPIChatInputApplicationCommandsJSONBody };
   /** Setting that holds its cooldown, shown in /help. */
@@ -38,6 +48,7 @@ export interface CommandDefinition {
   autocomplete?(interaction: CommandAutocomplete, ctx: Context): Promise<unknown>;
   /** Handlers for custom IDs shaped `<command>:<action>:<args...>`. */
   components?: Record<string, ComponentHandler>;
+  userMenu?: UserMenuDefinition;
 }
 
 export interface LoadedCommand extends Omit<CommandDefinition, 'module'> {

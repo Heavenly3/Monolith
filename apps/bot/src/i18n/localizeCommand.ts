@@ -1,11 +1,14 @@
 import {
   ApplicationCommandOptionType,
+  ApplicationCommandType,
+  InteractionContextType,
   Locale,
   type APIApplicationCommandOption,
   type LocalizationMap,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
+  type RESTPostAPIContextMenuApplicationCommandsJSONBody,
 } from 'discord.js';
-import type { Language } from '@monolith/i18n';
+import { translator, type Language } from '@monolith/i18n';
 import { commandsEs, type CommandTexts, type OptionTexts } from './commands.es.ts';
 
 // Discord locales that receive each translation file.
@@ -81,6 +84,17 @@ export function localizeCommand(
     localizeOptions(result.options, entry, locales);
   }
   return result;
+}
+
+/** Payload of a member context-menu entry, named in every bot language. */
+export function userMenuJson(nameKey: string): RESTPostAPIContextMenuApplicationCommandsJSONBody {
+  const spanish = translator('es')(nameKey);
+  return {
+    type: ApplicationCommandType.User,
+    name: translator('en')(nameKey),
+    name_localizations: { [Locale.SpanishES]: spanish, [Locale.SpanishLATAM]: spanish },
+    contexts: [InteractionContextType.Guild],
+  };
 }
 
 /** Description of a command node in a bot language (falls back to English). */
