@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { parseEconomyBackup } from '../src/lib/economyBackup.ts';
 import { parseXpBackup } from '../src/lib/xpBackup.ts';
 
 const A = '123456789012345678';
@@ -33,5 +34,23 @@ describe('experience backups', () => {
     ]);
     expect(parseXpBackup('name,points\nkael,5')).toEqual([]);
     expect(parseXpBackup('{ broken')).toEqual([]);
+  });
+});
+
+describe('balance backups', () => {
+  it('reads our export, cash/bank columns and totals only', () => {
+    const ours = JSON.stringify({ members: [{ userId: A, wallet: 300, bank: 20, total: 320 }] });
+    expect(parseEconomyBackup(ours)).toEqual([{ userId: A, wallet: 300, bank: 20 }]);
+    const csv = [
+      'Rank,User ID,Username,Cash,Bank,Total',
+      `1,${A},"Kael","1,500","2,000","3,500"`,
+    ].join('\n');
+    expect(parseEconomyBackup(csv)).toEqual([{ userId: A, wallet: 1500, bank: 2000 }]);
+    const other = ['User ID;Cash;Bank', `${B};1200;800`].join('\n');
+    expect(parseEconomyBackup(other)).toEqual([{ userId: B, wallet: 1200, bank: 800 }]);
+    expect(parseEconomyBackup(JSON.stringify({ [A]: 900 }))).toEqual([
+      { userId: A, wallet: 900, bank: 0 },
+    ]);
+    expect(parseEconomyBackup('name,points\nkael,5')).toEqual([]);
   });
 });

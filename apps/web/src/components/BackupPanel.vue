@@ -7,19 +7,38 @@ import { computed, ref } from 'vue';
 import { t } from '../i18n/index.ts';
 import { api, guildPath } from '../lib/api.ts';
 import { useNotify } from '../lib/composables.ts';
+import { parseEconomyBackup } from '../lib/economyBackup.ts';
 import { formatNumber } from '../lib/format.ts';
-import { parseXpBackup, type XpRecord } from '../lib/xpBackup.ts';
+import { parseXpBackup } from '../lib/xpBackup.ts';
 
-// Download every member's experience, or load it back (also from other bots).
-const props = defineProps<{ guildId: string }>();
+// Download every member's experience or credits, or load a backup back in
+// (also from other bots). Texts live under web.backup.<kind>.
+const props = defineProps<{ guildId: string; kind: 'levels' | 'economy' }>();
 const emit = defineEmits<{ imported: [] }>();
 const notify = useNotify();
 
+const KINDS = {
+  levels: {
+    base: '/levels',
+    parse: parseXpBackup,
+    total: (records: unknown[]) => (records as { xp: number }[]).reduce((s, r) => s + r.xp, 0),
+  },
+  economy: {
+    base: '/members',
+    parse: parseEconomyBackup,
+    total: (records: unknown[]) =>
+      (records as { wallet: number; bank: number }[]).reduce((s, r) => s + r.wallet + r.bank, 0),
+  },
+} as const;
+const kind = computed(() => KINDS[props.kind]);
+const text = (key: string, vars?: Record<string, string | number>) =>
+  t(`web.backup.${props.kind}.${key}`, vars);
+
 const exportUrl = (format: 'json' | 'csv') =>
-  guildPath(props.guildId, `/levels/export?format=${format}`);
+  guildPath(props.guildId, `${kind.value.base}/export?format=${format}`);
 
 const picker = ref<HTMLInputElement | null>(null);
-const records = ref<XpRecord[]>([]);
+const records = ref<unknown[]>([]);
 const fileName = ref('');
 const unreadable = ref(false);
 const dialog = ref(false);
@@ -31,13 +50,12 @@ const modes = computed(() =>
     label: t(`web.backup.modes.${value}`),
   })),
 );
-const totalXp = computed(() => records.value.reduce((sum, r) => sum + r.xp, 0));
 
 async function pick(event: Event): Promise<void> {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (!file) return;
   fileName.value = file.name;
-  records.value = parseXpBackup(await file.text());
+  records.value = kind.value.parse(await file.text());
   unreadable.value = records.value.length === 0;
   mode.value = 'highest';
   dialog.value = true;
@@ -47,11 +65,11 @@ async function pick(event: Event): Promise<void> {
 async function load(): Promise<void> {
   busy.value = true;
   try {
-    const result = await api.post<{ count: number }>(guildPath(props.guildId, '/levels/import'), {
-      mode: mode.value,
-      records: records.value,
-    });
-    notify.success(t('web.backup.done', { count: formatNumber(result.count) }));
+    const result = await api.post<{ count: number }>(
+      guildPath(props.guildId, `${kind.value.base}/import`),
+      { mode: mode.value, records: records.value },
+    );
+    notify.success(text('done', { count: formatNumber(result.count) }));
     dialog.value = false;
     emit('imported');
   } catch (failure) {
@@ -65,8 +83,8 @@ async function load(): Promise<void> {
 <template>
   <section class="panel stack">
     <div>
-      <h2 class="divider-title">{{ t('web.backup.title') }}</h2>
-      <p class="muted">{{ t('web.backup.subtitle') }}</p>
+      <h2 class="divider-title">{{ text('title') }}</h2>
+      <p class="muted">{{ text('subtitle') }}</p>
     </div>
     <div class="row wrap">
       <Button
@@ -87,7 +105,7 @@ async function load(): Promise<void> {
         severity="secondary"
         outlined
       />
-      <Button :label="t('web.backup.import')" icon="pi pi-upload" @click="picker?.click()" />
+      <Button :label="text('import')" icon="pi pi-upload" @click="picker?.click()" />
       <input
         ref="picker"
         type="file"
@@ -100,20 +118,20 @@ async function load(): Promise<void> {
     <Dialog
       v-model:visible="dialog"
       modal
-      :header="t('web.backup.import')"
+      :header="text('import')"
       :style="{ width: 'min(32rem, 94vw)' }"
     >
       <div class="stack">
         <p class="muted file">{{ fileName }}</p>
         <Message v-if="unreadable" severity="error" :closable="false">
-          {{ t('web.backup.unreadable') }}
+          {{ text('unreadable') }}
         </Message>
         <template v-else>
           <p>
             {{
-              t('web.backup.found', {
+              text('found', {
                 count: formatNumber(records.length),
-                xp: formatNumber(totalXp),
+                total: formatNumber(kind.total(records)),
               })
             }}
           </p>
@@ -126,10 +144,10 @@ async function load(): Promise<void> {
               option-value="value"
               :allow-empty="false"
             />
-            <small class="muted">{{ t(`web.backup.modeHints.${mode}`) }}</small>
+            <small class="muted">{{ text(`modeHints.${mode}`) }}</small>
           </div>
           <Message v-if="mode === 'replace'" severity="warn" :closable="false">
-            {{ t('web.backup.replaceWarning') }}
+            {{ text('replaceWarning') }}
           </Message>
         </template>
       </div>

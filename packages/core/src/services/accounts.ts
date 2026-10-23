@@ -274,6 +274,79 @@ export function resetAll(guildId: string): number {
   ).changes;
 }
 
+// ── Backups ─────────────────────────────────────────────────────────────────
+
+export interface BalanceRecord {
+  userId: string;
+  wallet: number;
+  bank: number;
+}
+
+export const IMPORT_MODES = ['replace', 'add', 'highest'] as const;
+export type BalanceImportMode = (typeof IMPORT_MODES)[number];
+export const MAX_IMPORT = 100_000;
+
+/** Every account with credits (or debt), richest first, for a backup or another bot. */
+export function exportAll(guildId: string): (LeaderboardRow & { rank: number })[] {
+  return many<{ user_id: string; username: string | null; wallet: number; bank: number }>(
+    `SELECT a.user_id, p.username, a.wallet, a.bank FROM accounts a
+     LEFT JOIN profiles p ON p.user_id = a.user_id
+     WHERE a.guild_id = ? AND (a.wallet <> 0 OR a.bank <> 0)
+     ORDER BY a.wallet + a.bank DESC, a.user_id LIMIT ?`,
+    guildId,
+    MAX_IMPORT,
+  ).map((row, index) => ({
+    rank: index + 1,
+    userId: row.user_id,
+    username: row.username,
+    wallet: row.wallet,
+    bank: row.bank,
+    netWorth: row.wallet + row.bank,
+  }));
+}
+
+/**
+ * Loads balances from a backup. "replace" empties every account first, "add"
+ * sums the backup to current balances and "highest" keeps, for wallet and
+ * bank separately, whichever is larger. Every change goes to the ledger.
+ */
+export function importBalances(
+  guildId: string,
+  records: BalanceRecord[],
+  mode: BalanceImportMode,
+): number {
+  const valid = records.filter(
+    (r) =>
+      /^\d{17,20}$/.test(r.userId) &&
+      Number.isSafeInteger(r.wallet) &&
+      Number.isSafeInteger(r.bank) &&
+      r.wallet >= 0 &&
+      r.bank >= 0,
+  );
+  transaction(() => {
+    if (mode === 'replace') resetAll(guildId);
+    for (const record of valid) {
+      run(
+        'INSERT INTO accounts (guild_id, user_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
+        guildId,
+        record.userId,
+      );
+      const current = findAccount(guildId, record.userId)!;
+      for (const account of ['wallet', 'bank'] as const) {
+        const target =
+          mode === 'add'
+            ? current[account] + record[account]
+            : mode === 'highest'
+              ? Math.max(current[account], record[account])
+              : record[account];
+        const delta = target - current[account];
+        if (delta !== 0) apply(guildId, record.userId, account, delta, 'import');
+      }
+    }
+  });
+  return valid.length;
+}
+
 export const MONEY_ACTIONS = ['add', 'remove', 'set', 'reset'] as const;
 export type MoneyAction = (typeof MONEY_ACTIONS)[number];
 

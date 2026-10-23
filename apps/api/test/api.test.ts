@@ -276,6 +276,28 @@ describe('dashboard files', () => {
   });
 });
 
+describe('balance backups', () => {
+  it('exports and imports balances', async () => {
+    accounts.getAccount(ADMIN_GUILD, { id: BOB, username: 'bob' });
+    accounts.credit(ADMIN_GUILD, BOB, 700, 'admin');
+    const csv = await call('GET', guildUrl('/members/export?format=csv'));
+    expect(csv.body.split('\n')[1]).toBe(`1,${BOB},"bob",700,0,700`);
+    expect(
+      (
+        await call('POST', guildUrl('/members/import'), {
+          mode: 'replace',
+          records: [{ userId: ALICE, wallet: 50, bank: 5 }],
+        })
+      ).json(),
+    ).toEqual({ ok: true, count: 1 });
+    expect(accounts.findAccount(ADMIN_GUILD, BOB)?.wallet).toBe(0);
+    expect((await call('GET', guildUrl('/members/export'))).json().members).toMatchObject([
+      { userId: ALICE, wallet: 50, bank: 5, total: 55 },
+    ]);
+    accounts.resetAll(ADMIN_GUILD);
+  });
+});
+
 describe('levels', () => {
   it('saves every kind of setting from the dashboard', async () => {
     const saved = await call('PUT', guildUrl('/settings/levelAnnounce'), {

@@ -109,6 +109,28 @@ describe('chat money', () => {
   });
 });
 
+describe('balance backups', () => {
+  const ID = '123456789012345678';
+
+  it('exports and imports balances in every mode', () => {
+    accounts.credit(GUILD, alice.id, 300, 'admin');
+    expect(accounts.exportAll(GUILD)).toMatchObject([{ rank: 1, userId: alice.id, wallet: 300 }]);
+
+    const records = [
+      { userId: ID, wallet: 100, bank: 50 },
+      { userId: 'bad', wallet: 1, bank: 1 },
+    ];
+    expect(accounts.importBalances(GUILD, records, 'add')).toBe(1);
+    accounts.importBalances(GUILD, [{ userId: ID, wallet: 10, bank: 0 }], 'add');
+    expect(accounts.findAccount(GUILD, ID)).toMatchObject({ wallet: 110, bank: 50 });
+    accounts.importBalances(GUILD, [{ userId: ID, wallet: 20, bank: 500 }], 'highest');
+    expect(accounts.findAccount(GUILD, ID)).toMatchObject({ wallet: 110, bank: 500 });
+    accounts.importBalances(GUILD, [{ userId: ID, wallet: 7, bank: 0 }], 'replace');
+    expect(accounts.findAccount(GUILD, ID)).toMatchObject({ wallet: 7, bank: 0 });
+    expect(accounts.findAccount(GUILD, alice.id)?.wallet).toBe(0);
+  });
+});
+
 describe('crime', () => {
   it('pays on success and fines from wallet then bank on failure', () => {
     settings.set(GUILD, 'crime.range', { min: 400, max: 400 });

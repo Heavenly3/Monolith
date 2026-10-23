@@ -3,13 +3,29 @@ import { lang } from '../i18n/index.ts';
 
 export { formatDuration, formatNumber };
 
-/** 2,775,276,526 → "2.78B" (en) / "2775,28 M" (es); exact below one million. */
+// Short scales: Spanish says "mil millones" where English says "billion".
+const SCALES: Record<string, [number, string][]> = {
+  en: [
+    [1e12, 'T'],
+    [1e9, 'B'],
+    [1e6, 'M'],
+  ],
+  es: [
+    [1e12, ' B'],
+    [1e9, ' mil M'],
+    [1e6, ' M'],
+  ],
+};
+
+/** 2,775,276,526 → "2.78B" (en) / "2,78 mil M" (es); exact below one million. */
 export function compactNumber(value: number): string {
   if (Math.abs(value) < 1_000_000) return formatNumber(value);
-  return new Intl.NumberFormat(lang.value, {
-    notation: 'compact',
-    maximumFractionDigits: 2,
-  }).format(value);
+  const scales = SCALES[lang.value] ?? SCALES.en!;
+  const [size, suffix] = scales.find(([limit]) => Math.abs(value) >= limit)!;
+  const amount = new Intl.NumberFormat(lang.value, { maximumFractionDigits: 2 }).format(
+    value / size,
+  );
+  return `${amount}${suffix}`;
 }
 
 const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [

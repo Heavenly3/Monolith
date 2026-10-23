@@ -170,24 +170,41 @@ export const en = {
     quick: 'Quick:',
   },
   backup: {
-    title: 'Backup and import',
-    subtitle:
-      "Download everyone's experience as JSON or CSV, or load a backup — also from other level bots that export by user id.",
     exportJson: 'Export JSON',
     exportCsv: 'Export CSV',
-    import: 'Import experience',
-    unreadable: 'No members with a user id and XP were found in this file.',
-    found: '{count} members with {xp} XP in total.',
     mode: 'How to load it',
     modes: { highest: 'Keep the highest', add: 'Add', replace: 'Replace all' },
-    modeHints: {
-      highest: "Each member keeps whichever is larger: their current XP or the file's.",
-      add: "The file's XP is added on top of what members already have.",
-      replace: "Everyone's experience is erased first; only the file remains.",
-    },
-    replaceWarning: 'Members not in the file lose all their experience.',
     confirm: 'Load',
-    done: 'Experience loaded for {count} members.',
+    levels: {
+      title: 'Backup and import',
+      subtitle:
+        "Download everyone's experience as JSON or CSV, or load a backup — also from other level bots that export by user id.",
+      import: 'Import experience',
+      unreadable: 'No members with a user id and XP were found in this file.',
+      found: '{count} members with {total} XP in total.',
+      modeHints: {
+        highest: "Each member keeps whichever is larger: their current XP or the file's.",
+        add: "The file's XP is added on top of what members already have.",
+        replace: "Everyone's experience is erased first; only the file remains.",
+      },
+      replaceWarning: 'Members not in the file lose all their experience.',
+      done: 'Experience loaded for {count} members.',
+    },
+    economy: {
+      title: 'Backup and import',
+      subtitle:
+        "Download everyone's wallet and bank as JSON or CSV, or load a backup — also from other economy bots (columns like cash, bank or total by user id).",
+      import: 'Import balances',
+      unreadable: 'No members with a user id and credits were found in this file.',
+      found: '{count} members with {total} credits in total.',
+      modeHints: {
+        highest: 'Wallet and bank each keep whichever is larger: the current one or the file.',
+        add: "The file's credits are added on top of what members already have.",
+        replace: 'Every wallet and bank is emptied first; only the file remains.',
+      },
+      replaceWarning: 'Members not in the file lose all their credits.',
+      done: 'Balances loaded for {count} members.',
+    },
   },
   public: {
     eyebrow: 'Level ranking',
@@ -247,6 +264,7 @@ export const en = {
     removeConfirm: 'Remove the income of this role?',
   },
   members: {
+    total: 'In total',
     subtitle: 'Members with credits, from richest to poorest.',
     member: 'Member',
     rank: 'Rank',

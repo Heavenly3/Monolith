@@ -176,24 +176,41 @@ export const es: WebMessages = {
     quick: 'Rápido:',
   },
   backup: {
-    title: 'Copia de seguridad e importación',
-    subtitle:
-      'Descarga la experiencia de todos en JSON o CSV, o carga una copia — también de otros bots de niveles que exporten por id de usuario.',
     exportJson: 'Exportar JSON',
     exportCsv: 'Exportar CSV',
-    import: 'Importar experiencia',
-    unreadable: 'No se encontraron miembros con id de usuario y XP en este archivo.',
-    found: '{count} miembros con {xp} XP en total.',
     mode: 'Cómo cargarla',
     modes: { highest: 'Quedarse con la mayor', add: 'Sumar', replace: 'Reemplazar todo' },
-    modeHints: {
-      highest: 'Cada miembro conserva la mayor: su XP actual o la del archivo.',
-      add: 'La XP del archivo se suma a la que ya tienen los miembros.',
-      replace: 'Primero se borra la experiencia de todos; solo queda la del archivo.',
-    },
-    replaceWarning: 'Los miembros que no estén en el archivo pierden toda su experiencia.',
     confirm: 'Cargar',
-    done: 'Experiencia cargada para {count} miembros.',
+    levels: {
+      title: 'Copia de seguridad e importación',
+      subtitle:
+        'Descarga la experiencia de todos en JSON o CSV, o carga una copia — también de otros bots de niveles que exporten por id de usuario.',
+      import: 'Importar experiencia',
+      unreadable: 'No se encontraron miembros con id de usuario y XP en este archivo.',
+      found: '{count} miembros con {total} XP en total.',
+      modeHints: {
+        highest: 'Cada miembro conserva la mayor: su XP actual o la del archivo.',
+        add: 'La XP del archivo se suma a la que ya tienen los miembros.',
+        replace: 'Primero se borra la experiencia de todos; solo queda la del archivo.',
+      },
+      replaceWarning: 'Los miembros que no estén en el archivo pierden toda su experiencia.',
+      done: 'Experiencia cargada para {count} miembros.',
+    },
+    economy: {
+      title: 'Copia de seguridad e importación',
+      subtitle:
+        'Descarga la cartera y el banco de todos en JSON o CSV, o carga una copia — también de otros bots de economía (columnas como cash, bank o total por id de usuario).',
+      import: 'Importar saldos',
+      unreadable: 'No se encontraron miembros con id de usuario y créditos en este archivo.',
+      found: '{count} miembros con {total} créditos en total.',
+      modeHints: {
+        highest: 'Cartera y banco conservan cada uno el mayor: el actual o el del archivo.',
+        add: 'Los créditos del archivo se suman a los que ya tienen los miembros.',
+        replace: 'Primero se vacían todas las carteras y bancos; solo queda el archivo.',
+      },
+      replaceWarning: 'Los miembros que no estén en el archivo pierden todos sus créditos.',
+      done: 'Saldos cargados para {count} miembros.',
+    },
   },
   public: {
     eyebrow: 'Ranking de niveles',
@@ -254,6 +271,7 @@ export const es: WebMessages = {
     removeConfirm: '¿Quitar los ingresos de este rol?',
   },
   members: {
+    total: 'En total',
     subtitle: 'Miembros con créditos, del más rico al más pobre.',
     member: 'Miembro',
     rank: 'Puesto',

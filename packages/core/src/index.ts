@@ -53,7 +53,12 @@ export type {
   XpGain,
   XpRecord,
 } from './services/levels.ts';
-export type { Adjustment, MoneyAction } from './services/accounts.ts';
+export type {
+  Adjustment,
+  BalanceImportMode,
+  BalanceRecord,
+  MoneyAction,
+} from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';
 export type { BetResult, Settlement } from './games/bets.ts';
 export type { SlotOutcome, RouletteColor, KenoParse } from './games/rules.ts';

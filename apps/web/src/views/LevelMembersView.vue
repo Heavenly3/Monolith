@@ -11,7 +11,7 @@ import SelectButton from 'primevue/selectbutton';
 import { computed, reactive, ref } from 'vue';
 import PageHeader from '../components/PageHeader.vue';
 import StatCard from '../components/StatCard.vue';
-import XpBackupPanel from '../components/XpBackupPanel.vue';
+import BackupPanel from '../components/BackupPanel.vue';
 import { t } from '../i18n/index.ts';
 import { api, guildPath } from '../lib/api.ts';
 import { useAsk, useLoader, useNotify } from '../lib/composables.ts';
@@ -208,7 +208,7 @@ async function resetAll(): Promise<void> {
       </DataTable>
     </div>
 
-    <XpBackupPanel :guild-id="guild.id" @imported="refresh" />
+    <BackupPanel :guild-id="guild.id" kind="levels" @imported="refresh" />
     <SettingsView :categories="['levelLeaderboard']" embedded />
     <div class="panel row public-link">
       <i class="pi pi-link muted" />

@@ -8,14 +8,16 @@ import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import SelectButton from 'primevue/selectbutton';
 import { computed, reactive, ref } from 'vue';
+import BackupPanel from '../components/BackupPanel.vue';
 import PageHeader from '../components/PageHeader.vue';
+import StatCard from '../components/StatCard.vue';
 import { t } from '../i18n/index.ts';
 import { api, guildPath } from '../lib/api.ts';
 import { useAsk, useLoader, useNotify } from '../lib/composables.ts';
 import { errorMessage } from '../lib/errors.ts';
 import { formatNumber } from '../lib/format.ts';
 import { useGuild } from '../lib/guild.ts';
-import type { Member } from '../lib/types.ts';
+import type { Member, Overview } from '../lib/types.ts';
 
 const guild = useGuild();
 const notify = useNotify();
@@ -33,6 +35,10 @@ const page = ref(0);
 const { data, error, loading, reload } = useLoader(() =>
   api.get<MembersPage>(guildPath(guild.value.id, `/members?page=${page.value}&limit=${PAGE_SIZE}`)),
 );
+
+// Totals of the economy, shown above the table.
+const overview = useLoader(() => api.get<Overview>(guildPath(guild.value.id, '/')));
+const refresh = async () => Promise.all([reload(), overview.reload()]);
 
 function onPage(event: DataTablePageEvent): void {
   page.value = event.page;
@@ -86,7 +92,7 @@ async function submit(): Promise<void> {
       }),
     );
     dialog.value = false;
-    await reload();
+    await refresh();
   } catch (failure) {
     formError.value = errorMessage(failure);
   } finally {
@@ -101,7 +107,7 @@ async function resetAll(): Promise<void> {
       guildPath(guild.value.id, '/members/reset'),
     );
     notify.success(t('panel.economy.resetDone', { count }));
-    await reload();
+    await refresh();
   } catch (failure) {
     notify.failure(failure);
   }
@@ -120,6 +126,29 @@ async function resetAll(): Promise<void> {
       />
       <Button :label="t('web.members.adjust')" icon="pi pi-pencil" @click="openAdjust()" />
     </PageHeader>
+
+    <div v-if="overview.data.value" class="grid stats">
+      <StatCard
+        icon="pi pi-users"
+        :label="t('panel.members.accounts')"
+        :value="overview.data.value.stats.accounts"
+      />
+      <StatCard
+        icon="pi pi-wallet"
+        :label="t('panel.members.inWallets')"
+        :value="overview.data.value.stats.wallets"
+      />
+      <StatCard
+        icon="pi pi-building-columns"
+        :label="t('panel.members.inBanks')"
+        :value="overview.data.value.stats.banks"
+      />
+      <StatCard
+        icon="pi pi-chart-bar"
+        :label="t('web.members.total')"
+        :value="overview.data.value.stats.wallets + overview.data.value.stats.banks"
+      />
+    </div>
 
     <Message v-if="error" severity="error" :closable="false">{{ error }}</Message>
     <div v-else class="panel table">
@@ -172,6 +201,8 @@ async function resetAll(): Promise<void> {
         </Column>
       </DataTable>
     </div>
+
+    <BackupPanel :guild-id="guild.id" kind="economy" @imported="refresh" />
 
     <Dialog
       v-model:visible="dialog"
@@ -239,6 +270,10 @@ async function resetAll(): Promise<void> {
 </template>
 
 <style scoped>
+.stats {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
 .table {
   padding: 0.5rem;
   overflow-x: auto;
