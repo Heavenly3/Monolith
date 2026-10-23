@@ -304,10 +304,6 @@ async function resetAll(): Promise<void> {
   flex-basis: 100%;
 }
 
-.stats {
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-}
-
 .table {
   padding: 0.5rem;
   overflow-x: auto;

@@ -135,6 +135,11 @@ a.p-button {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
+/* Stat cards share the row evenly and wrap before an amount gets squeezed. */
+.grid.stats {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
 .field {
   display: flex;
   flex-direction: column;

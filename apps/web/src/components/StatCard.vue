@@ -26,7 +26,8 @@ const exact = computed(() => formatNumber(props.value));
 .stat {
   display: flex;
   gap: 0.9rem;
-  align-items: flex-start;
+  align-items: center;
+  min-width: 0;
 }
 
 .stat-icon {
@@ -35,11 +36,14 @@ const exact = computed(() => formatNumber(props.value));
   background: rgba(94, 200, 229, 0.12);
   border-radius: 10px;
   padding: 0.65rem;
+  flex-shrink: 0;
 }
 
 .stat-body {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  gap: 0.15rem;
   min-width: 0;
 }
 
@@ -51,6 +55,8 @@ const exact = computed(() => formatNumber(props.value));
   font-size: 1.2rem;
   font-weight: 700;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Phones: icon above the text so large amounts keep one line. */

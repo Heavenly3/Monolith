@@ -25,7 +25,7 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
     </div>
 
     <template v-else-if="data">
-      <div class="grid">
+      <div class="grid stats">
         <StatCard
           icon="pi pi-users"
           :label="t('web.overview.members')"
