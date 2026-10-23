@@ -158,10 +158,22 @@ export const es: WebMessages = {
   },
   rankCard: {
     title: 'Vista previa',
-    subtitle: 'Así se ve la imagen de rango con el color que elegiste.',
+    subtitle:
+      'La imagen de rango tal como la verán los miembros. Sigue tus cambios antes de guardar.',
+    embed:
+      'Los miembros reciben un embed pequeño con nivel, puesto, barra y totales, en el color de acento.',
     compact: 'Los miembros reciben tres líneas cortas de texto en lugar de una imagen.',
     detailed:
       'Los miembros reciben la tarjeta completa con multiplicador, mensajes restantes y espera.',
+    presets: 'Colores rápidos',
+    pickColor: 'Elige un color',
+  },
+  duration: {
+    days: 'días',
+    hours: 'horas',
+    minutes: 'min',
+    seconds: 's',
+    quick: 'Rápido:',
   },
   backup: {
     title: 'Copia de seguridad e importación',

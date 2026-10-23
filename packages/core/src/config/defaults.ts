@@ -28,12 +28,16 @@ export interface LevelMessage {
 export const FINE_MODES = ['fixed', 'percent'] as const;
 export type FineMode = (typeof FINE_MODES)[number];
 
-/** How /rank looks: a drawn image, a short text, or the full card with every detail. */
-export const RANK_STYLES = ['image', 'compact', 'detailed'] as const;
+/**
+ * How /rank looks: a drawn image, a small embed like Polaris, three lines of
+ * text, or the full card with every detail.
+ */
+export const RANK_STYLES = ['image', 'embed', 'compact', 'detailed'] as const;
 export type RankStyle = (typeof RANK_STYLES)[number];
 
-export const RANK_COLORS = ['cyan', 'amber', 'teal', 'red', 'violet', 'green'] as const;
-export type RankColor = (typeof RANK_COLORS)[number];
+/** Pattern drawn over the rank image. */
+export const RANK_THEMES = ['blueprint', 'plain', 'scanlines', 'hazard', 'circuit'] as const;
+export type RankTheme = (typeof RANK_THEMES)[number];
 
 export const REWARD_MODES = ['stack', 'replace'] as const;
 export type RewardMode = (typeof REWARD_MODES)[number];
@@ -175,8 +179,13 @@ export interface SettingValues {
   'levels.announceStyle': AnnounceStyle;
   'levels.levelMessages': LevelMessage[];
   'levels.rankStyle': RankStyle;
-  /** Accent colour of the rank image. */
-  'levels.rankColor': RankColor;
+  'levels.rankTheme': RankTheme;
+  /** Accent colour of the rank image and embed, as #rrggbb. */
+  'levels.rankAccent': string;
+  /** Picture behind the rank image (https PNG or JPEG), or null. */
+  'levels.rankBackground': string | null;
+  /** How much the background picture is darkened, in percent. */
+  'levels.rankDim': number;
   /** Anyone with the link can see the ranking on the web, without logging in. */
   'levels.publicLeaderboard': boolean;
   'levels.ignoredChannels': string[];
@@ -265,7 +274,10 @@ export const DEFAULTS: SettingValues = {
   'levels.levelMessages': [],
   'levels.publicLeaderboard': false,
   'levels.rankStyle': 'image',
-  'levels.rankColor': 'cyan',
+  'levels.rankTheme': 'blueprint',
+  'levels.rankAccent': '#5ec8e5',
+  'levels.rankBackground': null,
+  'levels.rankDim': 65,
   'levels.ignoredChannels': [],
   'levels.ignoredRoles': [],
   'levels.rewardMode': 'stack',

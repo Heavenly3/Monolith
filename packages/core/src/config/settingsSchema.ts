@@ -7,8 +7,8 @@ import {
   ANNOUNCE_STYLES,
   CHANNEL_MULTIPLIER_MODES,
   FINE_MODES,
-  RANK_COLORS,
   RANK_STYLES,
+  RANK_THEMES,
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,
   REWARD_MODES,
@@ -26,6 +26,8 @@ export type FieldType =
   | 'language'
   | 'number'
   | 'decimal'
+  | 'color'
+  | 'url'
   | 'toggle'
   | 'choice'
   | 'channel'
@@ -306,7 +308,10 @@ export const SETTING_CATEGORIES = {
     module: 'levels',
     fields: [
       { id: 'rankStyle', key: 'levels.rankStyle', type: 'choice', options: RANK_STYLES },
-      { id: 'rankColor', key: 'levels.rankColor', type: 'choice', options: RANK_COLORS },
+      { id: 'rankTheme', key: 'levels.rankTheme', type: 'choice', options: RANK_THEMES },
+      { id: 'accent', key: 'levels.rankAccent', type: 'color' },
+      { id: 'background', key: 'levels.rankBackground', type: 'url', optional: true, limit: 400 },
+      { id: 'dim', key: 'levels.rankDim', type: 'percent', min: 0, max: 95 },
     ],
   },
   levelLeaderboard: {
@@ -368,6 +373,19 @@ export function parseFieldValue(field: SettingField, raw: unknown): unknown {
       if (!input || !Number.isFinite(value)) return undefined;
       const rounded = Math.round(value * 100) / 100;
       return inRange(rounded, field, 1_000_000) ?? undefined;
+    }
+    case 'color': {
+      const hex = input.startsWith('#') ? input : `#${input}`;
+      return /^#[0-9a-f]{6}$/i.test(hex) ? hex.toLowerCase() : undefined;
+    }
+    case 'url': {
+      if (!input) return field.optional ? null : undefined;
+      if (input.length > (field.limit ?? 400)) return undefined;
+      try {
+        return new URL(input).protocol === 'https:' ? input : undefined;
+      } catch {
+        return undefined;
+      }
     }
     case 'percent': {
       const value = Number(input.replace('%', ''));

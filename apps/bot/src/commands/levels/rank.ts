@@ -3,6 +3,7 @@ import {
   AttachmentBuilder,
   ButtonBuilder,
   ButtonStyle,
+  EmbedBuilder,
   InteractionContextType,
   MessageFlags,
   SlashCommandBuilder,
@@ -18,7 +19,7 @@ import {
   type UserMenuInteraction,
 } from '../../framework/types.ts';
 import { activityOf, pendingRoles, syncRewardRoles } from '../../services/levelUp.ts';
-import { avatarData, renderRankCard } from '../../services/rankCard.ts';
+import { designOf, imageData, renderRankCard } from '../../services/rankCard.ts';
 import * as ui from '../../ui/index.ts';
 import { emojis, progressBar, relativeTime } from '../../ui/index.ts';
 
@@ -84,19 +85,53 @@ function compactText(t: Translator, guildId: string, target: User, name: string)
   ].join('\n');
 }
 
+/** A small embed in the spirit of Polaris, in the server's accent colour. */
+function rankEmbed(t: Translator, guildId: string, target: User, name: string): EmbedBuilder {
+  const progress = levels.progressOf(guildId, target.id);
+  const rank = levels.rankOf(guildId, target.id);
+  const maxed = progress.needed === 0;
+  const next = levels.rewards(guildId).find((reward) => reward.level > progress.level);
+  const accent = settings.get(guildId, 'levels.rankAccent');
+  const embed = new EmbedBuilder()
+    .setColor(Number.parseInt(accent.slice(1), 16))
+    .setAuthor({ name, iconURL: target.displayAvatarURL({ size: 64 }) })
+    .setDescription(
+      [
+        `**${t('levels.level')} ${progress.level}**${rank ? ` (${t('levels.rank')} #${rank})` : ''}`,
+        maxed
+          ? `${progressBar(1)} ${t('levels.maxLevel')}`
+          : `${progressBar(progress.ratio)} ${formatNumber(progress.current)} / ${formatNumber(
+              progress.needed,
+            )} XP (${Math.floor(progress.ratio * 100)}%)`,
+      ].join('\n'),
+    )
+    .addFields(
+      { name: t('levels.xp'), value: formatNumber(progress.xp), inline: true },
+      { name: t('levels.messages'), value: formatNumber(progress.messages), inline: true },
+    );
+  if (next) {
+    embed.addFields({
+      name: t('levels.nextRewardTitle'),
+      value: `<@&${next.roleId}> · ${t('levels.level')} ${next.level}`,
+      inline: true,
+    });
+  }
+  return embed;
+}
+
 /** The rank image as an attachment. */
 async function rankImage(t: Translator, guildId: string, target: User, name: string) {
   const progress = levels.progressOf(guildId, target.id);
   const png = renderRankCard({
     name,
-    avatar: await avatarData(target.displayAvatarURL({ extension: 'png', size: 256 })),
+    avatar: await imageData(target.displayAvatarURL({ extension: 'png', size: 256 })),
     level: progress.level,
     rank: levels.rankOf(guildId, target.id),
     xp: progress.xp,
     current: progress.current,
     needed: progress.needed,
     messages: progress.messages,
-    color: settings.get(guildId, 'levels.rankColor'),
+    design: await designOf(guildId),
     labels: {
       level: t('levels.level'),
       rank: t('levels.rank'),
@@ -229,6 +264,15 @@ async function answer(
   const components = fix ? [new ActionRowBuilder<ButtonBuilder>().addComponents(fix)] : [];
   const warning = fix ? `${emojis.warning} ${t('levels.outOfSync')}` : null;
 
+  if (style === 'embed') {
+    return interaction.reply({
+      content: warning ?? undefined,
+      embeds: [rankEmbed(t, guildId, target, name)],
+      components,
+      flags,
+      allowedMentions: { parse: [] },
+    });
+  }
   if (style === 'compact') {
     return interaction.reply({
       content: [compactText(t, guildId, target, name), warning].filter(Boolean).join('\n'),

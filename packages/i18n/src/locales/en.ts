@@ -74,6 +74,7 @@ export const en = {
     maxLevel: 'Maximum level reached',
     noXp: '{user} has no experience yet. Chat to earn some!',
     nextReward: 'Next reward: {role} at level {level}',
+    nextRewardTitle: 'Next reward',
     boardSubtitle: 'The most experienced members of the server.',
     boardEmpty: 'No one has experience yet. Start chatting!',
     boardLine: 'Level {level} · {xp} XP',
@@ -474,6 +475,8 @@ export const en = {
       duration: 'e.g. 30s, 15m, 1h30m, 2d',
       number: 'A whole number',
       decimal: 'A number, decimals allowed, e.g. 0.5',
+      color: 'A colour like #5ec8e5',
+      url: 'An https link to a PNG or JPEG image (or empty)',
       language: 'Pick a language',
       toggle: 'Tick to turn on',
       choice: 'Pick one',
@@ -497,16 +500,16 @@ export const en = {
       },
       rankStyle: {
         image: 'Image — a drawn card with avatar and progress bar',
+        embed: 'Embed — a small embed like Polaris',
         compact: 'Compact — three short lines of text',
         detailed: 'Detailed — the full card with multiplier and cooldown',
       },
-      rankColor: {
-        cyan: 'Cyan',
-        amber: 'Amber',
-        teal: 'Teal',
-        red: 'Red',
-        violet: 'Violet',
-        green: 'Green',
+      rankTheme: {
+        blueprint: 'Blueprint — a faint grid',
+        plain: 'Plain — just the panel',
+        scanlines: 'Scanlines — like an old monitor',
+        hazard: 'Hazard — warning stripes',
+        circuit: 'Circuit — traces and nodes',
       },
       fineMode: {
         fixed: 'Fixed — an amount of credits',
@@ -701,7 +704,16 @@ export const en = {
       },
       levelRank: {
         rankStyle: { label: 'Style', help: 'What members see when they use /rank.' },
-        rankColor: { label: 'Image colour', help: 'Accent colour of the rank image.' },
+        rankTheme: { label: 'Theme', help: 'Pattern drawn over the rank image.' },
+        accent: { label: 'Accent colour', help: 'Colour of the ring, level, bar and embed.' },
+        background: {
+          label: 'Background picture',
+          help: 'Optional https link to a PNG or JPEG drawn behind the card.',
+        },
+        dim: {
+          label: 'Darken background (%)',
+          help: 'Keeps the text readable over bright pictures.',
+        },
       },
       levelLeaderboard: {
         public: {

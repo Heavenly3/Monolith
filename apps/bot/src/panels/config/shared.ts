@@ -180,6 +180,13 @@ function fieldInput(guildId: string, categoryId: string, field: SettingField, t:
         paragraph: true,
         max: field.limit ?? 500,
       });
+    case 'url':
+      return textField(field.id, label, {
+        description: fieldHint(field, t),
+        value: inputValue(guildId, field),
+        required: !field.optional,
+        max: field.limit ?? 400,
+      });
     default:
       return textField(field.id, label, {
         description: fieldHint(field, t),

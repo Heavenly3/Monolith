@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { parseDuration } from '@monolith/core/browser';
 import Button from 'primevue/button';
 import InputNumber from 'primevue/inputnumber';
 import InputText from 'primevue/inputtext';
@@ -12,10 +11,11 @@ import { t } from '../i18n/index.ts';
 import { ApiError, api, guildPath } from '../lib/api.ts';
 import { useChannels } from '../lib/channels.ts';
 import { useAsk, useNotify } from '../lib/composables.ts';
-import { formatDuration } from '../lib/format.ts';
 import { useRoles } from '../lib/roles.ts';
 import type { SettingCategoryValues, SettingFieldValue } from '../lib/types.ts';
 import ChoiceCards from './ChoiceCards.vue';
+import ColorInput from './ColorInput.vue';
+import DurationInput from './DurationInput.vue';
 import RoleTag from './RoleTag.vue';
 import TemplateEditor from './TemplateEditor.vue';
 
@@ -30,6 +30,7 @@ const ask = useAsk();
 
 // Each kind of input keeps its values in a map of the right type.
 const numbers = reactive<Record<string, number | null>>({});
+const durations = reactive<Record<string, number>>({});
 const texts = reactive<Record<string, string>>({});
 const flags = reactive<Record<string, boolean>>({});
 const singles = reactive<Record<string, string | null>>({});
@@ -54,7 +55,7 @@ function load(category: SettingCategoryValues): void {
     else if (field.type === 'toggle') flags[field.id] = Boolean(value);
     else if (field.type === 'channel') singles[field.id] = (value as string | null) ?? null;
     else if (LIST_TYPES.has(field.type)) lists[field.id] = [...((value as string[]) ?? [])];
-    else if (field.type === 'duration') texts[field.id] = formatDuration(Number(value));
+    else if (field.type === 'duration') durations[field.id] = Number(value) || 0;
     else texts[field.id] = (value as string | null) ?? '';
   }
   invalid.value = null;
@@ -67,6 +68,7 @@ function valueOf(field: SettingFieldValue): unknown {
   if (field.type === 'toggle') return flags[field.id] ?? false;
   if (field.type === 'channel') return singles[field.id] ?? '';
   if (LIST_TYPES.has(field.type)) return lists[field.id] ?? [];
+  if (field.type === 'duration') return durations[field.id] ?? 0;
   return texts[field.id] ?? '';
 }
 
@@ -84,7 +86,10 @@ const SHOWN_WHEN: Record<string, (values: Record<string, unknown>) => boolean> =
   'chatMoney.cooldown': (values) => values.enabled === true,
   'chatMoney.channels': (values) => values.enabled === true,
   'levelAnnounceRules.until': (values) => Number(values.every) > 1,
-  'levelRank.rankColor': (values) => values.rankStyle === 'image',
+  'levelRank.rankTheme': (values) => values.rankStyle === 'image',
+  'levelRank.accent': (values) => values.rankStyle === 'image' || values.rankStyle === 'embed',
+  'levelRank.background': (values) => values.rankStyle === 'image',
+  'levelRank.dim': (values) => values.rankStyle === 'image' && Boolean(values.background),
 };
 const visibleFields = computed(() =>
   props.category.fields.filter(
@@ -113,11 +118,6 @@ const TEMPLATE_FALLBACKS: Record<string, string> = {
 };
 const fallbackOf = (field: SettingFieldValue): string =>
   t(TEMPLATE_FALLBACKS[`${props.category.id}.${field.id}`] ?? 'config.builtIn');
-
-function durationPreview(field: SettingFieldValue): string | null {
-  const seconds = parseDuration(texts[field.id] ?? '');
-  return seconds ? t('web.settings.durationPreview', { duration: formatDuration(seconds) }) : null;
-}
 
 async function save(): Promise<void> {
   saving.value = true;
@@ -196,16 +196,29 @@ async function reset(): Promise<void> {
           <template #decrementbuttonicon><span class="pi pi-minus" /></template>
         </InputNumber>
 
-        <template v-else-if="field.type === 'duration'">
-          <InputText
-            :id="`field-${field.id}`"
-            v-model="texts[field.id]"
-            :invalid="invalid === field.id || !durationPreview(field)"
-            :placeholder="t('config.hints.duration')"
-            fluid
-          />
-          <small class="amount">{{ durationPreview(field) ?? t('config.hints.duration') }}</small>
-        </template>
+        <DurationInput
+          v-else-if="field.type === 'duration'"
+          v-model="durations[field.id]!"
+          :input-id="`field-${field.id}`"
+          :invalid="invalid === field.id"
+        />
+
+        <ColorInput
+          v-else-if="field.type === 'color'"
+          v-model="texts[field.id]!"
+          :input-id="`field-${field.id}`"
+          :invalid="invalid === field.id"
+        />
+
+        <InputText
+          v-else-if="field.type === 'url'"
+          :id="`field-${field.id}`"
+          v-model="texts[field.id]"
+          :invalid="invalid === field.id"
+          placeholder="https://…"
+          type="url"
+          fluid
+        />
 
         <Select
           v-else-if="field.type === 'language'"

@@ -291,11 +291,29 @@ describe('rank card', () => {
       current: 5,
       needed: 10,
       messages: 1,
-      color: 'amber',
+      design: { theme: 'hazard', accent: '#e8a23c', background: null, dim: 50 },
       labels: { level: 'Level', rank: 'Rank', xp: 'XP', messages: 'messages', max: 'Max' },
     });
     expect(svg).not.toContain('<b>');
-    expect(svg).toContain('&#60;b&#62;Kael &#38; the v…');
+    expect(svg).toContain('&#60;b&#62;Kael &#38; the very…');
     expect(svg).toContain('#e8a23c');
+  });
+
+  it('leaves out symbols the card font lacks, unless nothing readable is left', () => {
+    const draw = (name: string) =>
+      rankCardSvg({
+        name,
+        avatar: null,
+        level: 1,
+        rank: 1,
+        xp: 1,
+        current: 1,
+        needed: 10,
+        messages: 1,
+        design: { theme: 'plain', accent: '#5ec8e5', background: null, dim: 0 },
+        labels: { level: 'Level', rank: 'Rank', xp: 'XP', messages: 'messages', max: 'Max' },
+      });
+    expect(draw('Coconut ◎')).toContain('fill="#eef2f5">Coconut</text>');
+    expect(draw('ココナッツ')).toContain('sans-serif">ココナッツ</text>');
   });
 });

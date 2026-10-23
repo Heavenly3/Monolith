@@ -129,7 +129,10 @@ const formula = computed(() => ({
       <RankCardPreview
         v-if="main === 'levelRank'"
         :style-id="String(draftOf('levelRank', 'rankStyle') ?? 'image')"
-        :color="String(draftOf('levelRank', 'rankColor') ?? 'cyan')"
+        :theme="String(draftOf('levelRank', 'rankTheme') ?? 'blueprint')"
+        :accent="String(draftOf('levelRank', 'accent') ?? '#5ec8e5')"
+        :background="String(draftOf('levelRank', 'background') ?? '') || null"
+        :dim="Number(draftOf('levelRank', 'dim') ?? 65)"
       />
       <JobsEditor v-if="main === 'work'" :guild-id="guild.id" />
       <WheelEditor v-if="main === 'wheel'" :guild-id="guild.id" />

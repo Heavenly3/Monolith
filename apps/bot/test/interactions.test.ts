@@ -301,8 +301,13 @@ async function suite(locale: string) {
   expect(harness.recorder.payloads.at(-1)?.text).toContain('GG <@alice>, level 2!');
   await cmd('rank');
   await cmd('rank', { opts: { user: bob } });
-  for (const style of ['compact', 'detailed', 'image'] as const) {
+  for (const style of ['compact', 'embed', 'detailed', 'image'] as const) {
     settings.set(GUILD, 'levels.rankStyle', style);
+    settings.set(
+      GUILD,
+      'levels.rankBackground',
+      style === 'image' ? 'https://example.com/bg.png' : null,
+    );
     await cmd('rank');
     await harness.userMenu(execute, 'View rank', { user: alice, target: alice, locale });
   }

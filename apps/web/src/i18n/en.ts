@@ -155,9 +155,19 @@ export const en = {
   },
   rankCard: {
     title: 'Preview',
-    subtitle: 'This is how the rank image looks with the colour you picked.',
+    subtitle: 'The rank image as members will see it. It follows your changes before saving.',
+    embed: 'Members get a small embed with level, rank, a bar and totals, in the accent colour.',
     compact: 'Members get three short lines of text instead of an image.',
     detailed: 'Members get the full card with multiplier, messages left and cooldown.',
+    presets: 'Quick colours',
+    pickColor: 'Pick a colour',
+  },
+  duration: {
+    days: 'days',
+    hours: 'hours',
+    minutes: 'min',
+    seconds: 's',
+    quick: 'Quick:',
   },
   backup: {
     title: 'Backup and import',

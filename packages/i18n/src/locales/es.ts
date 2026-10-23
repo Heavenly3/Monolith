@@ -75,6 +75,7 @@ export const es: Messages = {
     maxLevel: 'Nivel máximo alcanzado',
     noXp: '{user} todavía no tiene experiencia. ¡Chatea para ganarla!',
     nextReward: 'Próxima recompensa: {role} en el nivel {level}',
+    nextRewardTitle: 'Próxima recompensa',
     boardSubtitle: 'Los miembros con más experiencia del servidor.',
     boardEmpty: 'Nadie tiene experiencia todavía. ¡Empezad a chatear!',
     boardLine: 'Nivel {level} · {xp} XP',
@@ -480,6 +481,8 @@ export const es: Messages = {
       duration: 'p. ej. 30s, 15m, 1h30m, 2d',
       number: 'Un número entero',
       decimal: 'Un número, con decimales si quieres, p. ej. 0.5',
+      color: 'Un color como #5ec8e5',
+      url: 'Un enlace https a una imagen PNG o JPEG (o vacío)',
       language: 'Elige un idioma',
       toggle: 'Márcalo para activarlo',
       choice: 'Elige una opción',
@@ -503,16 +506,16 @@ export const es: Messages = {
       },
       rankStyle: {
         image: 'Imagen — una tarjeta dibujada con avatar y barra de progreso',
+        embed: 'Embed — un embed pequeño como el de Polaris',
         compact: 'Compacto — tres líneas cortas de texto',
         detailed: 'Detallado — la tarjeta completa con multiplicador y espera',
       },
-      rankColor: {
-        cyan: 'Cian',
-        amber: 'Ámbar',
-        teal: 'Turquesa',
-        red: 'Rojo',
-        violet: 'Violeta',
-        green: 'Verde',
+      rankTheme: {
+        blueprint: 'Plano técnico — una cuadrícula tenue',
+        plain: 'Liso — solo el panel',
+        scanlines: 'Líneas — como un monitor antiguo',
+        hazard: 'Peligro — franjas de advertencia',
+        circuit: 'Circuito — pistas y nodos',
       },
       fineMode: {
         fixed: 'Fija — una cantidad de créditos',
@@ -734,7 +737,16 @@ export const es: Messages = {
       },
       levelRank: {
         rankStyle: { label: 'Estilo', help: 'Lo que ven los miembros al usar /rango.' },
-        rankColor: { label: 'Color de la imagen', help: 'Color de acento de la imagen de rango.' },
+        rankTheme: { label: 'Tema', help: 'Dibujo que se pone sobre la imagen de rango.' },
+        accent: { label: 'Color de acento', help: 'Color del aro, el nivel, la barra y el embed.' },
+        background: {
+          label: 'Imagen de fondo',
+          help: 'Enlace https opcional a un PNG o JPEG que se pone detrás de la tarjeta.',
+        },
+        dim: {
+          label: 'Oscurecer el fondo (%)',
+          help: 'Mantiene el texto legible sobre imágenes claras.',
+        },
       },
       levelLeaderboard: {
         public: {
