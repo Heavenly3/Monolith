@@ -40,6 +40,7 @@ export const en = {
     roulette: 'Roulette',
     horserace: 'Drone race',
     keno: 'Keno',
+    blackjack: 'Blackjack',
     raffle: 'Lottery',
     loans: 'Loans',
     shop: 'Shop',
@@ -205,6 +206,26 @@ export const en = {
       'You tripped a pressure plate in the archive and woke every defence system.',
       'The ration dispenser photographed you and sent the picture to the stratum council.',
     ],
+  },
+
+  blackjack: {
+    dealer: 'Dealer',
+    you: 'You',
+    yourMove: 'Your move: hit for another card, stand, or double your bet for one last card.',
+    hit: 'Hit',
+    stand: 'Stand',
+    double: 'Double ({amount})',
+    playing: 'You already have a hand on the table. Finish it before starting another {command}.',
+    gone: 'This hand is over.',
+    noFundsToDouble: 'You do not have enough credits in your wallet to double.',
+    rules: 'Blackjack pays 3:2 · dealer stands on 17 · idle hands stand after 5 minutes',
+    outcomes: {
+      blackjack: 'Blackjack!',
+      win: 'You win!',
+      push: 'Push — your bet comes back',
+      lose: 'The dealer wins',
+      bust: 'Bust — over 21',
+    },
   },
 
   leaderboard: {
@@ -708,6 +729,7 @@ export const en = {
         roulette: { label: 'Roulette cooldown', help: 'Time between two /roulette bets.' },
         horserace: { label: 'Race cooldown', help: 'Time between two /race bets.' },
         keno: { label: 'Keno cooldown', help: 'Time between two /keno games.' },
+        blackjack: { label: 'Blackjack cooldown', help: 'Time between two /blackjack hands.' },
       },
       economy: {
         start: {
@@ -985,6 +1007,10 @@ export const en = {
         about: 'Moves credits from the bank back into your wallet so you can spend them.',
       },
       pay: { about: 'Gives credits from your wallet to another member instantly.' },
+      blackjack: {
+        about:
+          'Play a hand of blackjack against the dealer with buttons: hit, stand or double your bet. Blackjack pays 3:2, a win pays double and a tie returns your bet.',
+      },
       crime: {
         about:
           'Try something illegal for a bigger payout than /work. It can fail: then you pay a fine, fixed or a share of your balance. There is a cooldown between crimes.',

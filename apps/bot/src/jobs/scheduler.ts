@@ -1,5 +1,6 @@
 import type { Client } from 'discord.js';
 import { cooldowns, logger } from '@monolith/core';
+import { standIdleHands } from './blackjackIdle.ts';
 import { collectLoans } from './loanCollector.ts';
 import { drawRaffles } from './raffleDraw.ts';
 import { awardVoiceXp } from './voiceXp.ts';
@@ -16,6 +17,7 @@ const JOBS: Job[] = [
   { name: 'loans', every: 60_000, run: collectLoans },
   { name: 'raffle', every: 15_000, run: drawRaffles },
   { name: 'voice-xp', every: 60_000, run: awardVoiceXp },
+  { name: 'blackjack', every: 30_000, run: standIdleHands },
   { name: 'cooldowns', every: 60 * 60_000, run: () => cooldowns.purgeExpired() },
 ];
 

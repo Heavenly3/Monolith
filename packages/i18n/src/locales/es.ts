@@ -41,6 +41,7 @@ export const es: Messages = {
     roulette: 'Ruleta',
     horserace: 'Carrera de drones',
     keno: 'Keno',
+    blackjack: 'Blackjack',
     raffle: 'Lotería',
     loans: 'Préstamos',
     shop: 'Tienda',
@@ -208,6 +209,27 @@ export const es: Messages = {
       'Pisaste una placa de presión en el archivo y despertaste todas las defensas.',
       'El dispensador de raciones te fotografió y envió la imagen al consejo del estrato.',
     ],
+  },
+
+  blackjack: {
+    dealer: 'Crupier',
+    you: 'Tú',
+    yourMove: 'Tu turno: pide otra carta, plántate o dobla tu apuesta por una última carta.',
+    hit: 'Pedir',
+    stand: 'Plantarse',
+    double: 'Doblar ({amount})',
+    playing: 'Ya tienes una mano en la mesa. Termínala antes de empezar otro {command}.',
+    gone: 'Esta mano ya terminó.',
+    noFundsToDouble: 'No tienes créditos suficientes en la cartera para doblar.',
+    rules:
+      'El blackjack paga 3:2 · el crupier se planta con 17 · las manos sin jugar se plantan a los 5 minutos',
+    outcomes: {
+      blackjack: '¡Blackjack!',
+      win: '¡Ganas!',
+      push: 'Empate — recuperas tu apuesta',
+      lose: 'Gana el crupier',
+      bust: 'Te pasaste de 21',
+    },
   },
 
   leaderboard: {
@@ -758,6 +780,7 @@ export const es: Messages = {
           help: 'Tiempo entre dos apuestas de /carrera.',
         },
         keno: { label: 'Espera del keno', help: 'Tiempo entre dos partidas de /keno.' },
+        blackjack: { label: 'Espera del blackjack', help: 'Tiempo entre dos manos de /blackjack.' },
       },
       economy: {
         start: {
@@ -1044,6 +1067,10 @@ export const es: Messages = {
       },
       withdraw: { about: 'Pasa créditos del banco a tu cartera para poder gastarlos.' },
       pay: { about: 'Da créditos de tu cartera a otro miembro al instante.' },
+      blackjack: {
+        about:
+          'Juega una mano de blackjack contra el crupier con botones: pedir, plantarse o doblar la apuesta. El blackjack paga 3:2, ganar paga el doble y el empate te devuelve la apuesta.',
+      },
       crime: {
         about:
           'Intenta algo ilegal para ganar más que con /trabajar. Puede salir mal: entonces pagas una multa, fija o una parte de tu saldo. Hay una espera entre crímenes.',

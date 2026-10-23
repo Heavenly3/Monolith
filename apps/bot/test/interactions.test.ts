@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import type * as RespondModule from '../src/framework/respond.ts';
 import {
   accounts,
+  blackjack,
   closeDatabase,
   cooldowns,
   levels,
@@ -228,6 +229,22 @@ async function suite(locale: string) {
   await cmd('crime');
   clearCooldowns();
   await cmd('crime');
+
+  // Blackjack: a whole hand with every button, and someone else's buttons
+  accounts.credit(GUILD, alice.id, 5000, 'admin');
+  clearCooldowns();
+  blackjack.expire(Date.now() + blackjack.IDLE_MS * 2);
+  await cmd('blackjack', { opts: { bet: '200' } });
+  await cmd('blackjack', { opts: { bet: '200' } });
+  await act('blackjack:hit:alice', { user: bob });
+  await act('blackjack:hit:alice');
+  await act('blackjack:double:alice');
+  await act('blackjack:stand:alice');
+  await act('blackjack:stand:alice');
+  clearCooldowns();
+  await cmd('blackjack', { opts: { bet: '200' } });
+  await act('blackjack:double:alice');
+  blackjack.expire(Date.now() + blackjack.IDLE_MS * 2);
 
   // Modules: a turned-off module answers with a notice, then comes back
   await panel('modules', 'toggle:games');

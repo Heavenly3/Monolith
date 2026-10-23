@@ -30,6 +30,7 @@ export * as work from './services/work.ts';
 
 export * as bets from './games/bets.ts';
 export * as rules from './games/rules.ts';
+export * as blackjack from './games/blackjack.ts';
 
 export type { LedgerEntry, LedgerReason } from './services/ledger.ts';
 export type { AuditEntry } from './services/audit.ts';
@@ -55,6 +56,13 @@ export type { Adjustment, MoneyAction } from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';
 export type { BetResult, Settlement } from './games/bets.ts';
 export type { SlotOutcome, RouletteColor, KenoParse } from './games/rules.ts';
+export type {
+  Card as BlackjackCard,
+  Finished as BlackjackResult,
+  Hand as BlackjackHand,
+  Move as BlackjackMove,
+  Outcome as BlackjackOutcome,
+} from './games/blackjack.ts';
 
 export * from './utils/format.ts';
 export * from './utils/parse.ts';

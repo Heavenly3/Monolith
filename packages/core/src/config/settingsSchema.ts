@@ -180,6 +180,7 @@ export const SETTING_CATEGORIES = {
       { id: 'roulette', key: 'roulette.cooldown', type: 'duration' },
       { id: 'horserace', key: 'horserace.cooldown', type: 'duration' },
       { id: 'keno', key: 'keno.cooldown', type: 'duration' },
+      { id: 'blackjack', key: 'blackjack.cooldown', type: 'duration' },
     ],
   },
   loans: {

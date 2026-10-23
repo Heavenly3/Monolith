@@ -21,6 +21,7 @@ export type Feature =
   | 'roulette'
   | 'horserace'
   | 'keno'
+  | 'blackjack'
   | 'raffle'
   | 'loans'
   | 'shop'
@@ -41,6 +42,7 @@ const FEATURE_ICONS: Record<Feature, EmojiName> = {
   roulette: 'roulette',
   horserace: 'drone',
   keno: 'keno',
+  blackjack: 'card',
   raffle: 'raffle',
   loans: 'loan',
   shop: 'shop',

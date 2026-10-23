@@ -2,7 +2,7 @@
 // player gets back double their bet. Every game keeps a small house edge so
 // the economy cannot be farmed (see packages/core/test/games.test.ts).
 
-export type GameName = 'slots' | 'roulette' | 'horserace' | 'keno';
+export type GameName = 'slots' | 'roulette' | 'horserace' | 'keno' | 'blackjack';
 export type CooldownName = GameName | 'work' | 'collect' | 'wheel' | 'rob' | 'crime' | 'chat';
 
 export const SLOT_SYMBOLS = ['nut', 'gear', 'chip', 'cell', 'core', 'monolith'] as const;

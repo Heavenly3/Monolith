@@ -120,6 +120,7 @@ export interface SettingValues {
   'roulette.cooldown': number;
   'horserace.cooldown': number;
   'keno.cooldown': number;
+  'blackjack.cooldown': number;
   'rob.cooldown': number;
   'loan.interestRate': number;
   'loan.duration': number;
@@ -215,6 +216,7 @@ export const DEFAULTS: SettingValues = {
   'roulette.cooldown': 30,
   'horserace.cooldown': 30,
   'keno.cooldown': 30,
+  'blackjack.cooldown': 30,
   'rob.cooldown': 2 * HOUR,
 
   'loan.interestRate': 10,

@@ -221,6 +221,21 @@ export const MIGRATIONS: readonly string[] = [
   );
   CREATE INDEX idx_member_levels_rank ON member_levels (guild_id, xp DESC);
   `,
+
+  // 6 — blackjack hands in progress (one per member and server)
+  `
+  CREATE TABLE blackjack_games (
+    guild_id   TEXT NOT NULL,
+    user_id    TEXT NOT NULL,
+    stake      INTEGER NOT NULL CHECK (stake > 0),
+    deck       TEXT NOT NULL,
+    player     TEXT NOT NULL,
+    dealer     TEXT NOT NULL,
+    doubled    INTEGER NOT NULL DEFAULT 0,
+    updated_at INTEGER NOT NULL,
+    PRIMARY KEY (guild_id, user_id)
+  );
+  `,
 ];
 
 /** Tables that belong to one server (used to hand legacy data over to a server). */
