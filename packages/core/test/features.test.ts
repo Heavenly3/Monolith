@@ -1,5 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { accounts, bets, cooldowns, loans, raffle, rob, shop, wheel, work } from '../src/index.ts';
+import {
+  accounts,
+  bets,
+  cooldowns,
+  loans,
+  raffle,
+  rob,
+  settings,
+  shop,
+  wheel,
+  work,
+} from '../src/index.ts';
 import { GUILD, alice, bob, freshDatabase } from './helpers.ts';
 
 beforeEach(() => {
@@ -22,7 +33,11 @@ describe('bets', () => {
   it('validates the amount', () => {
     accounts.credit(GUILD, alice.id, 1000, 'admin');
     expect(bets.placeBet(GUILD, alice, 'abc', 'keno')).toEqual({ ok: false, reason: 'invalid' });
-    expect(bets.placeBet(GUILD, alice, '50', 'keno')).toEqual({ ok: false, reason: 'minBet' });
+    expect(bets.placeBet(GUILD, alice, '50', 'keno')).toEqual({
+      ok: false,
+      reason: 'minBet',
+      min: 100,
+    });
     expect(bets.placeBet(GUILD, alice, '5000', 'keno')).toMatchObject({
       ok: false,
       reason: 'funds',
@@ -42,6 +57,40 @@ describe('bets', () => {
       net: 200,
       wallet: 1200,
     });
+  });
+});
+
+describe('economy rules', () => {
+  it('gives the starting balance once and caps earnings', () => {
+    const carol = { id: 'carol', username: 'carol' };
+    settings.set(GUILD, 'economy.startBalance', 500);
+    expect(accounts.getAccount(GUILD, carol).wallet).toBe(500);
+    expect(accounts.getAccount(GUILD, carol).wallet).toBe(500);
+
+    settings.set(GUILD, 'economy.maxBalance', 800);
+    expect(accounts.earn(GUILD, carol.id, 1000, 'work')).toBe(300);
+    expect(accounts.earn(GUILD, carol.id, 10, 'work')).toBe(0);
+    expect(accounts.findAccount(GUILD, carol.id)?.wallet).toBe(800);
+  });
+
+  it('applies bet limits and returns the stake past the maximum balance', () => {
+    accounts.credit(GUILD, alice.id, 1000, 'admin');
+    settings.set(GUILD, 'bet.max', 300);
+    expect(bets.placeBet(GUILD, alice, '400', 'slots')).toEqual({
+      ok: false,
+      reason: 'maxBet',
+      max: 300,
+    });
+    expect(bets.placeBet(GUILD, alice, '300', 'slots')).toEqual({ ok: true, amount: 300 });
+    settings.set(GUILD, 'economy.maxBalance', 1100);
+    expect(bets.settle(GUILD, alice.id, 300, 3)).toMatchObject({ payout: 400, net: 100 });
+  });
+
+  it('resets every balance', () => {
+    accounts.credit(GUILD, alice.id, 100, 'admin');
+    accounts.credit(GUILD, bob.id, 100, 'admin', 'bank');
+    expect(accounts.resetAll(GUILD)).toBe(2);
+    expect(accounts.stats(GUILD).accounts).toBe(0);
   });
 });
 

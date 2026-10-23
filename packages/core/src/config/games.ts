@@ -2,8 +2,6 @@
 // player gets back double their bet. Every game keeps a small house edge so
 // the economy cannot be farmed (see packages/core/test/games.test.ts).
 
-export const MIN_BET = 100;
-
 export type GameName = 'slots' | 'roulette' | 'horserace' | 'keno';
 export type CooldownName = GameName | 'work' | 'collect' | 'wheel' | 'rob';
 

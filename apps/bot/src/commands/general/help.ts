@@ -12,9 +12,9 @@ import {
 import {
   HORSERACE,
   KENO,
-  MIN_BET,
   SETTING_CATEGORIES,
   SLOTS,
+  bets,
   formatDuration,
   settings,
   type SettingField,
@@ -213,7 +213,10 @@ function renderSection(view: View, sectionId: string): ui.Card {
       t(`help.sections.${sectionId}.description`),
     )
     .text(
-      t(`help.sections.${sectionId}.intro`, { min: coins(MIN_BET), command: mention('config') }),
+      t(`help.sections.${sectionId}.intro`, {
+        min: coins(bets.betLimits(guildId).min),
+        command: mention('config'),
+      }),
     )
     .divider();
 

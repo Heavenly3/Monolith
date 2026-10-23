@@ -80,6 +80,19 @@ export interface WheelReward {
 export interface SettingValues {
   /** 'auto' replies in each member's Discord language. */
   'general.language': 'auto' | Language;
+  /** Credits every new member starts with. */
+  'economy.startBalance': number;
+  /** Most credits (wallet + bank) earnings can take a member to; 0 = no limit. */
+  'economy.maxBalance': number;
+  'bet.min': number;
+  /** 0 = no limit. */
+  'bet.max': number;
+  /** Chance of a robbery succeeding, in percent. */
+  'rob.chance': number;
+  /** Most of the victim's wallet a robbery takes, in percent. */
+  'rob.steal': number;
+  /** Most of the thief's wallet a failed robbery costs, in percent. */
+  'rob.fine': number;
   /** null uses the built-in messages, translated to each reply's language. */
   'work.messages': string[] | null;
   'work.range': { min: number; max: number };
@@ -153,6 +166,13 @@ export type SettingKey = keyof SettingValues;
 
 export const DEFAULTS: SettingValues = {
   'general.language': 'auto',
+  'economy.startBalance': 0,
+  'economy.maxBalance': 0,
+  'bet.min': 100,
+  'bet.max': 0,
+  'rob.chance': 45,
+  'rob.steal': 40,
+  'rob.fine': 25,
 
   'work.messages': null,
   'work.range': { min: 50, max: 250 },

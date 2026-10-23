@@ -187,6 +187,7 @@ export const en = {
     minWallet: 'You need at least {min} in your wallet to play. You have {wallet}.',
     invalidBet: 'Enter a valid bet, such as `500`, `2.5k`, `half` or `all`.',
     minBet: 'The minimum bet is {min}.',
+    maxBet: 'The maximum bet is {max}.',
     won: 'You won {amount}',
     refund: 'You got your bet back',
     lost: 'You lost {amount}',
@@ -478,10 +479,15 @@ export const en = {
       general: { label: 'General', description: 'Language of the bot' },
       modules: { label: 'Modules', description: 'Turn whole systems on or off' },
       members: { label: 'Members', description: 'Change the credits of members and see totals' },
+      economy: {
+        label: 'Economy rules',
+        description: 'Starting and maximum balance, bet limits',
+      },
+      robbery: { label: 'Robbing', description: 'Chance, loot, fine and cooldown of /rob' },
       work: { label: 'Work', description: 'Rewards, cooldown and jobs of /work' },
       collect: { label: 'Role income', description: 'Income per role and cooldown of /collect' },
       wheel: { label: 'Wheel of Fortune', description: 'Prizes and cooldown of /wheel' },
-      games: { label: 'Games', description: 'Cooldowns of the games and /rob' },
+      games: { label: 'Games', description: 'Cooldowns of the games' },
       shop: { label: 'Shop', description: 'Add or remove items for sale' },
       loans: { label: 'Loans', description: 'Loan terms and active loans' },
       raffle: { label: 'Lottery', description: 'Ticket price, starting prize and draw time' },
@@ -644,7 +650,30 @@ export const en = {
         roulette: { label: 'Roulette cooldown', help: 'Time between two /roulette bets.' },
         horserace: { label: 'Race cooldown', help: 'Time between two /race bets.' },
         keno: { label: 'Keno cooldown', help: 'Time between two /keno games.' },
-        rob: { label: 'Rob cooldown', help: 'Time between two /rob attempts.' },
+      },
+      economy: {
+        start: {
+          label: 'Starting balance',
+          help: 'Credits every new member gets in their wallet.',
+        },
+        max: {
+          label: 'Maximum balance',
+          help: 'Earnings stop when wallet + bank reach this (0 = no limit).',
+        },
+        minBet: { label: 'Minimum bet', help: 'Smallest bet in every game.' },
+        maxBet: { label: 'Maximum bet', help: 'Largest bet in every game (0 = no limit).' },
+      },
+      robbery: {
+        chance: { label: 'Success chance (%)', help: 'How often a robbery works.' },
+        steal: {
+          label: 'Most stolen (%)',
+          help: "Largest share of the victim's wallet a robbery takes.",
+        },
+        fine: {
+          label: 'Largest fine (%)',
+          help: "Share of the thief's wallet a failed robbery can cost; it goes to the victim.",
+        },
+        cooldown: { label: 'Cooldown', help: 'Time between two /rob attempts.' },
       },
       loans: {
         rate: { label: 'Interest (%)', help: 'Extra percentage added to every new loan.' },
@@ -727,6 +756,13 @@ export const en = {
     cancel: 'Cancel',
     cancelled: 'Cancelled.',
     clearAll: 'Remove all',
+    economy: {
+      stats: '{accounts} members with credits · {total} in total',
+      resetAll: 'Reset the economy',
+      confirmResetAll:
+        'Empty **every wallet and bank** of the server? Loans, items and history are kept. This cannot be undone.',
+      resetDone: 'Economy reset: {count} members back to zero.',
+    },
     members: {
       adjust: 'Change credits',
       accounts: 'Members with credits',

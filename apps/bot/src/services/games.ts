@@ -1,4 +1,4 @@
-import { MIN_BET, bets, type BetResult, type GameName, type Settlement } from '@monolith/core';
+import { bets, type BetResult, type GameName, type Settlement } from '@monolith/core';
 import type { Translator } from '@monolith/i18n';
 import * as ui from '../ui/index.ts';
 import { emojis, coins } from '../ui/index.ts';
@@ -17,13 +17,20 @@ export function betError(
         t('games.action', { game: `**${t(`features.${game}`)}**` }),
       );
     case 'minWallet':
-      return ui.error(t('games.minWallet', { min: coins(MIN_BET), wallet: coins(result.wallet) }));
+      return ui.error(
+        t('games.minWallet', {
+          min: coins(result.min),
+          wallet: coins(result.wallet),
+        }),
+      );
     case 'funds':
       return ui.error(t('common.notEnoughWallet', { amount: coins(result.wallet) }));
     case 'invalid':
       return ui.error(t('games.invalidBet'));
     case 'minBet':
-      return ui.error(t('games.minBet', { min: coins(MIN_BET) }));
+      return ui.error(t('games.minBet', { min: coins(result.min) }));
+    case 'maxBet':
+      return ui.error(t('games.maxBet', { max: coins(result.max) }));
   }
 }
 

@@ -22,7 +22,10 @@ export type LedgerReason =
   | 'raffle_win'
   | 'admin'
   | 'level'
-  | 'import';
+  | 'import'
+  | 'start'
+  | 'crime'
+  | 'chat';
 
 export interface LedgerEntry {
   id: number;

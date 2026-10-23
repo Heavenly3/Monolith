@@ -207,6 +207,20 @@ async function suite(locale: string) {
   await panel('members', 'adjust', { admin: false });
   await panel('members', 'nope');
 
+  // Economy rules: limits, robbing and a full reset
+  await panel('economy', 'edit:economy');
+  await panel('economy', 'edit:robbery');
+  await panel('economy', 'save:economy', {
+    fields: { start: '250', max: '0', minBet: '100', maxBet: '50' },
+  });
+  await panel('economy', 'save:economy', {
+    fields: { start: '0', max: '0', minBet: '100', maxBet: '0' },
+  });
+  await panel('economy', 'save:robbery', {
+    fields: { chance: '45', steal: '40', fine: '25', cooldown: '2h' },
+  });
+  await panel('economy', 'resetAll');
+
   // Modules: a turned-off module answers with a notice, then comes back
   await panel('modules', 'toggle:games');
   clearCooldowns();

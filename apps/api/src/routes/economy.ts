@@ -131,6 +131,13 @@ export async function economyRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true };
   });
 
+  app.post('/members/reset', async (request) => {
+    const { guild, viewer } = scope(request);
+    const count = accounts.resetAll(guild.id);
+    audit.record(guild.id, viewer.session.userId, 'members.resetAll', { source: 'web', count });
+    return { ok: true, count };
+  });
+
   app.delete('/loans', async (request) => {
     const { guild, viewer } = scope(request);
     const count = loans.cancelAll(guild.id);

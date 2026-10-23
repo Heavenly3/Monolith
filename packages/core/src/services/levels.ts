@@ -204,10 +204,11 @@ function changeXp(
     );
 
     const levelsGained = Math.max(0, level - before.level);
-    const coins = payCoins ? levelsGained * settings.get(guildId, 'levels.coinsPerLevel') : 0;
-    if (coins > 0) {
+    const owed = payCoins ? levelsGained * settings.get(guildId, 'levels.coinsPerLevel') : 0;
+    let coins = 0;
+    if (owed > 0) {
       accounts.getAccount(guildId, user);
-      accounts.credit(guildId, user.id, coins, 'level');
+      coins = accounts.earn(guildId, user.id, owed, 'level');
     }
     return { gained: xp - before.xp, xp, before: before.level, after: level, levelsGained, coins };
   });

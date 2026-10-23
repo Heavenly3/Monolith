@@ -190,6 +190,7 @@ export const es: Messages = {
     minWallet: 'Necesitas al menos {min} en tu cartera para jugar. Tienes {wallet}.',
     invalidBet: 'Escribe una apuesta válida, como `500`, `2.5k`, `mitad` o `todo`.',
     minBet: 'La apuesta mínima es {min}.',
+    maxBet: 'La apuesta máxima es {max}.',
     won: 'Ganaste {amount}',
     refund: 'Recuperaste tu apuesta',
     lost: 'Perdiste {amount}',
@@ -486,13 +487,18 @@ export const es: Messages = {
         label: 'Miembros',
         description: 'Cambia los créditos de los miembros y mira los totales',
       },
+      economy: {
+        label: 'Reglas de economía',
+        description: 'Saldo inicial y máximo, límites de apuesta',
+      },
+      robbery: { label: 'Robos', description: 'Probabilidad, botín, multa y espera de /robar' },
       work: { label: 'Trabajo', description: 'Recompensas, espera y trabajos de /trabajar' },
       collect: {
         label: 'Ingresos por rol',
         description: 'Ingresos de cada rol y espera de /cobrar',
       },
       wheel: { label: 'Rueda de la Fortuna', description: 'Premios y espera de /rueda' },
-      games: { label: 'Juegos', description: 'Esperas de los juegos y de /robar' },
+      games: { label: 'Juegos', description: 'Esperas de los juegos' },
       shop: { label: 'Tienda', description: 'Añade o quita objetos a la venta' },
       loans: { label: 'Préstamos', description: 'Condiciones y préstamos activos' },
       raffle: {
@@ -679,7 +685,36 @@ export const es: Messages = {
           help: 'Tiempo entre dos apuestas de /carrera.',
         },
         keno: { label: 'Espera del keno', help: 'Tiempo entre dos partidas de /keno.' },
-        rob: { label: 'Espera del robo', help: 'Tiempo entre dos intentos de /robar.' },
+      },
+      economy: {
+        start: {
+          label: 'Saldo inicial',
+          help: 'Créditos que recibe en la cartera cada miembro nuevo.',
+        },
+        max: {
+          label: 'Saldo máximo',
+          help: 'Las ganancias se detienen cuando cartera + banco llegan a esto (0 = sin límite).',
+        },
+        minBet: { label: 'Apuesta mínima', help: 'La apuesta más pequeña en todos los juegos.' },
+        maxBet: {
+          label: 'Apuesta máxima',
+          help: 'La apuesta más grande en todos los juegos (0 = sin límite).',
+        },
+      },
+      robbery: {
+        chance: {
+          label: 'Probabilidad de éxito (%)',
+          help: 'Con qué frecuencia sale bien un robo.',
+        },
+        steal: {
+          label: 'Máximo robado (%)',
+          help: 'La mayor parte de la cartera de la víctima que se lleva un robo.',
+        },
+        fine: {
+          label: 'Multa máxima (%)',
+          help: 'Parte de la cartera del ladrón que puede costar un robo fallido; va a la víctima.',
+        },
+        cooldown: { label: 'Espera', help: 'Tiempo entre dos intentos de /robar.' },
       },
       loans: {
         rate: { label: 'Interés (%)', help: 'Porcentaje extra que se suma a cada préstamo nuevo.' },
@@ -766,6 +801,13 @@ export const es: Messages = {
     cancel: 'Cancelar',
     cancelled: 'Cancelado.',
     clearAll: 'Quitar todos',
+    economy: {
+      stats: '{accounts} miembros con créditos · {total} en total',
+      resetAll: 'Reiniciar la economía',
+      confirmResetAll:
+        '¿Vaciar **todas las carteras y bancos** del servidor? Se conservan préstamos, objetos e historial. No se puede deshacer.',
+      resetDone: 'Economía reiniciada: {count} miembros vuelven a cero.',
+    },
     members: {
       adjust: 'Cambiar créditos',
       accounts: 'Miembros con créditos',

@@ -1,5 +1,6 @@
 import { many, one, run, transaction } from '../db/database.ts';
 import * as ledger from './ledger.ts';
+import * as settings from './settings.ts';
 import type { LedgerReason } from './ledger.ts';
 import type { Account, Balance, LeaderboardRow, UserRef } from '../types.ts';
 
@@ -52,14 +53,18 @@ export function getProfile(
   );
 }
 
-/** The account of a member in a server, created on first use. */
+/** The account of a member in a server, created on first use with the starting balance. */
 export function getAccount(guildId: string, user: UserRef): Account {
   rememberProfile(user);
-  run(
-    'INSERT INTO accounts (guild_id, user_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
-    guildId,
-    user.id,
-  );
+  transaction(() => {
+    const created = run(
+      'INSERT INTO accounts (guild_id, user_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
+      guildId,
+      user.id,
+    ).changes;
+    const start = settings.get(guildId, 'economy.startBalance');
+    if (created && start > 0) apply(guildId, user.id, 'wallet', start, 'start');
+  });
   return findAccount(guildId, user.id)!;
 }
 
@@ -103,6 +108,32 @@ export function credit(
 ): void {
   assertAmount(amount);
   if (amount > 0) transaction(() => apply(guildId, userId, account, amount, reason));
+}
+
+/** Room left under the server's maximum balance (Infinity without one). */
+export function roomFor(guildId: string, userId: string): number {
+  const max = settings.get(guildId, 'economy.maxBalance');
+  if (max <= 0) return Number.POSITIVE_INFINITY;
+  const account = findAccount(guildId, userId);
+  return Math.max(0, max - ((account?.wallet ?? 0) + (account?.bank ?? 0)));
+}
+
+/**
+ * Pays earnings (work, income, prizes...) up to the maximum balance.
+ * Returns what was actually paid.
+ */
+export function earn(
+  guildId: string,
+  userId: string,
+  amount: number,
+  reason: LedgerReason,
+): number {
+  assertAmount(amount);
+  return transaction(() => {
+    const paid = Math.min(amount, roomFor(guildId, userId));
+    if (paid > 0) apply(guildId, userId, 'wallet', paid, reason);
+    return paid;
+  });
 }
 
 /** Removes `amount` only if the balance covers it. Returns success. */
@@ -231,6 +262,16 @@ export function stats(guildId: string): { accounts: number; wallets: number; ban
       guildId,
     ) ?? { accounts: 0, wallets: 0, banks: 0 }
   );
+}
+
+/** Empties every wallet and bank of a server. Returns how many accounts had credits. */
+export function resetAll(guildId: string): number {
+  return run(
+    `UPDATE accounts SET wallet = 0, bank = 0, updated_at = ?
+     WHERE guild_id = ? AND (wallet <> 0 OR bank <> 0)`,
+    Date.now(),
+    guildId,
+  ).changes;
 }
 
 export const MONEY_ACTIONS = ['add', 'remove', 'set', 'reset'] as const;

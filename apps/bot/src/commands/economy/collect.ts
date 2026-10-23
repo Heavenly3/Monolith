@@ -27,13 +27,13 @@ export default defineCommand({
 
     const total = rewards.reduce((sum, reward) => sum + reward.amount, 0);
     accounts.getAccount(guildId, user);
-    accounts.credit(guildId, user.id, total, 'collect');
+    const paid = accounts.earn(guildId, user.id, total, 'collect');
     const readyAt = cooldowns.startConfigured(guildId, user.id, 'collect');
 
     const card = new ui.Card('collect')
       .header(
         `${emojis.collect} ${t('collect.title')}`,
-        t('collect.body', { amount: coins(total) }),
+        t('collect.body', { amount: coins(paid) }),
         user.displayAvatarURL({ size: 128 }),
       )
       .divider()

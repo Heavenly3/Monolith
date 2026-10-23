@@ -26,13 +26,13 @@ export default defineCommand({
     const { min, max } = settings.get(guildId, 'work.range');
     const earnings = randomBetween(min, max);
     accounts.getAccount(guildId, user);
-    accounts.credit(guildId, user.id, earnings, 'work');
+    const paid = accounts.earn(guildId, user.id, earnings, 'work');
     const readyAt = cooldowns.startConfigured(guildId, user.id, 'work');
 
     const template = pick(messages);
     const story = template.includes('{amount}')
-      ? template.replaceAll('{amount}', coins(earnings))
-      : t('work.fallback', { message: template, amount: coins(earnings) });
+      ? template.replaceAll('{amount}', coins(paid))
+      : t('work.fallback', { message: template, amount: coins(paid) });
 
     const card = new ui.Card('work')
       .header(`${emojis.work} ${t('work.title')}`, story, user.displayAvatarURL({ size: 128 }))

@@ -11,7 +11,7 @@ import { computed, reactive, ref } from 'vue';
 import PageHeader from '../components/PageHeader.vue';
 import { t } from '../i18n/index.ts';
 import { api, guildPath } from '../lib/api.ts';
-import { useLoader, useNotify } from '../lib/composables.ts';
+import { useAsk, useLoader, useNotify } from '../lib/composables.ts';
 import { errorMessage } from '../lib/errors.ts';
 import { formatNumber } from '../lib/format.ts';
 import { useGuild } from '../lib/guild.ts';
@@ -19,6 +19,7 @@ import type { Member } from '../lib/types.ts';
 
 const guild = useGuild();
 const notify = useNotify();
+const ask = useAsk();
 const PAGE_SIZE = 25;
 
 interface MembersPage {
@@ -92,11 +93,31 @@ async function submit(): Promise<void> {
     saving.value = false;
   }
 }
+
+async function resetAll(): Promise<void> {
+  if (!(await ask(t('panel.economy.confirmResetAll').replace(/\*\*/g, '')))) return;
+  try {
+    const { count } = await api.post<{ count: number }>(
+      guildPath(guild.value.id, '/members/reset'),
+    );
+    notify.success(t('panel.economy.resetDone', { count }));
+    await reload();
+  } catch (failure) {
+    notify.failure(failure);
+  }
+}
 </script>
 
 <template>
   <div class="page">
     <PageHeader :title="t('web.nav.members')" :subtitle="t('web.members.subtitle')">
+      <Button
+        :label="t('panel.economy.resetAll')"
+        icon="pi pi-refresh"
+        severity="danger"
+        outlined
+        @click="resetAll"
+      />
       <Button :label="t('web.members.adjust')" icon="pi pi-pencil" @click="openAdjust()" />
     </PageHeader>
 

@@ -1,6 +1,7 @@
 import { transaction } from '../db/database.ts';
 import * as accounts from './accounts.ts';
 import * as cooldowns from './cooldowns.ts';
+import * as settings from './settings.ts';
 import { ROB } from '../config/games.ts';
 import { randomFloat } from '../utils/random.ts';
 import type { UserRef } from '../types.ts';
@@ -30,16 +31,19 @@ export function attempt(
   if (thiefAccount.wallet < ROB.minThiefWallet) return { ok: false, reason: 'thiefPoor' };
   if (targetAccount.wallet < ROB.minTargetWallet) return { ok: false, reason: 'targetPoor' };
 
-  const success = roll < ROB.successChance;
+  const success = roll < settings.get(guildId, 'rob.chance') / 100;
   const amount = transaction(() => {
     if (success) {
-      const percent = randomFloat(ROB.stealPercent.min, ROB.stealPercent.max);
+      const steal = settings.get(guildId, 'rob.steal') / 100;
+      const percent = randomFloat(Math.min(ROB.stealPercent.min, steal), steal);
       const wanted = Math.max(1, Math.floor(targetAccount.wallet * percent));
       const stolen = accounts.debitUpTo(guildId, target.id, wanted, 'rob');
       accounts.credit(guildId, thief.id, stolen, 'rob');
       return stolen;
     }
-    const percent = randomFloat(ROB.finePercent.min, ROB.finePercent.max);
+    const finePercent = settings.get(guildId, 'rob.fine') / 100;
+    if (finePercent <= 0) return 0;
+    const percent = randomFloat(Math.min(ROB.finePercent.min, finePercent), finePercent);
     const fine = accounts.debitUpTo(
       guildId,
       thief.id,

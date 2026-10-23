@@ -27,7 +27,7 @@ export default defineCommand({
     // The prize is paid before the animation so nothing is lost if it fails.
     const reward = pick(rewards);
     accounts.getAccount(guildId, user);
-    if (reward.amount > 0) accounts.credit(guildId, user.id, reward.amount, 'wheel');
+    if (reward.amount > 0) accounts.earn(guildId, user.id, reward.amount, 'wheel');
     const readyAt = cooldowns.startConfigured(guildId, user.id, 'wheel');
 
     const spinning = () =>

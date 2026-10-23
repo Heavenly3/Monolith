@@ -92,6 +92,30 @@ export const SETTING_CATEGORIES = {
       { id: 'levels', key: 'modules.levels', type: 'toggle' },
     ],
   },
+  economy: {
+    group: 'economy',
+    module: 'economy',
+    fields: [
+      { id: 'start', key: 'economy.startBalance', type: 'coins' },
+      { id: 'max', key: 'economy.maxBalance', type: 'coins' },
+      { id: 'minBet', key: 'bet.min', type: 'coins', min: 1 },
+      { id: 'maxBet', key: 'bet.max', type: 'coins' },
+    ],
+    validate: (values) =>
+      Number(values.maxBet) > 0 && Number(values.minBet) > Number(values.maxBet)
+        ? 'config.minMax'
+        : null,
+  },
+  robbery: {
+    group: 'economy',
+    module: 'economy',
+    fields: [
+      { id: 'chance', key: 'rob.chance', type: 'percent', min: 1, max: 100 },
+      { id: 'steal', key: 'rob.steal', type: 'percent', min: 1, max: 100 },
+      { id: 'fine', key: 'rob.fine', type: 'percent', min: 0, max: 100 },
+      { id: 'cooldown', key: 'rob.cooldown', type: 'duration' },
+    ],
+  },
   work: {
     group: 'economy',
     module: 'economy',
@@ -120,7 +144,6 @@ export const SETTING_CATEGORIES = {
       { id: 'roulette', key: 'roulette.cooldown', type: 'duration' },
       { id: 'horserace', key: 'horserace.cooldown', type: 'duration' },
       { id: 'keno', key: 'keno.cooldown', type: 'duration' },
-      { id: 'rob', key: 'rob.cooldown', type: 'duration' },
     ],
   },
   loans: {

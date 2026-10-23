@@ -17,6 +17,7 @@ import type {
   Section,
 } from './types.ts';
 import { general } from './sections/general.ts';
+import { economySection } from './sections/economy.ts';
 import { members } from './sections/members.ts';
 import { workSection } from './sections/work.ts';
 import { collect } from './sections/collect.ts';
@@ -31,6 +32,7 @@ import { levelsSection } from './sections/levels.ts';
 const SECTIONS: Record<string, Section> = {
   general,
   modules: modulesSection,
+  economy: economySection,
   members,
   work: workSection,
   collect,
