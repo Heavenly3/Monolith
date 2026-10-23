@@ -59,6 +59,8 @@ export interface SettingFieldValue {
   limit: number | null;
   optional: boolean;
   value: unknown;
+  /** Value the field has when nothing was changed. */
+  default: unknown;
   custom: boolean;
 }
 

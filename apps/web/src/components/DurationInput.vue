@@ -81,8 +81,14 @@ function set(unit: (typeof UNITS)[number]['id'], value: number | null): void {
 
 .units {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(4, minmax(0, 9rem));
+  gap: 0.5rem 0.75rem;
+}
+
+.unit :deep(input) {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--mn-font-mono);
 }
 
 .unit {

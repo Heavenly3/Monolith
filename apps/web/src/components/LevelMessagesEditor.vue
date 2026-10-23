@@ -94,11 +94,9 @@ async function remove(entryLevel: number): Promise<void> {
             :min="1"
             :max="1000"
             show-buttons
-            button-layout="horizontal"
-          >
-            <template #incrementbuttonicon><span class="pi pi-plus" /></template>
-            <template #decrementbuttonicon><span class="pi pi-minus" /></template>
-          </InputNumber>
+            button-layout="stacked"
+            class="level-input"
+          />
         </div>
         <TemplateEditor
           v-model="draft"
@@ -160,6 +158,16 @@ async function remove(entryLevel: number): Promise<void> {
 
 .level {
   max-width: 14rem;
+}
+
+.level-input {
+  width: 11rem;
+}
+
+.level-input :deep(input) {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--mn-font-mono);
 }
 
 .actions {

@@ -1,9 +1,9 @@
 // Settings of a server: the same categories and validation as /config.
 import {
+  DEFAULTS,
   SETTING_CATEGORIES,
   audit,
   isSettingCategory,
-  settings,
   settingsForm,
   wheel,
   work,
@@ -20,6 +20,12 @@ function builtInJobs(request: FastifyRequest): string[] {
   return [...LOCALES[lang && isLanguage(lang) ? lang : 'en'].work.defaultMessages];
 }
 
+/** Default value of one field (a property of an object setting when it has a path). */
+function defaultOf(field: SettingField): unknown {
+  const value = DEFAULTS[field.key] as unknown;
+  return field.path ? (value as Record<string, unknown>)[field.path] : value;
+}
+
 function categoryOf(request: FastifyRequest) {
   const { category } = request.params as { category: string };
   if (!isSettingCategory(category)) throw new HttpError(404, 'unknown_category');
@@ -34,18 +40,24 @@ export async function settingsRoutes(app: FastifyInstance): Promise<void> {
         id,
         group: category.group,
         module: 'module' in category ? category.module : null,
-        fields: (category.fields as SettingField[]).map((field) => ({
-          id: field.id,
-          type: field.type,
-          min: field.min ?? null,
-          max: field.max ?? null,
-          options: field.options ?? null,
-          variables: field.variables ?? null,
-          limit: field.limit ?? null,
-          optional: field.optional ?? false,
-          value: settingsForm.currentValue(guild.id, field),
-          custom: settings.isCustom(guild.id, field.key),
-        })),
+        fields: (category.fields as SettingField[]).map((field) => {
+          const value = settingsForm.currentValue(guild.id, field);
+          const fallback = defaultOf(field);
+          return {
+            id: field.id,
+            type: field.type,
+            min: field.min ?? null,
+            max: field.max ?? null,
+            options: field.options ?? null,
+            variables: field.variables ?? null,
+            limit: field.limit ?? null,
+            optional: field.optional ?? false,
+            value,
+            default: fallback,
+            // Per field: the two halves of a range share one setting.
+            custom: JSON.stringify(value) !== JSON.stringify(fallback),
+          };
+        }),
       })),
     };
   });
