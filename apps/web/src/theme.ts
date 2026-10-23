@@ -1,46 +1,46 @@
-// PrimeVue theme: Aura with the gold, leather and parchment tones of the bot
-// (apps/bot/src/ui/theme.ts). The dashboard is always dark.
+// PrimeVue theme: Aura in the graphite and cyan of the bot (apps/bot/src/ui/theme.ts).
+// The dashboard is always dark.
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
 
-const gold = {
-  50: '#fbf7e9',
-  100: '#f5ebc4',
-  200: '#ecd88c',
-  300: '#e0c155',
-  400: '#d4ad36',
-  500: '#c9a227',
-  600: '#a8821c',
-  700: '#86641a',
-  800: '#6e511b',
-  900: '#5d441b',
-  950: '#35250b',
+const cyan = {
+  50: '#eefbfe',
+  100: '#d4f4fb',
+  200: '#aee8f6',
+  300: '#8fdcf0',
+  400: '#73d2eb',
+  500: '#5ec8e5',
+  600: '#3aa9c8',
+  700: '#2d86a0',
+  800: '#276b80',
+  900: '#24596a',
+  950: '#123844',
 };
 
-const leather = {
+const graphite = {
   0: '#ffffff',
-  50: '#f6f3ef',
-  100: '#e8e1d8',
-  200: '#cfc3b4',
-  300: '#b0a08c',
-  400: '#8f7d68',
-  500: '#6f5f4e',
-  600: '#54473a',
-  700: '#3e342b',
-  800: '#2a231d',
-  900: '#1c1713',
-  950: '#120e0b',
+  50: '#f2f4f6',
+  100: '#dfe3e8',
+  200: '#c2c9d1',
+  300: '#9ba5b0',
+  400: '#76818d',
+  500: '#58626d',
+  600: '#414952',
+  700: '#2a3038',
+  800: '#1a1e23',
+  900: '#13161a',
+  950: '#0b0d10',
 };
 
 export const MonolithPreset = definePreset(Aura, {
   semantic: {
-    primary: gold,
+    primary: cyan,
     colorScheme: {
       dark: {
-        surface: leather,
+        surface: graphite,
         primary: {
           color: '{primary.500}',
-          contrastColor: '#1c1713',
+          contrastColor: '#0b0d10',
           hoverColor: '{primary.400}',
           activeColor: '{primary.300}',
         },

@@ -51,8 +51,8 @@ async function restore(): Promise<void> {
 
 const prizeLabel = (prize: WheelPrize): string => {
   if (prize.name)
-    return prize.amount ? `${prize.name} · ${formatNumber(prize.amount)} 🪙` : prize.name;
-  return prize.amount ? `${formatNumber(prize.amount)} 🪙` : t('web.wheel.empty');
+    return prize.amount ? `${prize.name} · ${formatNumber(prize.amount)} 💠` : prize.name;
+  return prize.amount ? `${formatNumber(prize.amount)} 💠` : t('web.wheel.empty');
 };
 </script>
 
@@ -139,10 +139,10 @@ const prizeLabel = (prize: WheelPrize): string => {
   align-items: center;
   gap: 0.25rem;
   padding: 0.2rem 0.2rem 0.2rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(201, 162, 39, 0.12);
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  color: var(--mn-gold-soft);
+  border-radius: 4px;
+  background: rgba(94, 200, 229, 0.12);
+  border: 1px solid rgba(94, 200, 229, 0.35);
+  color: var(--mn-accent-soft);
 }
 
 .prize.empty {

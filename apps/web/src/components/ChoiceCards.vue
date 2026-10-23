@@ -62,8 +62,8 @@ const parts = (text: string) => {
 }
 
 .choice.active {
-  border-color: var(--mn-gold);
-  background: rgba(201, 162, 39, 0.1);
+  border-color: var(--mn-accent);
+  background: rgba(94, 200, 229, 0.1);
 }
 
 .choice i {
@@ -72,7 +72,7 @@ const parts = (text: string) => {
 }
 
 .choice.active i {
-  color: var(--mn-gold);
+  color: var(--mn-accent);
 }
 
 .choice span {

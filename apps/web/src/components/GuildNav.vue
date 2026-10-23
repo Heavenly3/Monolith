@@ -106,11 +106,11 @@ defineProps<{ sections: NavSection[]; guild: GuildSummary | null }>();
 }
 
 .nav-link.active {
-  background: rgba(201, 162, 39, 0.14);
-  color: var(--mn-gold-soft);
+  background: rgba(94, 200, 229, 0.14);
+  color: var(--mn-accent-soft);
 }
 
 .nav-link.active i {
-  color: var(--mn-gold);
+  color: var(--mn-accent);
 }
 </style>

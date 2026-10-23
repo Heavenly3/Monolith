@@ -1,15 +1,17 @@
 :root {
-  --mn-font-display: 'Cinzel', Georgia, serif;
+  --mn-font-display: 'Chakra Petch', 'Inter', system-ui, sans-serif;
   --mn-font-body: 'Inter', system-ui, sans-serif;
-  --mn-bg: #120e0b;
-  --mn-panel: #1c1713;
-  --mn-panel-raised: #241d18;
-  --mn-border: #3e342b;
-  --mn-gold: #c9a227;
-  --mn-gold-soft: #e0c155;
-  --mn-text: #ece4d8;
-  --mn-muted: #a89a88;
-  --mn-radius: 12px;
+  --mn-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --mn-bg: #0b0d10;
+  --mn-panel: #13161a;
+  --mn-panel-raised: #1a1e23;
+  --mn-border: #2a3038;
+  --mn-accent: #5ec8e5;
+  --mn-accent-soft: #8fdcf0;
+  --mn-amber: #e8a23c;
+  --mn-text: #e3e8ed;
+  --mn-muted: #8b96a1;
+  --mn-radius: 6px;
   --mn-sidebar: 260px;
   color-scheme: dark;
 }
@@ -28,7 +30,10 @@ body {
 
 body {
   background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(201, 162, 39, 0.08), transparent 60%),
+    radial-gradient(1200px 600px at 15% -10%, rgba(94, 200, 229, 0.07), transparent 60%),
+    /* Faint blueprint grid: the walls of the Structure. */
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 48px 48px,
     var(--mn-bg);
   color: var(--mn-text);
   font-family: var(--mn-font-body);
@@ -42,7 +47,8 @@ h2,
 h3 {
   font-family: var(--mn-font-display);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   margin: 0;
 }
 
@@ -59,7 +65,7 @@ h3 {
 }
 
 a {
-  color: var(--mn-gold-soft);
+  color: var(--mn-accent-soft);
 }
 
 a.p-button {
@@ -144,8 +150,9 @@ a.p-button {
   color: var(--mn-muted);
 }
 
-.gold {
-  color: var(--mn-gold-soft);
+.amount {
+  color: var(--mn-amber);
+  font-family: var(--mn-font-mono);
   font-variant-numeric: tabular-nums;
 }
 
@@ -153,7 +160,7 @@ a.p-button {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--mn-gold);
+  color: var(--mn-accent);
   font-family: var(--mn-font-display);
 }
 

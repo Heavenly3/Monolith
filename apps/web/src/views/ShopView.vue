@@ -113,7 +113,7 @@ async function remove(item: ShopItem): Promise<void> {
           />
           <RoleTag v-if="item.roleId" :role="byId.get(item.roleId)" :fallback="item.roleId" />
         </div>
-        <strong class="gold price">{{ formatNumber(item.price) }} 🪙</strong>
+        <strong class="amount price">{{ formatNumber(item.price) }} 💠</strong>
       </article>
     </div>
 

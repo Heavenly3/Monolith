@@ -56,7 +56,7 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
             <li v-for="(member, index) in data.top" :key="member.userId">
               <span class="place">{{ medals[index] }}</span>
               <span class="who">{{ member.username ?? member.userId }}</span>
-              <span class="gold">{{ formatNumber(member.netWorth) }}</span>
+              <span class="amount">{{ formatNumber(member.netWorth) }}</span>
             </li>
           </ol>
         </section>
@@ -90,7 +90,7 @@ const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
 
 <style scoped>
 .grid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 }
 
 .columns {

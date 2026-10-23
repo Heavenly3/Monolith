@@ -178,7 +178,7 @@ async function reset(): Promise<void> {
           :min="field.min ?? 0"
           :max="field.max ?? (field.type === 'percent' ? 1000 : Number.MAX_SAFE_INTEGER)"
           :invalid="invalid === field.id"
-          :suffix="field.type === 'coins' ? ' 🪙' : field.type === 'percent' ? ' %' : undefined"
+          :suffix="field.type === 'coins' ? ' 💠' : field.type === 'percent' ? ' %' : undefined"
           locale="en-US"
           show-buttons
           button-layout="horizontal"
@@ -196,7 +196,7 @@ async function reset(): Promise<void> {
             :placeholder="t('config.hints.duration')"
             fluid
           />
-          <small class="gold">{{ durationPreview(field) ?? t('config.hints.duration') }}</small>
+          <small class="amount">{{ durationPreview(field) ?? t('config.hints.duration') }}</small>
         </template>
 
         <Select

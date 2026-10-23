@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BrandLogo from '../components/BrandLogo.vue';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 import { computed } from 'vue';
@@ -17,7 +18,7 @@ const notice = computed(() => {
 <template>
   <main class="login">
     <section class="panel card">
-      <div class="crest" aria-hidden="true">⚜️</div>
+      <BrandLogo :size="52" :name="false" />
       <h1>{{ t('web.login.title') }}</h1>
       <p class="muted">{{ t('web.login.subtitle') }}</p>
       <Message v-if="notice" severity="warn" :closable="false">{{ notice }}</Message>

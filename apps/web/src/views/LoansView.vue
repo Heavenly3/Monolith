@@ -73,7 +73,7 @@ async function cancelAll(): Promise<void> {
         </Column>
         <Column :header="t('web.loans.owed')" class="num" header-class="num">
           <template #body="{ data: loan }">
-            <span class="gold">{{ formatNumber(loan.amountDue) }}</span>
+            <span class="amount">{{ formatNumber(loan.amountDue) }}</span>
           </template>
         </Column>
         <Column :header="t('web.loans.due')">

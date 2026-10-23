@@ -138,7 +138,7 @@ const preview = computed<PreviewPart[]>(() => {
 
 .preview {
   padding: 0.65rem 0.9rem;
-  border-left: 3px solid var(--mn-gold);
+  border-left: 3px solid var(--mn-accent);
   border-radius: 6px;
   background: var(--mn-panel-raised);
 }
@@ -163,7 +163,7 @@ const preview = computed<PreviewPart[]>(() => {
 .badge {
   display: inline-block;
   padding: 0 0.45rem;
-  border-radius: 999px;
+  border-radius: 4px;
   background: rgba(88, 101, 242, 0.25);
   color: #c9cdfb;
   font-weight: 600;

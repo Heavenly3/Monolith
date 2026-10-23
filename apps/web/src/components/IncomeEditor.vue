@@ -63,7 +63,7 @@ async function remove(id: string): Promise<void> {
       <ul v-else class="rewards">
         <li v-for="reward in data.rewards" :key="reward.roleId">
           <RoleTag :role="byId.get(reward.roleId)" :fallback="reward.roleId" />
-          <span class="gold">{{ formatNumber(reward.amount) }} 🪙</span>
+          <span class="amount">{{ formatNumber(reward.amount) }} 💠</span>
           <Button
             icon="pi pi-trash"
             severity="danger"

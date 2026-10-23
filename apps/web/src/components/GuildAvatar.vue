@@ -28,7 +28,7 @@ const image = computed(() => guildIcon(props.guild) ?? undefined);
   border-radius: 10px;
   overflow: hidden;
   background: var(--mn-panel-raised);
-  color: var(--mn-gold-soft);
+  color: var(--mn-accent-soft);
   font-family: var(--mn-font-display);
   flex-shrink: 0;
 }

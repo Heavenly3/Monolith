@@ -76,8 +76,8 @@ provide(IN_SECTION, true);
   width: 3rem;
   height: 3rem;
   border-radius: 12px;
-  background: rgba(201, 162, 39, 0.14);
-  color: var(--mn-gold);
+  background: rgba(94, 200, 229, 0.14);
+  color: var(--mn-accent);
   font-size: 1.3rem;
   flex-shrink: 0;
 }
@@ -110,7 +110,7 @@ provide(IN_SECTION, true);
   align-items: center;
   gap: 0.45rem;
   padding: 0.4rem 0.8rem;
-  border-radius: 999px;
+  border-radius: 4px;
   border: 1px solid var(--mn-border);
   color: var(--mn-muted);
   text-decoration: none;
@@ -128,9 +128,9 @@ provide(IN_SECTION, true);
 }
 
 .tab.active {
-  color: var(--mn-gold-soft);
-  border-color: var(--mn-gold);
-  background: rgba(201, 162, 39, 0.12);
+  color: var(--mn-accent-soft);
+  border-color: var(--mn-accent);
+  background: rgba(94, 200, 229, 0.12);
 }
 
 @media (max-width: 640px) {

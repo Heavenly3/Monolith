@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BrandLogo from '../components/BrandLogo.vue';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 import Skeleton from 'primevue/skeleton';
@@ -40,7 +41,7 @@ onMounted(() => load());
 <template>
   <div class="guilds-page">
     <header class="topbar">
-      <span class="brand">⚜️ Monolith</span>
+      <BrandLogo />
       <UserMenu />
     </header>
 
@@ -126,7 +127,7 @@ onMounted(() => load());
   font-family: var(--mn-font-display);
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--mn-gold-soft);
+  color: var(--mn-accent-soft);
 }
 
 .page {
@@ -146,7 +147,7 @@ onMounted(() => load());
 }
 
 .guild:hover {
-  border-color: var(--mn-gold);
+  border-color: var(--mn-accent);
 }
 
 .guild.off {

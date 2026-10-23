@@ -168,7 +168,7 @@ async function resetAll(): Promise<void> {
         </Column>
         <Column :header="t('levels.xp')" class="num" header-class="num">
           <template #body="{ data: member }">
-            <span class="gold">{{ formatNumber(member.xp) }}</span>
+            <span class="amount">{{ formatNumber(member.xp) }}</span>
           </template>
         </Column>
         <Column :header="t('levels.messages')" class="num" header-class="num">
@@ -269,12 +269,13 @@ async function resetAll(): Promise<void> {
 .level-number {
   min-width: 2.25rem;
   height: 2.25rem;
-  border-radius: 50%;
   display: grid;
   place-items: center;
   font-weight: 700;
-  color: #1c1713;
-  background: radial-gradient(circle at 30% 30%, #f0d37a, var(--mn-gold));
+  color: var(--mn-bg);
+  font-family: var(--mn-font-mono);
+  background: var(--mn-accent);
+  border-radius: 4px;
 }
 
 .level-progress {

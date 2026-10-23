@@ -114,7 +114,7 @@ async function useBuiltIn(): Promise<void> {
         <li v-for="(message, index) in data.messages" :key="`${index}-${message}`">
           <span class="text">
             <template v-for="(part, i) in preview(message)" :key="i">
-              <span v-if="part === REWARD" class="reward">🪙 {{ t('web.jobs.reward') }}</span>
+              <span v-if="part === REWARD" class="reward">💠 {{ t('web.jobs.reward') }}</span>
               <template v-else>{{ part }}</template>
             </template>
           </span>
@@ -142,7 +142,7 @@ async function useBuiltIn(): Promise<void> {
         <p v-if="draftPreview" class="preview">
           <span class="muted">{{ t('web.jobs.preview') }}</span>
           <template v-for="(part, i) in draftPreview" :key="i">
-            <span v-if="part === REWARD" class="reward">🪙 {{ t('web.jobs.reward') }}</span>
+            <span v-if="part === REWARD" class="reward">💠 {{ t('web.jobs.reward') }}</span>
             <template v-else>{{ part }}</template>
           </template>
         </p>
@@ -205,9 +205,9 @@ async function useBuiltIn(): Promise<void> {
   display: inline-block;
   padding: 0 0.45rem;
   margin: 0 0.1rem;
-  border-radius: 999px;
-  background: rgba(201, 162, 39, 0.16);
-  color: var(--mn-gold-soft);
+  border-radius: 4px;
+  background: rgba(94, 200, 229, 0.16);
+  color: var(--mn-accent-soft);
   font-weight: 600;
   font-size: 0.9em;
 }
@@ -216,7 +216,7 @@ async function useBuiltIn(): Promise<void> {
   align-self: stretch;
   margin: 0;
   padding: 0.6rem 0.85rem;
-  border-left: 3px solid var(--mn-gold);
+  border-left: 3px solid var(--mn-accent);
   border-radius: 6px;
   background: var(--mn-panel-raised);
 }

@@ -146,7 +146,7 @@ const percentLabel = (percent: number) =>
             <i :class="m.type === 'role' ? 'pi pi-shield' : 'pi pi-hashtag'" class="muted" />
             <RoleTag v-if="m.type === 'role'" :role="rolesById.get(m.id)" :fallback="m.id" />
             <span v-else># {{ channelsById.get(m.id)?.name ?? m.id }}</span>
-            <strong class="gold">{{ percentLabel(m.percent) }}</strong>
+            <strong class="amount">{{ percentLabel(m.percent) }}</strong>
             <Button
               icon="pi pi-trash"
               severity="danger"
@@ -232,7 +232,7 @@ const percentLabel = (percent: number) =>
 .level-badge {
   min-width: 5.5rem;
   font-weight: 600;
-  color: var(--mn-gold-soft);
+  color: var(--mn-accent-soft);
 }
 
 .add {

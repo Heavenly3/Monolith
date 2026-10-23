@@ -38,7 +38,7 @@ function onPage(event: DataTablePageEvent): void {
   void reload();
 }
 
-// Change gold dialog
+// Change credits dialog
 const ACTIONS = ['add', 'remove', 'set', 'reset'] as const;
 type Action = (typeof ACTIONS)[number];
 
@@ -133,7 +133,7 @@ async function submit(): Promise<void> {
         </Column>
         <Column :header="t('common.netWorth')" class="num" header-class="num">
           <template #body="{ data: member }">
-            <span class="gold">{{ formatNumber(member.netWorth) }}</span>
+            <span class="amount">{{ formatNumber(member.netWorth) }}</span>
           </template>
         </Column>
         <Column style="width: 3.5rem">

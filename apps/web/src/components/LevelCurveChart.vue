@@ -91,8 +91,8 @@ const milestones = computed(() =>
     <svg :viewBox="`0 0 ${W} ${H}`" class="chart" role="img" :aria-label="t('web.curve.title')">
       <defs>
         <linearGradient id="curve-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#c9a227" stop-opacity="0.35" />
-          <stop offset="100%" stop-color="#c9a227" stop-opacity="0" />
+          <stop offset="0%" stop-color="#5ec8e5" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#5ec8e5" stop-opacity="0" />
         </linearGradient>
       </defs>
       <g class="grid">
@@ -136,7 +136,7 @@ const milestones = computed(() =>
             <td>
               <strong>{{ row.level }}</strong>
             </td>
-            <td class="num gold">{{ row.xp }}</td>
+            <td class="num amount">{{ row.xp }}</td>
             <td class="num">≈ {{ row.messages }}</td>
             <td class="num">≈ {{ row.time }}</td>
           </tr>
@@ -174,7 +174,7 @@ const milestones = computed(() =>
 
 .line {
   fill: none;
-  stroke: var(--mn-gold);
+  stroke: var(--mn-accent);
   stroke-width: 2.5;
   stroke-linejoin: round;
   transition: d 0.3s ease;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BrandLogo from '../components/BrandLogo.vue';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
 import Message from 'primevue/message';
@@ -87,7 +88,7 @@ const sections = computed<NavSection[]>(() => [
           aria-label="Menu"
           @click="drawer = true"
         />
-        <span class="brand">⚜️ Monolith</span>
+        <BrandLogo class="brand" />
         <UserMenu />
       </header>
       <main class="content">
@@ -176,7 +177,7 @@ const sections = computed<NavSection[]>(() => [
 
   .brand {
     font-family: var(--mn-font-display);
-    color: var(--mn-gold-soft);
+    color: var(--mn-accent-soft);
     font-weight: 700;
     margin-right: auto;
   }
