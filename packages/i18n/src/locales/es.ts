@@ -451,6 +451,10 @@ export const es: Messages = {
         channel: 'El canal sustituye al rol',
         role: 'El rol sustituye al canal',
       },
+      style: {
+        card: 'Tarjeta — con avatar y título',
+        plain: 'Texto — un mensaje normal',
+      },
     },
     languages: {
       auto: 'Automático',
@@ -496,6 +500,10 @@ export const es: Messages = {
       levelAnnounce: {
         label: 'Mensajes de nivel',
         description: 'Dónde y cómo se anuncian las subidas',
+      },
+      levelAnnounceRules: {
+        label: 'Cuándo anunciar',
+        description: 'Qué niveles se anuncian, menciones y estilo',
       },
       levelFilters: {
         label: 'Filtros',
@@ -595,10 +603,25 @@ export const es: Messages = {
         mode: { label: 'Dónde anunciar', help: 'Dónde se envían los mensajes de subida de nivel.' },
         channel: { label: 'Canal de anuncios', help: 'Se usa al anunciar en un canal fijo.' },
         message: { label: 'Mensaje', help: 'Texto del mensaje de subida de nivel.' },
+      },
+      levelAnnounceRules: {
         every: {
           label: 'Anunciar cada',
           help: 'Anuncia cada N niveles; los niveles con recompensa siempre se anuncian.',
         },
+        until: {
+          label: 'Hasta el nivel',
+          help: 'A partir de este nivel se anuncian todos otra vez (0 = siempre cada N).',
+        },
+        rewardsOnly: {
+          label: 'Solo niveles con recompensa',
+          help: 'Anuncia únicamente los niveles que dan un rol.',
+        },
+        ping: {
+          label: 'Mencionar al miembro',
+          help: 'El anuncio le envía una notificación.',
+        },
+        style: { label: 'Estilo', help: 'Cómo se ve el anuncio en Discord.' },
       },
       levelFilters: {
         channels: { label: 'Canales sin XP', help: 'Los mensajes aquí nunca dan experiencia.' },
@@ -653,6 +676,9 @@ export const es: Messages = {
   levelsAdmin: {
     full: 'Puedes tener como mucho {max} roles de recompensa.',
     badRole: 'Elige un rol normal (no @everyone ni un rol de bot).',
+    messagesFull: 'Puedes tener como mucho {max} mensajes por nivel.',
+    messageSaved: 'El nivel {level} tiene ahora su propio mensaje.',
+    messageRemoved: 'El nivel {level} vuelve a usar el mensaje habitual.',
     missing: 'Esa recompensa no existe.',
     rewardAdded: '{role} se da ahora en el nivel **{level}**.',
     rewardRemoved: '{role} ya no es una recompensa de nivel.',
@@ -677,6 +703,15 @@ export const es: Messages = {
       rewardTitle: 'Nuevo rol de recompensa',
       levelLabel: 'Nivel',
       roleLabel: 'Rol',
+      messagesTitle: 'Mensajes por nivel',
+      noMessages: 'Sin mensajes especiales: todos los niveles usan el habitual.',
+      addMessage: 'Mensaje de nivel',
+      removeMessage: 'Quitar un mensaje de nivel…',
+      messageTitle: 'Mensaje para un nivel',
+      messageLabel: 'Mensaje',
+      messageLevelHint: 'El nivel que muestra este mensaje en vez del habitual (1–1000)',
+      preview: 'Vista previa',
+      previewTitle: 'Así se anunciaría tu nivel {level}:',
       keepLabel: 'Conservar al reemplazarse',
       keepHint: 'Con "solo el rol más alto", los miembros conservan este igualmente.',
       noSyncLabel: 'Dar una sola vez',

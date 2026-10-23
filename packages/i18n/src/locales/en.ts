@@ -446,6 +446,10 @@ export const en = {
         channel: 'Channel replaces role',
         role: 'Role replaces channel',
       },
+      style: {
+        card: 'Card — with avatar and title',
+        plain: 'Text — a normal message',
+      },
     },
     languages: {
       auto: 'Automatic',
@@ -485,6 +489,10 @@ export const en = {
       levelAnnounce: {
         label: 'Level-up messages',
         description: 'Where and how level-ups are announced',
+      },
+      levelAnnounceRules: {
+        label: 'When to announce',
+        description: 'Which levels are announced, mentions and style',
       },
       levelFilters: {
         label: 'Filters',
@@ -569,10 +577,22 @@ export const en = {
           help: 'Used when announcing in a fixed channel.',
         },
         message: { label: 'Message', help: 'Text of the level-up message.' },
+      },
+      levelAnnounceRules: {
         every: {
           label: 'Announce every',
           help: 'Announce every N levels; reward levels are always announced.',
         },
+        until: {
+          label: 'Up to level',
+          help: 'From this level on, every level is announced again (0 = always every N).',
+        },
+        rewardsOnly: {
+          label: 'Reward levels only',
+          help: 'Only announce levels that give a role.',
+        },
+        ping: { label: 'Mention the member', help: 'The announcement sends them a notification.' },
+        style: { label: 'Style', help: 'How the announcement looks in Discord.' },
       },
       levelFilters: {
         channels: { label: 'Channels without XP', help: 'Messages here never give experience.' },
@@ -618,6 +638,9 @@ export const en = {
   levelsAdmin: {
     full: 'You can have at most {max} role rewards.',
     badRole: 'Pick a normal role (not @everyone or a bot role).',
+    messagesFull: 'You can have at most {max} level messages.',
+    messageSaved: 'Level {level} now has its own message.',
+    messageRemoved: 'Level {level} uses the usual message again.',
     missing: 'That reward does not exist.',
     rewardAdded: '{role} is now given at level **{level}**.',
     rewardRemoved: '{role} is no longer a level reward.',
@@ -641,6 +664,15 @@ export const en = {
       rewardTitle: 'New role reward',
       levelLabel: 'Level',
       roleLabel: 'Role',
+      messagesTitle: 'Level messages',
+      noMessages: 'No special messages: every level uses the usual one.',
+      addMessage: 'Level message',
+      removeMessage: 'Remove a level message…',
+      messageTitle: 'Message for one level',
+      messageLabel: 'Message',
+      messageLevelHint: 'The level that shows this message instead of the usual one (1–1000)',
+      preview: 'Preview',
+      previewTitle: 'This is how level {level} would be announced for you:',
       keepLabel: 'Keep when replaced',
       keepHint: 'With "only the highest role", members still keep this one.',
       noSyncLabel: 'Give once',

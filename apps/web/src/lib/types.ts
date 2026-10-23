@@ -83,6 +83,8 @@ export interface LevelsOverview {
   multipliers: { type: 'role' | 'channel'; id: string; percent: number }[];
   maxRewards: number;
   maxMultipliers: number;
+  messages: { level: number; message: string }[];
+  maxMessages: number;
 }
 
 export interface Role {

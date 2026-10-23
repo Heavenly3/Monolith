@@ -79,6 +79,7 @@ watch(draft, (values) => emit('draft', values), { immediate: true, deep: true })
 const SHOWN_WHEN: Record<string, (values: Record<string, unknown>) => boolean> = {
   'levelAnnounce.channel': (values) => values.mode === 'custom',
   'levelVoice.xp': (values) => values.enabled === true,
+  'levelAnnounceRules.until': (values) => Number(values.every) > 1,
 };
 const visibleFields = computed(() =>
   props.category.fields.filter(

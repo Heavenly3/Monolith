@@ -92,7 +92,7 @@ export const SECTIONS: Record<SectionId, Section> = {
       settings('experience', 'levels', 'pi pi-bolt'),
       settings('curve', 'levelCurve', 'pi pi-chart-line', 'levelFormula'),
       settings('voice', 'levelVoice', 'pi pi-microphone'),
-      settings('messages', 'levelAnnounce', 'pi pi-megaphone'),
+      settings('messages', 'levelAnnounce', 'pi pi-megaphone', 'levelAnnounceRules'),
       settings('filters', 'levelFilters', 'pi pi-filter'),
     ],
   },

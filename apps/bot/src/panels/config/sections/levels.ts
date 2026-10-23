@@ -5,9 +5,17 @@ import {
   RoleSelectMenuBuilder,
   UserSelectMenuBuilder,
 } from 'discord.js';
-import { formatNumber, levels, parseWholeNumber, type XpAction } from '@monolith/core';
+import {
+  LEVEL_VARIABLES,
+  formatNumber,
+  levels,
+  parseWholeNumber,
+  totalXpFor,
+  truncate,
+  type XpAction,
+} from '@monolith/core';
 import type { Translator } from '@monolith/i18n';
-import { syncRewardRoles } from '../../../services/levelUp.ts';
+import { announcementText, syncRewardRoles } from '../../../services/levelUp.ts';
 import { emojis } from '../../../ui/index.ts';
 import {
   ButtonStyle,
@@ -28,6 +36,7 @@ const CATEGORIES = [
   ['levelMultipliers', 'sparkle'],
   ['levelVoice', 'voice'],
   ['levelAnnounce', 'levelUp'],
+  ['levelAnnounceRules', 'message'],
   ['levelFilters', 'signal'],
   ['levelRoles', 'role'],
 ] as const;
@@ -64,6 +73,21 @@ export function rewardFlags(t: Translator, reward: { keep?: boolean; noSync?: bo
   return shown.length ? ` · *${shown.join(' · ')}*` : '';
 }
 
+function levelMessageModal(t: Translator) {
+  const variables = LEVEL_VARIABLES.map((name) => `{${name}}`).join(' ');
+  return modal('levels', 'saveMessage', t('panel.levels.messageTitle')).addLabelComponents(
+    textField('level', t('panel.levels.levelLabel'), {
+      description: t('panel.levels.messageLevelHint'),
+      max: 4,
+    }),
+    textField('message', t('panel.levels.messageLabel'), {
+      description: t('config.hints.template', { variables }),
+      paragraph: true,
+      max: levels.LEVEL_MESSAGE_LENGTH,
+    }),
+  );
+}
+
 function xpModal(t: Translator) {
   return modal('levels', 'saveXp', t('panel.levels.adjustTitle')).addLabelComponents(
     new LabelBuilder()
@@ -95,6 +119,11 @@ export const levelsSection: Section = {
   render(t, { guildId, guild }) {
     const stats = levels.stats(guildId);
     const rewards = levels.rewards(guildId);
+    const messages = levels.levelMessages(guildId);
+    const messageLines = messages.map(
+      (entry) =>
+        `${emojis.levelUp} ${t('levels.level')} **${entry.level}** · “${truncate(entry.message, 80)}”`,
+    );
     const rewardLines = rewards.map(
       (reward) =>
         `${emojis.level} ${t('levels.level')} **${reward.level}** → <@&${reward.roleId}>${rewardFlags(t, reward)}`,
@@ -113,13 +142,16 @@ export const levelsSection: Section = {
         `### ${emojis.role} ${t('config.categories.levelRewards.label')} (${rewards.length}/${levels.MAX_REWARDS})\n${
           rewardLines.length ? list(rewardLines, t, 10) : t('panel.levels.noRewards')
         }`,
+        `### ${emojis.levelUp} ${t('panel.levels.messagesTitle')} (${messages.length}/${levels.MAX_LEVEL_MESSAGES})\n${
+          messageLines.length ? list(messageLines, t, 6) : t('panel.levels.noMessages')
+        }`,
         `-# ${t('panel.levels.hint')}`,
       ],
       rows: [
-        CATEGORIES.slice(0, 4).map(([category, icon]) =>
+        CATEGORIES.slice(0, 5).map(([category, icon]) =>
           editCategoryButton(t, 'levels', category, emojis[icon]),
         ),
-        CATEGORIES.slice(4).map(([category, icon]) =>
+        CATEGORIES.slice(5).map(([category, icon]) =>
           editCategoryButton(t, 'levels', category, emojis[icon]),
         ),
         [
@@ -131,6 +163,8 @@ export const levelsSection: Section = {
             ButtonStyle.Success,
           ),
           button('levels', 'adjust', t('panel.levels.adjust'), emojis.xp, ButtonStyle.Primary),
+          button('levels', 'addMessage', t('panel.levels.addMessage'), emojis.message),
+          button('levels', 'preview', t('panel.levels.preview'), emojis.levelUp),
           button(
             'levels',
             'resetAll',
@@ -147,6 +181,18 @@ export const levelsSection: Section = {
             rewards.map((reward) => ({
               label: `${t('levels.level')} ${reward.level} → @${guild.roles.cache.get(reward.roleId)?.name ?? reward.roleId}`,
               value: reward.roleId,
+            })),
+          ),
+        ],
+        [
+          picker(
+            'levels',
+            'removeMessage',
+            t('panel.levels.removeMessage'),
+            messages.map((entry) => ({
+              label: `${t('levels.level')} ${entry.level}`,
+              description: entry.message,
+              value: String(entry.level),
             })),
           ),
         ],
@@ -203,6 +249,53 @@ export const levelsSection: Section = {
       return {
         banner: `${emojis.success} ${t('levelsAdmin.rewardRemoved', { role: `<@&${value}>` })}`,
       };
+    },
+
+    addMessage({ t, guildId }) {
+      if (levels.levelMessages(guildId).length >= levels.MAX_LEVEL_MESSAGES) {
+        return { error: t('levelsAdmin.messagesFull', { max: levels.MAX_LEVEL_MESSAGES }) };
+      }
+      return { modal: levelMessageModal(t) };
+    },
+
+    saveMessage({ t, guildId, fields }) {
+      if (!fields) return { error: t('config.unknown') };
+      const level = parseWholeNumber(fields.getTextInputValue('level')) ?? 0;
+      const message = fields.getTextInputValue('message');
+      const result = levels.setLevelMessage(guildId, { level, message });
+      if (result === 'full') {
+        return { error: t('levelsAdmin.messagesFull', { max: levels.MAX_LEVEL_MESSAGES }) };
+      }
+      if (result === 'invalid') {
+        return {
+          error: t('config.invalid', {
+            field: t('panel.levels.levelLabel'),
+            hint: t('panel.levels.messageLevelHint'),
+          }),
+        };
+      }
+      return { banner: `${emojis.success} ${t('levelsAdmin.messageSaved', { level })}` };
+    },
+
+    removeMessage({ t, guildId, value }) {
+      const level = Number(value);
+      if (!levels.removeLevelMessage(guildId, level)) return { error: t('levelsAdmin.missing') };
+      return { banner: `${emojis.success} ${t('levelsAdmin.messageRemoved', { level })}` };
+    },
+
+    preview({ t, guildId, interaction }) {
+      const level = Math.max(1, levels.progressOf(guildId, interaction.user.id).level + 1);
+      const text = announcementText(
+        interaction.member,
+        { before: level - 1, after: level, xp: totalXpFor(level, levels.curveOf(guildId)) },
+        t,
+        interaction.channel,
+      );
+      const quoted = text
+        .split('\n')
+        .map((line) => `> ${line}`)
+        .join('\n');
+      return { banner: `${emojis.info} ${t('panel.levels.previewTitle', { level })}\n${quoted}` };
     },
 
     adjust: ({ t }) => ({ modal: xpModal(t) }),

@@ -176,6 +176,30 @@ describe('role rewards', () => {
   });
 });
 
+describe('announcements', () => {
+  it('follows every, until and rewards only', () => {
+    settings.set(GUILD, 'levels.announceEvery', 5);
+    expect(levels.shouldAnnounce(GUILD, 4, false)).toBe(false);
+    expect(levels.shouldAnnounce(GUILD, 4, true)).toBe(true);
+    expect(levels.shouldAnnounce(GUILD, 10, false)).toBe(true);
+    settings.set(GUILD, 'levels.announceUntil', 20);
+    expect(levels.shouldAnnounce(GUILD, 21, false)).toBe(true);
+    settings.set(GUILD, 'levels.announceRewardsOnly', true);
+    expect(levels.shouldAnnounce(GUILD, 10, false)).toBe(false);
+    settings.set(GUILD, 'levels.announce', 'off');
+    expect(levels.shouldAnnounce(GUILD, 10, true)).toBe(false);
+  });
+
+  it('keeps one special message per level', () => {
+    expect(levels.setLevelMessage(GUILD, { level: 10, message: ' Ten! ' })).toBe('ok');
+    expect(levels.setLevelMessage(GUILD, { level: 10, message: 'Again' })).toBe('ok');
+    expect(levels.setLevelMessage(GUILD, { level: 0, message: 'x' })).toBe('invalid');
+    expect(levels.levelMessageAt(GUILD, 10)).toBe('Again');
+    expect(levels.removeLevelMessage(GUILD, 10)).toBe(true);
+    expect(levels.levelMessageAt(GUILD, 10)).toBeNull();
+  });
+});
+
 describe('settings forms', () => {
   it('validates the new field types', () => {
     expect(

@@ -6,6 +6,7 @@ import { computed, reactive } from 'vue';
 import IncomeEditor from '../components/IncomeEditor.vue';
 import JobsEditor from '../components/JobsEditor.vue';
 import LevelCurveChart from '../components/LevelCurveChart.vue';
+import LevelMessagesEditor from '../components/LevelMessagesEditor.vue';
 import PageHeader from '../components/PageHeader.vue';
 import SettingsForm from '../components/SettingsForm.vue';
 import WheelEditor from '../components/WheelEditor.vue';
@@ -116,6 +117,13 @@ const formula = computed(() => ({
         :rounding="Number(draftOf('levelFormula', 'rounding') ?? 1)"
         :xp-per-message="xpPerMessage"
         :cooldown="Number(valueOf('levels', 'cooldown') ?? 60)"
+      />
+      <LevelMessagesEditor
+        v-if="main === 'levelAnnounce'"
+        :guild-id="guild.id"
+        :variables="
+          byId.get('levelAnnounce')?.fields.find((f) => f.id === 'message')?.variables ?? []
+        "
       />
       <JobsEditor v-if="main === 'work'" :guild-id="guild.id" />
       <WheelEditor v-if="main === 'wheel'" :guild-id="guild.id" />

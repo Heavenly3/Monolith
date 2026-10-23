@@ -26,7 +26,46 @@ export async function levelRoutes(app: FastifyInstance): Promise<void> {
       multipliers: levels.multipliers(guild.id),
       maxRewards: levels.MAX_REWARDS,
       maxMultipliers: levels.MAX_MULTIPLIERS,
+      messages: levels.levelMessages(guild.id),
+      maxMessages: levels.MAX_LEVEL_MESSAGES,
     };
+  });
+
+  app.put(
+    '/levels/messages',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['level', 'message'],
+          additionalProperties: false,
+          properties: {
+            level: { type: 'integer', minimum: 1, maximum: 1000 },
+            message: { type: 'string', minLength: 1, maxLength: levels.LEVEL_MESSAGE_LENGTH },
+          },
+        },
+      },
+    },
+    async (request) => {
+      const { guild, viewer } = scope(request);
+      const entry = request.body as { level: number; message: string };
+      const result = levels.setLevelMessage(guild.id, entry);
+      if (result === 'full') throw new HttpError(409, 'full', { max: levels.MAX_LEVEL_MESSAGES });
+      if (result === 'invalid') throw new HttpError(422, 'invalid_value', { field: 'message' });
+      audit.record(guild.id, viewer.session.userId, 'levelMessages.set', {
+        source: 'web',
+        level: entry.level,
+      });
+      return { ok: true };
+    },
+  );
+
+  app.delete('/levels/messages/:level', async (request) => {
+    const { guild, viewer } = scope(request);
+    const level = Number((request.params as { level: string }).level);
+    if (!levels.removeLevelMessage(guild.id, level)) throw new HttpError(404, 'unknown_message');
+    audit.record(guild.id, viewer.session.userId, 'levelMessages.remove', { source: 'web', level });
+    return { ok: true };
   });
 
   app.post(

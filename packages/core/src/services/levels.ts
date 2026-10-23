@@ -1,7 +1,7 @@
 // Experience and levels of members. Discord-free: the bot passes the channel
 // and roles of a message, and applies the role changes this returns.
 import { levelFor, progressFor, totalXpFor, type CurveSettings } from '../config/levels.ts';
-import type { LevelReward, XpMultiplier } from '../config/defaults.ts';
+import type { LevelMessage, LevelReward, XpMultiplier } from '../config/defaults.ts';
 import { many, one, run, transaction } from '../db/database.ts';
 import type { UserRef } from '../types.ts';
 import { randomBetween } from '../utils/random.ts';
@@ -415,6 +415,46 @@ export function roleChangesFor(guildId: string, before: number, after: number): 
 /** The reward role unlocked exactly at `level`, if any (for announcements). */
 export const rewardAt = (guildId: string, level: number): LevelReward | undefined =>
   rewards(guildId).find((r) => r.level === level);
+
+// ── Announcements ───────────────────────────────────────────────────────────
+
+/** Whether reaching `level` is announced, following the server's rules. */
+export function shouldAnnounce(guildId: string, level: number, givesReward: boolean): boolean {
+  if (settings.get(guildId, 'levels.announce') === 'off') return false;
+  if (givesReward) return true;
+  if (settings.get(guildId, 'levels.announceRewardsOnly')) return false;
+  const until = settings.get(guildId, 'levels.announceUntil');
+  if (until > 0 && level > until) return true;
+  return level % settings.get(guildId, 'levels.announceEvery') === 0;
+}
+
+export const MAX_LEVEL_MESSAGES = 50;
+export const LEVEL_MESSAGE_LENGTH = 500;
+
+export const levelMessages = (guildId: string): LevelMessage[] =>
+  settings.get(guildId, 'levels.levelMessages').sort((a, b) => a.level - b.level);
+
+/** Adds or replaces the special message of one level. */
+export function setLevelMessage(guildId: string, entry: LevelMessage): 'ok' | 'full' | 'invalid' {
+  const message = entry.message.trim();
+  if (!message || message.length > LEVEL_MESSAGE_LENGTH) return 'invalid';
+  if (!Number.isInteger(entry.level) || entry.level < 1 || entry.level > 1000) return 'invalid';
+  const list = levelMessages(guildId).filter((m) => m.level !== entry.level);
+  if (list.length >= MAX_LEVEL_MESSAGES) return 'full';
+  settings.set(guildId, 'levels.levelMessages', [...list, { level: entry.level, message }]);
+  return 'ok';
+}
+
+export function removeLevelMessage(guildId: string, level: number): boolean {
+  const list = levelMessages(guildId);
+  const kept = list.filter((m) => m.level !== level);
+  if (kept.length === list.length) return false;
+  settings.set(guildId, 'levels.levelMessages', kept);
+  return true;
+}
+
+export const levelMessageAt = (guildId: string, level: number): string | null =>
+  levelMessages(guildId).find((m) => m.level === level)?.message ?? null;
 
 // ── Multipliers ─────────────────────────────────────────────────────────────
 

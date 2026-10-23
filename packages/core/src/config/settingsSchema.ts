@@ -4,6 +4,7 @@
 // under config.categories.<id> and config.fields.<id>.<field>.
 import { LANGUAGES } from '@monolith/i18n';
 import {
+  ANNOUNCE_STYLES,
   CHANNEL_MULTIPLIER_MODES,
   LEVEL_ANNOUNCE,
   LEVEL_CURVES,
@@ -65,9 +66,13 @@ export const LEVEL_VARIABLES = [
   'user',
   'username',
   'level',
+  'oldLevel',
+  'nextLevel',
   'xp',
+  'remaining',
   'rank',
   'role',
+  'channel',
   'server',
 ] as const;
 
@@ -219,10 +224,20 @@ export const SETTING_CATEGORIES = {
         limit: 500,
         optional: true,
       },
-      { id: 'every', key: 'levels.announceEvery', type: 'number', min: 1, max: 100 },
     ],
     validate: (values) =>
       values.mode === 'custom' && !values.channel ? 'config.channelRequired' : null,
+  },
+  levelAnnounceRules: {
+    group: 'levels',
+    module: 'levels',
+    fields: [
+      { id: 'every', key: 'levels.announceEvery', type: 'number', min: 1, max: 100 },
+      { id: 'until', key: 'levels.announceUntil', type: 'number', min: 0, max: 1000 },
+      { id: 'rewardsOnly', key: 'levels.announceRewardsOnly', type: 'toggle' },
+      { id: 'ping', key: 'levels.announcePing', type: 'toggle' },
+      { id: 'style', key: 'levels.announceStyle', type: 'choice', options: ANNOUNCE_STYLES },
+    ],
   },
   levelFilters: {
     group: 'levels',

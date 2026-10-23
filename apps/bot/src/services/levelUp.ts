@@ -1,6 +1,12 @@
 // What happens in Discord after a member earns XP: reward roles are kept in
 // sync with their level, and level-ups are announced where the server chose.
-import type { GuildBasedChannel, GuildMember, GuildTextBasedChannel } from 'discord.js';
+import type {
+  GuildBasedChannel,
+  GuildMember,
+  GuildTextBasedChannel,
+  MessageCreateOptions,
+} from 'discord.js';
+import type { Translator } from '@monolith/i18n';
 import {
   accounts,
   formatNumber,
@@ -63,7 +69,7 @@ export function fillTemplate(template: string, values: Record<string, string>): 
 }
 
 /** Highest reward role unlocked between the old and the new level, if any. */
-function unlockedReward(guildId: string, gain: XpGain) {
+function unlockedReward(guildId: string, gain: Pick<XpGain, 'before' | 'after'>) {
   for (let level = gain.after; level > gain.before; level--) {
     const reward = levels.rewardAt(guildId, level);
     if (reward) return reward;
@@ -71,29 +77,54 @@ function unlockedReward(guildId: string, gain: XpGain) {
   return undefined;
 }
 
-async function announce(member: GuildMember, gain: XpGain, source: GuildTextBasedChannel | null) {
+/** Text of a level-up announcement, before it is wrapped in a card or sent as plain text. */
+export function announcementText(
+  member: GuildMember,
+  gain: Pick<XpGain, 'before' | 'after' | 'xp'>,
+  t: Translator,
+  channel: { toString(): string } | null,
+): string {
   const guildId = member.guild.id;
-  const mode = settings.get(guildId, 'levels.announce');
-  if (mode === 'off') return;
-
   const reward = unlockedReward(guildId, gain);
-  const every = settings.get(guildId, 'levels.announceEvery');
-  if (!reward && gain.after % every !== 0) return;
-
-  const t = translatorFor(guildId, accounts.getProfile(member.id)?.locale);
   const template =
+    levels.levelMessageAt(guildId, gain.after) ??
     settings.get(guildId, 'levels.announceMessage') ??
     t(reward ? 'levels.announceReward' : 'levels.announce');
-  const text = fillTemplate(template, {
+  const progress = levels.progressOf(guildId, member.id);
+  return fillTemplate(template, {
     user: `${member}`,
     username: member.displayName,
     level: String(gain.after),
+    oldLevel: String(gain.before),
+    nextLevel: String(gain.after + 1),
     xp: formatNumber(gain.xp),
+    remaining: formatNumber(Math.max(0, progress.needed - progress.current)),
     rank: String(levels.rankOf(guildId, member.id) ?? '—'),
     role: reward ? `<@&${reward.roleId}>` : '',
+    channel: channel ? `${channel}` : '',
     server: member.guild.name,
   });
+}
 
+/** The announcement as a message, in the style the server chose. */
+export function announcementMessage(
+  member: GuildMember,
+  gain: Pick<XpGain, 'before' | 'after' | 'xp' | 'coins'>,
+  t: Translator,
+  channel: { toString(): string } | null,
+): MessageCreateOptions {
+  const guildId = member.guild.id;
+  const text = announcementText(member, gain, t, channel);
+  const pinged = settings.get(guildId, 'levels.announcePing') ? [member.id] : [];
+  const earned =
+    gain.coins > 0 ? `${emojis.coin} ${t('levels.coins', { amount: coins(gain.coins) })}` : null;
+
+  if (settings.get(guildId, 'levels.announceStyle') === 'plain') {
+    return {
+      content: [text, earned && `-# ${earned}`].filter(Boolean).join('\n'),
+      allowedMentions: { users: pinged },
+    };
+  }
   const card = new ui.Card('levels')
     .header(
       `${emojis.levelUp} ${t('levels.announceTitle')}`,
@@ -101,9 +132,17 @@ async function announce(member: GuildMember, gain: XpGain, source: GuildTextBase
       member.displayAvatarURL({ size: 128 }),
     )
     .text(text);
-  if (gain.coins > 0)
-    card.text(`-# ${emojis.coin} ${t('levels.coins', { amount: coins(gain.coins) })}`);
-  const message = card.toChannelMessage([member.id]);
+  if (earned) card.text(`-# ${earned}`);
+  return card.toChannelMessage(pinged);
+}
+
+async function announce(member: GuildMember, gain: XpGain, source: GuildTextBasedChannel | null) {
+  const guildId = member.guild.id;
+  const mode = settings.get(guildId, 'levels.announce');
+  if (!levels.shouldAnnounce(guildId, gain.after, Boolean(unlockedReward(guildId, gain)))) return;
+
+  const t = translatorFor(guildId, accounts.getProfile(member.id)?.locale);
+  const message = announcementMessage(member, gain, t, source);
 
   try {
     if (mode === 'dm') {

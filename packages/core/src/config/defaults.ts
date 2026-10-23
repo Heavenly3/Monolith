@@ -14,6 +14,16 @@ export type LevelCurve = (typeof LEVEL_CURVES)[number];
 export const LEVEL_ANNOUNCE = ['channel', 'custom', 'dm', 'off'] as const;
 export type LevelAnnounce = (typeof LEVEL_ANNOUNCE)[number];
 
+/** A level-up as a component card, or as plain text. */
+export const ANNOUNCE_STYLES = ['card', 'plain'] as const;
+export type AnnounceStyle = (typeof ANNOUNCE_STYLES)[number];
+
+/** Message used instead of the usual one when a member reaches one exact level. */
+export interface LevelMessage {
+  level: number;
+  message: string;
+}
+
 export const REWARD_MODES = ['stack', 'replace'] as const;
 export type RewardMode = (typeof REWARD_MODES)[number];
 
@@ -119,6 +129,14 @@ export interface SettingValues {
   'levels.announceMessage': string | null;
   /** Announce only every N levels (1 = every level). Reward levels are always announced. */
   'levels.announceEvery': number;
+  /** After this level every level is announced again (0 = the "every" rule never stops). */
+  'levels.announceUntil': number;
+  /** Only announce levels that give a reward role. */
+  'levels.announceRewardsOnly': boolean;
+  /** Whether the announcement notifies the member. */
+  'levels.announcePing': boolean;
+  'levels.announceStyle': AnnounceStyle;
+  'levels.levelMessages': LevelMessage[];
   'levels.ignoredChannels': string[];
   'levels.ignoredRoles': string[];
   'levels.rewardMode': RewardMode;
@@ -181,6 +199,11 @@ export const DEFAULTS: SettingValues = {
   'levels.announceChannel': null,
   'levels.announceMessage': null,
   'levels.announceEvery': 1,
+  'levels.announceUntil': 0,
+  'levels.announceRewardsOnly': false,
+  'levels.announcePing': true,
+  'levels.announceStyle': 'card',
+  'levels.levelMessages': [],
   'levels.ignoredChannels': [],
   'levels.ignoredRoles': [],
   'levels.rewardMode': 'stack',
