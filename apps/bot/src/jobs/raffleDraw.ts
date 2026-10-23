@@ -28,7 +28,7 @@ function announcement(t: Translator, result: DrawResult): ui.Card {
     );
   } else {
     card.text(
-      `${t('raffle.noWinner', { tickets: formatNumber(result.tickets), pot: coins(result.nextPot) })} ${emojis.crest}`,
+      `${t('raffle.noWinner', { tickets: formatNumber(result.tickets), pot: coins(result.nextPot) })} ${emojis.logo}`,
     );
   }
   return card.footer(t('raffle.footer', { command: mention('lottery buy') }));

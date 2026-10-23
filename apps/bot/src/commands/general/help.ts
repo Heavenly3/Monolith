@@ -54,7 +54,7 @@ const COMMAND_ICONS: Record<string, EmojiName> = {
   leaderboard: 'rank',
   slots: 'slots',
   roulette: 'roulette',
-  race: 'horse',
+  race: 'drone',
   keno: 'keno',
   lottery: 'raffle',
   loan: 'loan',
@@ -189,7 +189,7 @@ function renderHome(view: View): ui.Card {
     )
     .text(t('help.home.intro'))
     .divider()
-    .text(`### ${emojis.crest} ${t('help.home.quickStart')}\n${steps.join('\n')}`)
+    .text(`### ${emojis.logo} ${t('help.home.quickStart')}\n${steps.join('\n')}`)
     .divider()
     .text(
       visibleSections(admin)

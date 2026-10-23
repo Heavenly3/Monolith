@@ -21,7 +21,7 @@ export default defineCommand({
     const rewards = roleRewards.forRoles(guildId, member.roles.cache.keys());
     if (rewards.length === 0) {
       return interaction.reply(
-        ui.info(`${emojis.wisp} ${t('collect.noRewards', { command: mention('config') })}`),
+        ui.info(`${emojis.static} ${t('collect.noRewards', { command: mention('config') })}`),
       );
     }
 

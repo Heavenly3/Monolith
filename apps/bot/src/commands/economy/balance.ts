@@ -7,7 +7,7 @@ import { coins, emojis, relativeTime } from '../../ui/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('balance')
-    .setDescription("See your gold (wallet and bank) or another member's.")
+    .setDescription("See your credits (wallet and bank) or another member's.")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) => option.setName('user').setDescription('Member to check')),
 

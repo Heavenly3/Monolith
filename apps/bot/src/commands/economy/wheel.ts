@@ -49,8 +49,8 @@ export default defineCommand({
       .header(
         ui.featureTitle(t, 'wheel'),
         won
-          ? `${emojis.realm} ${t('wheel.won', { label })}`
-          : `${emojis.wisp} ${t('wheel.lost', { label })}`,
+          ? `${emojis.sector} ${t('wheel.won', { label })}`
+          : `${emojis.static} ${t('wheel.lost', { label })}`,
         user.displayAvatarURL({ size: 128 }),
       )
       .divider()

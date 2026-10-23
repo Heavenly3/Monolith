@@ -69,7 +69,7 @@ export interface SettingValues {
   'levels.xp': { min: number; max: number };
   /** Seconds before another message gives XP again. */
   'levels.cooldown': number;
-  /** Gold given on every level up (0 = none). */
+  /** Credits given on every level up (0 = none). */
   'levels.coinsPerLevel': number;
   'levels.curve': LevelCurve;
   /** Scales the XP needed per level (100 = normal). */

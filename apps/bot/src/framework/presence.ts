@@ -7,6 +7,6 @@ export function updatePresence(client: Client<true>): void {
   client.user.setActivity({
     type: ActivityType.Custom,
     name: 'custom',
-    state: `${emojis.crest} ${translate('en', 'status')}`,
+    state: `${emojis.logo} ${translate('en', 'status')}`,
   });
 }

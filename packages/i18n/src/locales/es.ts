@@ -18,7 +18,7 @@ export const es: Messages = {
     notEnoughBank: 'Solo tienes {amount} en el banco.',
     emptyWallet: 'Tu cartera está vacía.',
     emptyBank: 'Tu banco está vacío.',
-    botsNoAccount: 'Los bots no tienen oro.',
+    botsNoAccount: 'Los bots no tienen créditos.',
     cooldown: 'Podrás {action} de nuevo {time}.',
     serverOnly: 'Monolith solo funciona dentro de un servidor.',
     adminOnly: 'Solo los administradores pueden hacer eso.',
@@ -39,7 +39,7 @@ export const es: Messages = {
     leaderboard: 'Ranking',
     slots: 'Tragaperras',
     roulette: 'Ruleta',
-    horserace: 'Carrera de caballeros',
+    horserace: 'Carrera de drones',
     keno: 'Keno',
     raffle: 'Lotería',
     loans: 'Préstamos',
@@ -80,25 +80,25 @@ export const es: Messages = {
     disabledHint: 'Los niveles están desactivados en este servidor.',
   },
 
-  status: 'Tirando dados en la taberna',
+  status: 'Recorriendo la Estructura',
 
   balance: {
-    subtitle: 'Oro de {user}',
+    subtitle: 'Créditos de {user}',
     rank: 'Puesto **#{rank}**',
     activeLoan: 'Préstamo activo',
     loanDue: '{amount} vence {time}',
   },
 
   bank: {
-    depositTitle: 'Oro depositado',
+    depositTitle: 'Créditos depositados',
     depositBody: 'Pasaste {amount} al banco. Ahí nadie te lo puede robar.',
-    withdrawTitle: 'Oro retirado',
+    withdrawTitle: 'Créditos retirados',
     withdrawBody: 'Pasaste {amount} del banco a tu cartera.',
   },
 
   pay: {
     self: 'No puedes pagarte a ti mismo.',
-    bot: 'Los bots no necesitan oro.',
+    bot: 'Los bots no necesitan créditos.',
     title: 'Pago enviado',
     body: '{sender} le dio {amount} a {target}.',
   },
@@ -110,21 +110,21 @@ export const es: Messages = {
     fallback: '{message} Ganaste {amount}.',
     next: 'Próximo trabajo',
     defaultMessages: [
-      'Ahuyentaste a una manada de lobos de la aldea y te pagaron {amount}.',
-      'Escoltaste una caravana de mercaderes por el Bosque Oscuro y ganaste {amount}.',
-      'Forjaste una docena de espadas para la guardia del castillo y sacaste {amount}.',
-      'Recuperaste una reliquia robada de una guarida de goblins y recibiste {amount}.',
-      'Preparaste pociones para el alquimista de la corte y ganaste {amount}.',
-      'Limpiaste de ratas el sótano de la taberna y el posadero te pagó {amount}.',
-      'Llevaste una carta sellada al reino vecino y el gremio de mensajeros te pagó {amount}.',
-      'Hiciste guardia toda la noche en las murallas de la ciudad y ganaste {amount}.',
-      'Ayudaste a los granjeros a recoger la cosecha antes de la tormenta y sacaste {amount}.',
-      'Cartografiaste una mazmorra olvidada para el cartógrafo real y recibiste {amount}.',
-      'Ganaste el torneo de arquería de la feria del pueblo y te llevaste {amount}.',
-      'Domaste un grifo salvaje para los establos reales y te recompensaron con {amount}.',
-      'Copiaste viejos grimorios para la torre de los magos y ganaste {amount}.',
-      'Cazaste al trol que acechaba el puente viejo y cobraste una recompensa de {amount}.',
-      'Tocaste el laúd en la taberna toda la noche y reuniste {amount} en propinas.',
+      'Arrancaste cobre de un conducto derrumbado en el estrato 12 y lo vendiste por {amount}.',
+      'Reparaste un relé de energía que parpadeaba en un asentamiento y te pagaron {amount}.',
+      'Cartografiaste un sector inexplorado de la Estructura y vendiste el mapa por {amount}.',
+      'Subiste chatarra por trescientos pisos de escaleras y ganaste {amount}.',
+      'Recuperaste un núcleo de datos de una terminal muerta y lo cambiaste por {amount}.',
+      'Limpiaste crecimiento de silicio de un pozo de ventilación y sacaste {amount}.',
+      'Escoltaste una caravana de chatarreros por un pasillo a oscuras y ganaste {amount}.',
+      'Vigilaste una barricada durante todo el ciclo nocturno y te pagaron {amount}.',
+      'Sellaste una brecha antes de que el refrigerante inundara el nivel y recibiste {amount}.',
+      'Descifraste una señal antigua de los estratos superiores y vendiste la clave por {amount}.',
+      'Reconstruiste un reciclador de agua para los vecinos del bloque 7 y ganaste {amount}.',
+      'Rescataste piezas de un dron constructor caído y sacaste {amount}.',
+      'Guiaste a un explorador perdido de vuelta al hueco del ascensor y te recompensaron con {amount}.',
+      'Recableaste un montacargas muerto desde hacía décadas y ganaste {amount}.',
+      'Saqueaste una bóveda de almacén olvidada y vendiste su contenido por {amount}.',
     ],
   },
 
@@ -141,7 +141,7 @@ export const es: Messages = {
     action: 'girar la rueda',
     empty: 'La rueda todavía no tiene premios. Un administrador puede añadirlos en {command}.',
     spinning: 'La rueda está girando... {label}',
-    won: '¡La fortuna te sonríe: {label}!',
+    won: 'La rueda se fija en {label}. ¡Buena señal!',
     lost: 'La rueda se detuvo en {label}. Mejor suerte la próxima vez.',
     nothing: 'Nada',
     next: 'Próximo giro',
@@ -152,17 +152,18 @@ export const es: Messages = {
     bot: 'Los bots no tienen cartera que robar.',
     action: 'robar',
     thiefPoor: 'Necesitas al menos {amount} en tu cartera para pagar la multa si te atrapan.',
-    targetPoor: '{target} tiene muy poco oro en su cartera; no vale la pena.',
+    targetPoor: '{target} tiene muy pocos créditos en su cartera; no vale la pena.',
     successTitle: 'Robo exitoso',
-    successBody: 'Saltaste desde las sombras y le robaste {amount} a {target}.',
-    failTitle: '¡Te atrapó la guardia!',
-    failBody: 'La guardia de la ciudad te atrapó. Le pagaste a {target} {amount} de multa.',
+    successBody: 'Saliste de un conducto de mantenimiento y le quitaste {amount} a {target}.',
+    failTitle: '¡Te atrapó un centinela!',
+    failBody:
+      'Un centinela de seguridad te pilló en el acto. Le pagaste a {target} {amount} de multa.',
     next: 'Próximo robo',
   },
 
   leaderboard: {
     subtitle: 'Los miembros más ricos del servidor (cartera + banco).',
-    empty: 'Nadie tiene oro todavía. ¡Sé el primero!',
+    empty: 'Nadie tiene créditos todavía. ¡Sé el primero!',
     you: 'tú',
     yourRank: 'Tu puesto: #{rank}',
   },
@@ -181,11 +182,11 @@ export const es: Messages = {
 
   slots: {
     spinning: 'Los rodillos están girando...',
-    jackpot: '¡BOTE! ¡EL DRAGÓN DESPIERTA!',
+    jackpot: '¡BOTE! ¡EL MONOLITO SE ALINEA!',
     triple: '¡Tres iguales!',
     pair: '¡Una pareja!',
     none: 'Sin premio',
-    paytable: 'Pareja ×{pair} · Tres iguales ×{triple} · Tres dragones ×{jackpot}',
+    paytable: 'Pareja ×{pair} · Tres iguales ×{triple} · Tres monolitos ×{jackpot}',
   },
 
   roulette: {
@@ -302,8 +303,8 @@ export const es: Messages = {
     useHint: 'Úsalo con {command}',
     alreadyOwned: 'Ya tienes **{item}** — solo se puede comprar una vez.',
     cantAfford: 'Cuesta {total}, pero solo tienes {wallet} en tu cartera.',
-    refunded: '{reason} Se te devolvió el oro.',
-    roleRejected: 'Discord no me dejó darte el rol. Se te devolvió el oro.',
+    refunded: '{reason} Se te devolvieron los créditos.',
+    roleRejected: 'Discord no me dejó darte el rol. Se te devolvieron los créditos.',
     roleMissing: 'El rol de este objeto ya no existe.',
     roleNotEditable: 'No puedo dar {role} — sube mi rol por encima y dame **Gestionar roles**.',
   },
@@ -440,7 +441,7 @@ export const es: Messages = {
       modules: { label: 'Módulos', description: 'Activa o desactiva sistemas completos' },
       members: {
         label: 'Miembros',
-        description: 'Cambia el oro de los miembros y mira los totales',
+        description: 'Cambia los créditos de los miembros y mira los totales',
       },
       work: { label: 'Trabajo', description: 'Recompensas, espera y trabajos de /trabajar' },
       collect: {
@@ -455,7 +456,7 @@ export const es: Messages = {
         label: 'Lotería',
         description: 'Precio del boleto, premio inicial y hora del sorteo',
       },
-      levels: { label: 'Experiencia', description: 'XP por mensaje, espera y oro por nivel' },
+      levels: { label: 'Experiencia', description: 'XP por mensaje, espera y créditos por nivel' },
       levelCurve: { label: 'Curva de niveles', description: 'Cuánta XP necesita cada nivel' },
       levelVoice: { label: 'XP de voz', description: 'Experiencia por estar en canales de voz' },
       levelAnnounce: {
@@ -489,7 +490,7 @@ export const es: Messages = {
         },
         games: { label: 'Juegos', help: 'Tragaperras, ruleta, carrera y keno.' },
         shop: { label: 'Tienda', help: 'Tienda, compras, inventario y uso de objetos.' },
-        loans: { label: 'Préstamos', help: 'Pedir oro prestado con interés.' },
+        loans: { label: 'Préstamos', help: 'Pedir créditos prestados con interés.' },
         lottery: { label: 'Lotería', help: 'Boletos numerados y el premio compartido.' },
         levels: {
           label: 'Niveles',
@@ -504,8 +505,8 @@ export const es: Messages = {
           help: 'Tiempo antes de que los mensajes vuelvan a dar XP (evita el spam).',
         },
         coins: {
-          label: 'Oro por nivel',
-          help: 'Oro que se paga en cada subida de nivel (0 = nada).',
+          label: 'Créditos por nivel',
+          help: 'Créditos que se pagan en cada subida de nivel (0 = nada).',
         },
       },
       levelCurve: {
@@ -635,17 +636,17 @@ export const es: Messages = {
     cancelled: 'Cancelado.',
     clearAll: 'Quitar todos',
     members: {
-      adjust: 'Cambiar oro',
-      accounts: 'Miembros con oro',
-      inWallets: 'Oro en carteras',
-      inBanks: 'Oro en bancos',
-      hint: 'Añade, quita o fija el oro de cualquier miembro, o reinícialo por completo.',
-      modalTitle: 'Cambiar oro',
+      adjust: 'Cambiar créditos',
+      accounts: 'Miembros con créditos',
+      inWallets: 'Créditos en carteras',
+      inBanks: 'Créditos en bancos',
+      hint: 'Añade, quita o fija los créditos de cualquier miembro, o reinícialos por completo.',
+      modalTitle: 'Cambiar créditos',
       member: 'Miembro',
       action: 'Acción',
       actions: {
-        add: 'Añadir oro',
-        remove: 'Quitar oro',
+        add: 'Añadir créditos',
+        remove: 'Quitar créditos',
         set: 'Fijar cantidad exacta',
         reset: 'Reiniciar todo',
       },
@@ -671,7 +672,7 @@ export const es: Messages = {
       removePlaceholder: 'Quitar los ingresos de un rol…',
       modalTitle: 'Ingresos por rol',
       roleLabel: 'Rol',
-      amountLabel: 'Oro por cobro',
+      amountLabel: 'Créditos por cobro',
       confirmClear: 'Esto quita los ingresos de todos los roles.',
     },
     wheel: {
@@ -681,7 +682,7 @@ export const es: Messages = {
       resetPrizes: 'Restaurar premios',
       removePlaceholder: 'Quitar un premio…',
       modalTitle: 'Nuevo premio',
-      amountLabel: 'Oro (0 = casilla vacía)',
+      amountLabel: 'Créditos (0 = casilla vacía)',
       labelLabel: 'Nombre personalizado (opcional)',
       confirmReset: 'Esto reemplaza todos los premios por los originales.',
     },
@@ -726,10 +727,10 @@ export const es: Messages = {
     tip: 'Consejo: usa `/ayuda comando:<nombre>` para abrir directamente un comando.',
     home: {
       intro:
-        'Bienvenido a Monolith, un bot de economía ambientado en un mundo medieval de fantasía. Trabaja para ganar oro, guárdalo en el banco, prueba suerte en los juegos de la taberna y gástalo en la tienda.',
+        'Bienvenido a Monolith, un bot de economía y niveles ambientado en una megaestructura sin fin. Trabaja los estratos para ganar créditos, guárdalos en el banco, prueba suerte en los juegos y gástalos en la tienda.',
       quickStart: 'Tus primeros pasos',
       steps: [
-        '{work} para ganar tu primer oro',
+        '{work} para ganar tus primeros créditos',
         '{deposit} para protegerlo de los ladrones',
         '{slots} u otro juego para multiplicarlo',
         '{shop} para gastarlo',
@@ -739,9 +740,9 @@ export const es: Messages = {
     sections: {
       economy: {
         label: 'Economía',
-        description: 'Gana, guarda y envía oro',
+        description: 'Gana, guarda y envía créditos',
         intro:
-          'Tu oro está en dos sitios: la **cartera** (lista para gastar, pero otros pueden robarte) y el **banco** (a salvo de robos). Los juegos, los pagos y la tienda siempre usan la cartera.',
+          'Tus créditos están en dos sitios: la **cartera** (lista para gastar, pero otros pueden robarte) y el **banco** (a salvo de robos). Los juegos, los pagos y la tienda siempre usan la cartera.',
       },
       games: {
         label: 'Juegos',
@@ -752,9 +753,9 @@ export const es: Messages = {
       },
       loans: {
         label: 'Préstamos',
-        description: 'Pide oro prestado y devuélvelo',
+        description: 'Pide créditos prestados y devuélvelos',
         intro:
-          'Pide oro ahora y devuélvelo con interés. Si el préstamo llega a su plazo, se cobra automáticamente: primero de tu cartera, luego de tu banco, y lo que falte deja tu cartera en negativo.',
+          'Pide créditos ahora y devuélvelos con interés. Si el préstamo llega a su plazo, se cobra automáticamente: primero de tu cartera, luego de tu banco, y lo que falte deja tu cartera en negativo.',
       },
       shop: {
         label: 'Tienda',
@@ -766,13 +767,13 @@ export const es: Messages = {
         label: 'Niveles',
         description: 'Experiencia, rangos y roles de recompensa',
         intro:
-          'Los miembros ganan experiencia (XP) por chatear — una vez por cada espera, así el spam no cuenta — y, si se activa, por estar en voz. Con suficiente XP subes de nivel; algunos niveles dan un rol u oro.',
+          'Los miembros ganan experiencia (XP) por chatear — una vez por cada espera, así el spam no cuenta — y, si se activa, por estar en voz. Con suficiente XP subes de nivel; algunos niveles dan un rol o créditos.',
       },
       admin: {
         label: 'Administración',
         description: 'El panel de ajustes',
         intro:
-          'Todo se configura desde {command}: idioma, oro de los miembros, trabajo, ingresos por rol, la Rueda de la Fortuna, esperas de los juegos, la tienda, los préstamos y la lotería. Solo lo ven los administradores — puedes permitirlo a otros roles en Ajustes del servidor → Integraciones.',
+          'Todo se configura desde {command}: idioma, créditos de los miembros, trabajo, ingresos por rol, la Rueda de la Fortuna, esperas de los juegos, la tienda, los préstamos y la lotería. Solo lo ven los administradores — puedes permitirlo a otros roles en Ajustes del servidor → Integraciones.',
       },
       config: {
         label: 'Ajustes',
@@ -781,7 +782,7 @@ export const es: Messages = {
       },
     },
     payouts: {
-      slots: 'Pareja ×{pair} · Tres iguales ×{triple} · Tres dragones ×{jackpot}',
+      slots: 'Pareja ×{pair} · Tres iguales ×{triple} · Tres monolitos ×{jackpot}',
       roulette: 'Color, par/impar, bajo/alto ×2 · Docena o columna ×3 · Número único ×36',
       horserace: '1.º ×{first} · 2.º ×{second} · 3.º ×{third}',
       keno: 'Elige de 1 a 10 números; salen 20 de 80. Más aciertos pagan más — hasta ×{max}.',
@@ -792,13 +793,14 @@ export const es: Messages = {
           'Muestra la cartera, el banco, el total y el puesto en el ranking tuyos o de otro miembro, además de cualquier préstamo activo.',
       },
       deposit: {
-        about: 'Pasa oro de tu cartera al banco. El oro del banco no se puede robar con /robar.',
+        about:
+          'Pasa créditos de tu cartera al banco. Los créditos del banco no se pueden robar con /robar.',
       },
-      withdraw: { about: 'Pasa oro del banco a tu cartera para poder gastarlo.' },
-      pay: { about: 'Da oro de tu cartera a otro miembro al instante.' },
+      withdraw: { about: 'Pasa créditos del banco a tu cartera para poder gastarlos.' },
+      pay: { about: 'Da créditos de tu cartera a otro miembro al instante.' },
       work: {
         about:
-          'Haz un trabajo (una pequeña misión medieval) y gana una recompensa aleatoria dentro del rango configurado. Hay una espera entre trabajos.',
+          'Haz un trabajo en algún punto de la Estructura (chatarra, reparaciones, mapas…) y gana una recompensa aleatoria dentro del rango configurado. Hay una espera entre trabajos.',
       },
       collect: {
         about:
@@ -810,14 +812,14 @@ export const es: Messages = {
       },
       rob: {
         about:
-          'Intenta robar parte de la cartera de otro miembro. Si la guardia te atrapa, le pagas una multa a ese miembro. Necesitas algo de oro y el objetivo debe tener suficiente en su cartera.',
+          'Intenta robar parte de la cartera de otro miembro. Si un centinela te atrapa, le pagas una multa a ese miembro. Necesitas algunos créditos y el objetivo debe tener suficiente en su cartera.',
       },
       leaderboard: {
-        about: 'Ordena el servidor por oro total (cartera + banco), 10 miembros por página.',
+        about: 'Ordena el servidor por créditos totales (cartera + banco), 10 miembros por página.',
       },
       slots: {
         about:
-          'Una tragaperras de tres rodillos. Una pareja o tres iguales dan premio, y tres dragones ganan el bote.',
+          'Una tragaperras de tres rodillos. Una pareja o tres iguales dan premio, y tres monolitos ganan el bote.',
       },
       roulette: {
         about:
@@ -825,7 +827,7 @@ export const es: Messages = {
       },
       race: {
         about:
-          'Apuesta por uno de los 10 caballeros de una carrera de caballos. Ganas si tu caballero termina entre los 3 primeros, y puedes ver la carrera en directo.',
+          'Apuesta por uno de los 10 drones que corren por un conducto de servicio. Ganas si tu dron termina entre los 3 primeros, y puedes ver la carrera en directo.',
       },
       keno: {
         about:
@@ -837,7 +839,7 @@ export const es: Messages = {
       },
       loan: {
         about:
-          'Pide oro prestado, consulta tu préstamo o devuélvelo. Solo puedes tener un préstamo a la vez y el interés se suma al pedirlo.',
+          'Pide créditos prestados, consulta tu préstamo o devuélvelo. Solo puedes tener un préstamo a la vez y el interés se suma al pedirlo.',
       },
       shop: {
         about: 'Mira los objetos a la venta, 5 por página, con un botón Comprar en cada uno.',
@@ -859,7 +861,7 @@ export const es: Messages = {
       levels: { about: 'Ordena el servidor por experiencia, 10 miembros por página.' },
       config: {
         about:
-          'Abre el panel de ajustes: idioma, oro de los miembros, trabajo, ingresos por rol, la Rueda de la Fortuna, esperas de los juegos, objetos de la tienda, préstamos y la lotería — todo con botones, menús y formularios. Las acciones destructivas piden confirmación.',
+          'Abre el panel de ajustes: idioma, créditos de los miembros, trabajo, ingresos por rol, la Rueda de la Fortuna, esperas de los juegos, objetos de la tienda, préstamos y la lotería — todo con botones, menús y formularios. Las acciones destructivas piden confirmación.',
       },
     },
   },

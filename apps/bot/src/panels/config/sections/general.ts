@@ -16,7 +16,7 @@ function languageMenu(t: Translator, guildId: string): StringSelectMenuBuilder {
       (['auto', ...LANGUAGES] as const).map((value) => ({
         label: t(`config.languages.${value}`),
         description: value === 'auto' ? t('config.languages.autoDescription') : undefined,
-        emoji: value === 'auto' ? emojis.realm : translator(value)('meta.flag'),
+        emoji: value === 'auto' ? emojis.sector : translator(value)('meta.flag'),
         value,
         default: value === current,
       })),

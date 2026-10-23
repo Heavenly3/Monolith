@@ -29,7 +29,7 @@ function render(t: Translator, guildId: string, userId: string, page: number): u
   const card = new ui.Card('leaderboard')
     .header(ui.featureTitle(t, 'leaderboard'), t('leaderboard.subtitle'))
     .divider()
-    .text(lines.length ? lines.join('\n') : `${emojis.crest} ${t('leaderboard.empty')}`);
+    .text(lines.length ? lines.join('\n') : `${emojis.logo} ${t('leaderboard.empty')}`);
 
   if (pages > 1) {
     card.actions([

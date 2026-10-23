@@ -7,10 +7,10 @@ import { coins, emojis } from '../../ui/index.ts';
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('pay')
-    .setDescription('Give gold from your wallet to another member.')
+    .setDescription('Give credits from your wallet to another member.')
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
-      option.setName('user').setDescription('Who receives the gold').setRequired(true),
+      option.setName('user').setDescription('Who receives the credits').setRequired(true),
     )
     .addStringOption((option) =>
       option

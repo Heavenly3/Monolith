@@ -1,4 +1,4 @@
-// Overview of a server, members' gold, loans and the change history.
+// Overview of a server, members' credits, loans and the change history.
 import { accounts, audit, loans, raffle, shop, type MoneyAction } from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import { HttpError } from '../http.ts';

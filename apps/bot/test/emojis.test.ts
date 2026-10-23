@@ -6,20 +6,20 @@ afterEach(() => registerApplicationEmojis([]));
 
 describe('custom icons', () => {
   it('falls back to Unicode until icons are uploaded', () => {
-    expect(emojis.coin).toBe('🪙');
-    expect(reelEmojis.dragon).toBe('🐉');
+    expect(emojis.coin).toBe('💠');
+    expect(reelEmojis.monolith).toBe('⬛');
   });
 
   it('uses uploaded application emojis named mn_<name>', () => {
     const count = registerApplicationEmojis([
       { id: '1', name: 'mn_coin', animated: false },
-      { id: '2', name: 'mn_reel_dragon', animated: false },
+      { id: '2', name: 'mn_reel_monolith', animated: false },
       { id: '3', name: 'someone_else', animated: false },
     ]);
     expect(count).toBe(2);
     expect(emojis.coin).toBe('<:mn_coin:1>');
-    expect(reelEmojis.dragon).toBe('<:mn_reel_dragon:2>');
-    expect(emojis.bank).toBe('🗝️');
+    expect(reelEmojis.monolith).toBe('<:mn_reel_monolith:2>');
+    expect(emojis.bank).toBe('🏦');
   });
 
   it('every icon in the set maps to a known emoji', () => {

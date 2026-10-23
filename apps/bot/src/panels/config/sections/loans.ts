@@ -31,7 +31,7 @@ export const loansSection: Section = {
                 t,
                 10,
               )
-            : `${emojis.realm} ${t('loansAdmin.empty')}`
+            : `${emojis.sector} ${t('loansAdmin.empty')}`
         }`,
       ],
       rows: [

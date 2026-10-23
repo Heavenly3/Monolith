@@ -10,7 +10,7 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('work')
-    .setDescription('Work a quest and earn gold.')
+    .setDescription('Take a job in the Structure and earn credits.')
     .setContexts(InteractionContextType.Guild),
 
   async execute(interaction, { t, guildId }) {

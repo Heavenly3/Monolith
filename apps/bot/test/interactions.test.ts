@@ -106,7 +106,7 @@ async function suite(locale: string) {
     clearCooldowns();
     await cmd('slots', { opts: { bet: '500' } });
     await cmd('roulette', { opts: { bet: '500', on } });
-    await cmd('race', { opts: { bet: '1k', knight: 3 } });
+    await cmd('race', { opts: { bet: '1k', drone: 3 } });
     await cmd('keno', { opts: { bet: '500', numbers: '1 2 3 4 5 6 7 8 9 10' } });
   }
   await cmd('roulette', { opts: { bet: '500', on: 'straight' } });

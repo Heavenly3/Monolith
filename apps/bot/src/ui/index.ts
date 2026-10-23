@@ -39,7 +39,7 @@ const FEATURE_ICONS: Record<Feature, EmojiName> = {
   leaderboard: 'rank',
   slots: 'slots',
   roulette: 'roulette',
-  horserace: 'horse',
+  horserace: 'drone',
   keno: 'keno',
   raffle: 'raffle',
   loans: 'loan',

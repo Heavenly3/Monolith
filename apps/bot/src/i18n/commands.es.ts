@@ -25,30 +25,30 @@ export interface CommandTexts {
 export const commandsEs: Record<string, CommandTexts> = {
   balance: {
     name: 'saldo',
-    description: 'Mira tu oro (cartera y banco) o el de otro miembro.',
+    description: 'Mira tus créditos (cartera y banco) o el de otro miembro.',
     options: { user: { name: 'usuario', description: 'Miembro a consultar' } },
   },
   deposit: {
     name: 'depositar',
-    description: 'Pasa oro de tu cartera al banco, a salvo de ladrones.',
+    description: 'Pasa créditos de tu cartera al banco, a salvo de ladrones.',
     options: { amount },
   },
   withdraw: {
     name: 'retirar',
-    description: 'Pasa oro del banco a tu cartera.',
+    description: 'Pasa créditos del banco a tu cartera.',
     options: { amount },
   },
   pay: {
     name: 'pagar',
-    description: 'Da oro de tu cartera a otro miembro.',
-    options: { user: { name: 'usuario', description: 'Quién recibe el oro' }, amount },
+    description: 'Da créditos de tu cartera a otro miembro.',
+    options: { user: { name: 'usuario', description: 'Quién recibe los créditos' }, amount },
   },
-  work: { name: 'trabajar', description: 'Haz una misión y gana oro.' },
+  work: { name: 'trabajar', description: 'Haz un trabajo en la Estructura y gana créditos.' },
   collect: { name: 'cobrar', description: 'Cobra los ingresos de tus roles.' },
   wheel: { name: 'rueda', description: 'Gira la Rueda de la Fortuna para ganar un premio gratis.' },
   rob: {
     name: 'robar',
-    description: 'Intenta robar oro de la cartera de otro miembro. ¡Es arriesgado!',
+    description: 'Intenta robar créditos de la cartera de otro miembro. ¡Es arriesgado!',
     options: { user: { name: 'usuario', description: 'A quién robar' } },
   },
   leaderboard: { name: 'ranking', description: 'Mira a los miembros más ricos del servidor.' },
@@ -81,10 +81,10 @@ export const commandsEs: Record<string, CommandTexts> = {
   },
   race: {
     name: 'carrera',
-    description: 'Apuesta por un caballero en la carrera de caballos.',
+    description: 'Apuesta por un dron que corre por un conducto de servicio.',
     options: {
       bet,
-      knight: { name: 'caballero', description: 'El caballero por el que apuestas' },
+      drone: { name: 'dron', description: 'El dron por el que apuestas' },
     },
   },
   keno: {
@@ -117,13 +117,13 @@ export const commandsEs: Record<string, CommandTexts> = {
 
   loan: {
     name: 'prestamo',
-    description: 'Pide oro prestado y devuélvelo con interés.',
+    description: 'Pide créditos prestados y devuélvelos con interés.',
     subcommands: {
       request: {
         name: 'pedir',
         description: 'Pide un préstamo.',
         options: {
-          amount: { name: 'cantidad', description: 'Cuánto oro pedir — p. ej. 5000 o 10k' },
+          amount: { name: 'cantidad', description: 'Cuántos créditos pedir — p. ej. 5000 o 10k' },
         },
       },
       status: { name: 'estado', description: 'Mira cuánto debes.' },

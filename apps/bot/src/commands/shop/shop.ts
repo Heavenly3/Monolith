@@ -38,7 +38,7 @@ function render(t: Translator, guildId: string, page: number): ui.Card {
   if (products.length === 0) {
     return card
       .divider()
-      .text(`${emojis.candle} ${t('shop.empty')}`)
+      .text(`${emojis.signal} ${t('shop.empty')}`)
       .footer();
   }
 

@@ -71,7 +71,7 @@ function repay(
 export default defineCommand({
   data: new SlashCommandBuilder()
     .setName('loan')
-    .setDescription('Borrow gold and pay it back with interest.')
+    .setDescription('Borrow credits and pay them back with interest.')
     .setContexts(InteractionContextType.Guild)
     .addSubcommand((sub) =>
       sub
@@ -80,7 +80,7 @@ export default defineCommand({
         .addStringOption((option) =>
           option
             .setName('amount')
-            .setDescription('How much gold to borrow — e.g. 5000 or 10k')
+            .setDescription('How many credits to borrow — e.g. 5000 or 10k')
             .setRequired(true)
             .setMaxLength(20),
         ),

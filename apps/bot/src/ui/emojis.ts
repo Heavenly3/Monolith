@@ -7,64 +7,64 @@
 import type { SlotSymbol } from '@monolith/core';
 
 const FALLBACK = {
-  // Realm
-  crest: '⚜️',
-  castle: '🏰',
-  realm: '🗺️',
-  candle: '🕯️',
+  // The Structure
+  logo: '⬛',
+  structure: '🏗️',
+  sector: '🗺️',
+  signal: '📡',
   sparkle: '✨',
-  wisp: '🌫️',
-  bot: '🗿',
+  static: '📶',
+  bot: '🤖',
 
-  // Gold
-  coin: '🪙',
-  wallet: '👝',
-  bank: '🗝️',
+  // Credits
+  coin: '💠',
+  wallet: '💳',
+  bank: '🏦',
   deposit: '🔒',
   withdraw: '🔓',
   netWorth: '💎',
   money: '💰',
-  payment: '🤝',
-  card: '✍️',
+  payment: '🔁',
+  card: '🪪',
   rank: '🏆',
 
   // Levels
-  level: '🌟',
-  xp: '✨',
+  level: '🛗',
+  xp: '⚡',
   message: '💬',
   voice: '🎙️',
   levelUp: '⏫',
   modules: '🧩',
 
-  // Deeds
-  work: '📜',
-  collect: '👑',
-  wheel: '🎡',
-  rob: '🗡️',
-  busted: '⛓️',
+  // Work
+  work: '🔧',
+  collect: '🔌',
+  wheel: '⚙️',
+  rob: '🥷',
+  busted: '🚨',
 
-  // Moneylender
-  loan: '📃',
+  // Loans
+  loan: '💵',
   interest: '⚖️',
   due: '📅',
-  bill: '🪶',
+  bill: '🧾',
 
-  // Tavern games
-  slots: '🐉',
-  roulette: '🔮',
-  horse: '🏇',
+  // Games
+  slots: '🎰',
+  roulette: '🎡',
+  drone: '🛸',
   finish: '🏁',
-  keno: '🪨',
+  keno: '🔢',
   raffle: '🎟️',
   ticket: '🎫',
   bet: '🎲',
   win: '🎉',
   lose: '💀',
-  jackpot: '🔥',
+  jackpot: '☢️',
   up: '📈',
   down: '📉',
   refund: '↩️',
-  marker: '⭐',
+  marker: '🔷',
   spinning: '🌀',
   red: '🔴',
   black: '⚫',
@@ -73,20 +73,20 @@ const FALLBACK = {
   second: '🥈',
   third: '🥉',
 
-  // Market
+  // Shop
   shop: '🏪',
-  buy: '🧺',
-  inventory: '🎒',
-  role: '🛡️',
+  buy: '🛒',
+  inventory: '📦',
+  role: '🏷️',
   consumable: '🧪',
-  permanent: '⚔️',
-  description: '📜',
+  permanent: '🔩',
+  description: '📄',
 
   // Interface
-  config: '🏰',
-  edit: '🪶',
+  config: '🛠️',
+  edit: '✏️',
   reset: '🔄',
-  help: '📖',
+  help: '📘',
   clock: '⌛',
   cooldown: '⏳',
   previous: '◀️',
@@ -99,14 +99,14 @@ const FALLBACK = {
 
 export type EmojiName = keyof typeof FALLBACK;
 
-/** Faces of the Dragon's Hoard reels (the jackpot symbol lives in @monolith/core). */
+/** Faces of the slot machine reels (the jackpot symbol lives in @monolith/core). */
 const REEL_FALLBACK: Record<SlotSymbol, string> = {
-  sword: '🗡️',
-  shield: '🛡️',
-  ale: '🍺',
-  crown: '👑',
-  gem: '💎',
-  dragon: '🐉',
+  nut: '🔩',
+  gear: '⚙️',
+  chip: '💾',
+  cell: '🔋',
+  core: '⚛️',
+  monolith: '⬛',
 };
 
 /** Application emojis are named `mn_<name>` (reels: `mn_reel_<symbol>`). */

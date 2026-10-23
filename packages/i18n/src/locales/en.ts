@@ -16,7 +16,7 @@ export const en = {
     notEnoughBank: 'You only have {amount} in the bank.',
     emptyWallet: 'Your wallet is empty.',
     emptyBank: 'Your bank is empty.',
-    botsNoAccount: 'Bots do not have gold.',
+    botsNoAccount: 'Bots do not have credits.',
     cooldown: 'You can {action} again {time}.',
     serverOnly: 'Monolith only works inside a server.',
     adminOnly: 'Only administrators can do that.',
@@ -38,7 +38,7 @@ export const en = {
     leaderboard: 'Leaderboard',
     slots: 'Slots',
     roulette: 'Roulette',
-    horserace: 'Knight race',
+    horserace: 'Drone race',
     keno: 'Keno',
     raffle: 'Lottery',
     loans: 'Loans',
@@ -79,25 +79,25 @@ export const en = {
     disabledHint: 'Levels are turned off in this server.',
   },
 
-  status: 'Rolling dice in the tavern',
+  status: 'Wandering the Structure',
 
   balance: {
-    subtitle: 'Gold of {user}',
+    subtitle: 'Credits of {user}',
     rank: 'Rank **#{rank}**',
     activeLoan: 'Active loan',
     loanDue: '{amount} due {time}',
   },
 
   bank: {
-    depositTitle: 'Gold deposited',
+    depositTitle: 'Credits deposited',
     depositBody: 'You moved {amount} into the bank. Thieves cannot touch it there.',
-    withdrawTitle: 'Gold withdrawn',
+    withdrawTitle: 'Credits withdrawn',
     withdrawBody: 'You moved {amount} from the bank into your wallet.',
   },
 
   pay: {
     self: 'You cannot pay yourself.',
-    bot: 'Bots do not need gold.',
+    bot: 'Bots do not need credits.',
     title: 'Payment sent',
     body: '{sender} gave {amount} to {target}.',
   },
@@ -109,21 +109,21 @@ export const en = {
     fallback: '{message} You earned {amount}.',
     next: 'Next job',
     defaultMessages: [
-      'You drove a pack of wolves away from the village and were paid {amount}.',
-      'You escorted a merchant caravan through the Dark Wood and earned {amount}.',
-      'You forged a dozen swords for the castle guard and made {amount}.',
-      'You recovered a stolen relic from a goblin den and received {amount}.',
-      'You brewed potions for the court alchemist and earned {amount}.',
-      'You cleared the rats out of the tavern cellar and the innkeeper paid you {amount}.',
-      'You carried a sealed letter to the next kingdom and the messenger guild paid {amount}.',
-      'You stood guard on the city walls all night and earned {amount}.',
-      'You helped the farmers bring in the harvest before the storm and made {amount}.',
-      'You mapped a forgotten dungeon for the royal cartographer and received {amount}.',
-      'You won the archery contest at the village fair and took home {amount}.',
-      'You tamed a wild griffin for the royal stables and were rewarded {amount}.',
-      'You copied old spellbooks for the mage tower and earned {amount}.',
-      'You hunted the troll that haunted the old bridge and claimed a bounty of {amount}.',
-      'You played the lute in the tavern all evening and collected {amount} in tips.',
+      'You stripped copper from a collapsed conduit on stratum 12 and sold it for {amount}.',
+      'You repaired a flickering power relay for a settlement and were paid {amount}.',
+      'You mapped an uncharted sector of the Structure and sold the survey for {amount}.',
+      'You hauled scrap up three hundred floors of stairwell and earned {amount}.',
+      'You recovered a data core from a dead terminal and traded it for {amount}.',
+      'You cleared silicon growth from a ventilation shaft and made {amount}.',
+      'You escorted a caravan of scavengers through a dark corridor and earned {amount}.',
+      'You kept watch on a barricade through the night cycle and were paid {amount}.',
+      'You sealed a breach before the coolant flooded the level and received {amount}.',
+      'You decoded an old signal from the upper strata and sold the key for {amount}.',
+      'You rebuilt a water reclaimer for the residents of block 7 and earned {amount}.',
+      'You salvaged parts from a fallen construction drone and made {amount}.',
+      'You guided a lost explorer back to the lift shaft and were rewarded {amount}.',
+      'You rewired a cargo elevator that had been dead for decades and earned {amount}.',
+      'You scavenged a forgotten storage vault and sold the contents for {amount}.',
     ],
   },
 
@@ -139,7 +139,7 @@ export const en = {
     action: 'spin the wheel',
     empty: 'The wheel has no prizes yet. An administrator can add them in {command}.',
     spinning: 'The wheel is spinning... {label}',
-    won: 'Fortune smiles upon you: {label}!',
+    won: 'The wheel locks on {label}. Lucky signal!',
     lost: 'The wheel stopped on {label}. Better luck next time.',
     nothing: 'Nothing',
     next: 'Next spin',
@@ -150,17 +150,17 @@ export const en = {
     bot: 'Bots have no wallet to rob.',
     action: 'rob',
     thiefPoor: 'You need at least {amount} in your wallet to pay the fine if you get caught.',
-    targetPoor: '{target} has too little gold in their wallet to be worth it.',
+    targetPoor: '{target} has too few credits in their wallet to be worth it.',
     successTitle: 'Robbery successful',
-    successBody: 'You leapt from the shadows and stole {amount} from {target}.',
-    failTitle: 'Caught by the guards!',
-    failBody: 'The city guards caught you. You paid {target} {amount} as a fine.',
+    successBody: 'You slipped out of a maintenance duct and lifted {amount} from {target}.',
+    failTitle: 'Caught by a sentinel!',
+    failBody: 'A security sentinel caught you in the act. You paid {target} {amount} as a fine.',
     next: 'Next robbery',
   },
 
   leaderboard: {
     subtitle: 'The richest members of the server (wallet + bank).',
-    empty: 'No one has any gold yet. Be the first!',
+    empty: 'No one has any credits yet. Be the first!',
     you: 'you',
     yourRank: 'Your rank: #{rank}',
   },
@@ -179,11 +179,11 @@ export const en = {
 
   slots: {
     spinning: 'The reels are spinning...',
-    jackpot: 'JACKPOT! THE DRAGON AWAKENS!',
+    jackpot: 'JACKPOT! THE MONOLITH ALIGNS!',
     triple: 'Three of a kind!',
     pair: 'A pair!',
     none: 'No match',
-    paytable: 'Pair ×{pair} · Three of a kind ×{triple} · Three dragons ×{jackpot}',
+    paytable: 'Pair ×{pair} · Three of a kind ×{triple} · Three monoliths ×{jackpot}',
   },
 
   roulette: {
@@ -300,8 +300,8 @@ export const en = {
     useHint: 'Use it with {command}',
     alreadyOwned: 'You already have **{item}** — it can only be bought once.',
     cantAfford: 'That costs {total}, but you only have {wallet} in your wallet.',
-    refunded: '{reason} Your gold was returned.',
-    roleRejected: 'Discord did not let me give the role. Your gold was returned.',
+    refunded: '{reason} Your credits were returned.',
+    roleRejected: 'Discord did not let me give the role. Your credits were returned.',
     roleMissing: 'The role linked to this item no longer exists.',
     roleNotEditable: 'I cannot give {role} — move my role above it and give me **Manage Roles**.',
   },
@@ -434,7 +434,7 @@ export const en = {
     categories: {
       general: { label: 'General', description: 'Language of the bot' },
       modules: { label: 'Modules', description: 'Turn whole systems on or off' },
-      members: { label: 'Members', description: 'Change the gold of members and see totals' },
+      members: { label: 'Members', description: 'Change the credits of members and see totals' },
       work: { label: 'Work', description: 'Rewards, cooldown and jobs of /work' },
       collect: { label: 'Role income', description: 'Income per role and cooldown of /collect' },
       wheel: { label: 'Wheel of Fortune', description: 'Prizes and cooldown of /wheel' },
@@ -442,7 +442,10 @@ export const en = {
       shop: { label: 'Shop', description: 'Add or remove items for sale' },
       loans: { label: 'Loans', description: 'Loan terms and active loans' },
       raffle: { label: 'Lottery', description: 'Ticket price, starting prize and draw time' },
-      levels: { label: 'Experience', description: 'XP per message, cooldown and gold per level' },
+      levels: {
+        label: 'Experience',
+        description: 'XP per message, cooldown and credits per level',
+      },
       levelCurve: { label: 'Level curve', description: 'How much XP each level needs' },
       levelVoice: { label: 'Voice XP', description: 'Experience for time in voice channels' },
       levelAnnounce: {
@@ -476,7 +479,7 @@ export const en = {
         },
         games: { label: 'Games', help: 'Slots, roulette, race and keno.' },
         shop: { label: 'Shop', help: 'Shop, buying, inventory and using items.' },
-        loans: { label: 'Loans', help: 'Borrowing gold with interest.' },
+        loans: { label: 'Loans', help: 'Borrowing credits with interest.' },
         lottery: { label: 'Lottery', help: 'Numbered tickets and the shared prize.' },
         levels: { label: 'Levels', help: 'Experience for chatting, ranks and role rewards.' },
       },
@@ -484,7 +487,7 @@ export const en = {
         min: { label: 'Minimum XP per message', help: 'Least experience a message can give.' },
         max: { label: 'Maximum XP per message', help: 'Most experience a message can give.' },
         cooldown: { label: 'Cooldown', help: 'Time before messages give XP again (stops spam).' },
-        coins: { label: 'Gold per level', help: 'Gold paid on every level up (0 = none).' },
+        coins: { label: 'Credits per level', help: 'Credits paid on every level up (0 = none).' },
       },
       levelCurve: {
         curve: { label: 'Curve', help: 'How fast the XP needed grows from one level to the next.' },
@@ -519,8 +522,8 @@ export const en = {
         rewardMode: { label: 'Reward roles', help: 'Whether members keep lower reward roles.' },
       },
       work: {
-        min: { label: 'Minimum reward', help: 'Least gold /work can pay.' },
-        max: { label: 'Maximum reward', help: 'Most gold /work can pay.' },
+        min: { label: 'Minimum reward', help: 'Least credits /work can pay.' },
+        max: { label: 'Maximum reward', help: 'Most credits /work can pay.' },
         cooldown: { label: 'Cooldown', help: 'Time between two /work for the same member.' },
       },
       collect: {
@@ -539,7 +542,7 @@ export const en = {
       loans: {
         rate: { label: 'Interest (%)', help: 'Extra percentage added to every new loan.' },
         duration: { label: 'Term', help: 'Time before an unpaid loan is collected automatically.' },
-        max: { label: 'Maximum loan', help: 'Most gold a member can borrow.' },
+        max: { label: 'Maximum loan', help: 'Most credits a member can borrow.' },
       },
       raffle: {
         price: { label: 'Ticket price', help: 'Cost of one lottery ticket.' },
@@ -600,17 +603,17 @@ export const en = {
     cancelled: 'Cancelled.',
     clearAll: 'Remove all',
     members: {
-      adjust: 'Change gold',
-      accounts: 'Members with gold',
-      inWallets: 'Gold in wallets',
-      inBanks: 'Gold in banks',
-      hint: 'Add, remove or set the gold of any member, or reset it completely.',
-      modalTitle: 'Change gold',
+      adjust: 'Change credits',
+      accounts: 'Members with credits',
+      inWallets: 'Credits in wallets',
+      inBanks: 'Credits in banks',
+      hint: 'Add, remove or set the credits of any member, or reset them completely.',
+      modalTitle: 'Change credits',
       member: 'Member',
       action: 'Action',
       actions: {
-        add: 'Add gold',
-        remove: 'Remove gold',
+        add: 'Add credits',
+        remove: 'Remove credits',
         set: 'Set exact amount',
         reset: 'Reset everything',
       },
@@ -636,7 +639,7 @@ export const en = {
       removePlaceholder: 'Remove the income of a role…',
       modalTitle: 'Role income',
       roleLabel: 'Role',
-      amountLabel: 'Gold per collect',
+      amountLabel: 'Credits per collect',
       confirmClear: 'This removes the income of every role.',
     },
     wheel: {
@@ -646,7 +649,7 @@ export const en = {
       resetPrizes: 'Restore prizes',
       removePlaceholder: 'Remove a prize…',
       modalTitle: 'New prize',
-      amountLabel: 'Gold (0 = empty slot)',
+      amountLabel: 'Credits (0 = empty slot)',
       labelLabel: 'Custom name (optional)',
       confirmReset: 'This replaces every prize with the original ones.',
     },
@@ -690,10 +693,10 @@ export const en = {
     tip: 'Tip: use `/help command:<name>` to open one command directly.',
     home: {
       intro:
-        'Welcome to Monolith, an economy bot set in a medieval fantasy world. Work to earn gold, keep it safe in the bank, try your luck in the tavern games and spend it in the shop.',
+        'Welcome to Monolith, an economy and levels bot set inside an endless megastructure. Work the strata to earn credits, keep them safe in the bank, try your luck in the games and spend them in the shop.',
       quickStart: 'Your first steps',
       steps: [
-        '{work} to earn your first gold',
+        '{work} to earn your first credits',
         '{deposit} to keep it safe from thieves',
         '{slots} or another game to multiply it',
         '{shop} to spend it',
@@ -703,9 +706,9 @@ export const en = {
     sections: {
       economy: {
         label: 'Economy',
-        description: 'Earn, save and send gold',
+        description: 'Earn, save and send credits',
         intro:
-          'Your gold is kept in two places: the **wallet** (ready to spend, but others can rob it) and the **bank** (safe from robberies). Games, payments and the shop always use the wallet.',
+          'Your credits are kept in two places: the **wallet** (ready to spend, but others can rob it) and the **bank** (safe from robberies). Games, payments and the shop always use the wallet.',
       },
       games: {
         label: 'Games',
@@ -716,9 +719,9 @@ export const en = {
       },
       loans: {
         label: 'Loans',
-        description: 'Borrow gold and pay it back',
+        description: 'Borrow credits and pay them back',
         intro:
-          'Borrow gold now and pay it back with interest. If the loan reaches its deadline, it is taken automatically: first from your wallet, then from your bank, and whatever is missing leaves your wallet negative.',
+          'Borrow credits now and pay them back with interest. If the loan reaches its deadline, it is taken automatically: first from your wallet, then from your bank, and whatever is missing leaves your wallet negative.',
       },
       shop: {
         label: 'Shop',
@@ -730,13 +733,13 @@ export const en = {
         label: 'Levels',
         description: 'Experience, ranks and role rewards',
         intro:
-          'Members earn experience (XP) for chatting — once per cooldown so spam does not count — and optionally for time in voice. Enough XP raises your level; some levels give a role or gold.',
+          'Members earn experience (XP) for chatting — once per cooldown so spam does not count — and optionally for time in voice. Enough XP raises your level; some levels give a role or credits.',
       },
       admin: {
         label: 'Administration',
         description: 'The settings panel',
         intro:
-          'Everything is set up from {command}: language, members’ gold, work, role income, the Wheel of Fortune, game cooldowns, the shop, loans and the lottery. Only administrators see it — you can allow other roles in Server Settings → Integrations.',
+          'Everything is set up from {command}: language, members’ credits, work, role income, the Wheel of Fortune, game cooldowns, the shop, loans and the lottery. Only administrators see it — you can allow other roles in Server Settings → Integrations.',
       },
       config: {
         label: 'Settings',
@@ -745,7 +748,7 @@ export const en = {
       },
     },
     payouts: {
-      slots: 'Pair ×{pair} · Three of a kind ×{triple} · Three dragons ×{jackpot}',
+      slots: 'Pair ×{pair} · Three of a kind ×{triple} · Three monoliths ×{jackpot}',
       roulette: 'Colour, even/odd, low/high ×2 · Dozen or column ×3 · Single number ×36',
       horserace: '1st ×{first} · 2nd ×{second} · 3rd ×{third}',
       keno: 'Pick 1-10 numbers; 20 of 80 are drawn. More matches pay more — up to ×{max}.',
@@ -757,13 +760,15 @@ export const en = {
       },
       deposit: {
         about:
-          'Moves gold from your wallet into the bank. Gold in the bank cannot be stolen with /rob.',
+          'Moves credits from your wallet into the bank. Credits in the bank cannot be stolen with /rob.',
       },
-      withdraw: { about: 'Moves gold from the bank back into your wallet so you can spend it.' },
-      pay: { about: 'Gives gold from your wallet to another member instantly.' },
+      withdraw: {
+        about: 'Moves credits from the bank back into your wallet so you can spend them.',
+      },
+      pay: { about: 'Gives credits from your wallet to another member instantly.' },
       work: {
         about:
-          'Do a job (a short medieval quest) and earn a random reward within the configured range. There is a cooldown between jobs.',
+          'Do a job somewhere in the Structure (salvage, repairs, surveys…) and earn a random reward within the configured range. There is a cooldown between jobs.',
       },
       collect: {
         about:
@@ -775,14 +780,14 @@ export const en = {
       },
       rob: {
         about:
-          'Tries to steal part of another member’s wallet. If the guards catch you, you pay a fine to that member. You need some gold yourself, and the target must have enough in their wallet.',
+          'Tries to steal part of another member’s wallet. If a sentinel catches you, you pay a fine to that member. You need some credits yourself, and the target must have enough in their wallet.',
       },
       leaderboard: {
-        about: 'Ranks the server by total gold (wallet + bank), 10 members per page.',
+        about: 'Ranks the server by total credits (wallet + bank), 10 members per page.',
       },
       slots: {
         about:
-          'A slot machine with three reels. A pair or three of a kind pay out, and three dragons win the jackpot.',
+          'A slot machine with three reels. A pair or three of a kind pay out, and three monoliths win the jackpot.',
       },
       roulette: {
         about:
@@ -790,7 +795,7 @@ export const en = {
       },
       race: {
         about:
-          'Bet on one of 10 knights in a horse race. You win if your knight finishes in the top 3, and you can watch the race live.',
+          'Bet on one of 10 drones racing through a service conduit. You win if your drone finishes in the top 3, and you can watch the race live.',
       },
       keno: {
         about:
@@ -802,7 +807,7 @@ export const en = {
       },
       loan: {
         about:
-          'Borrow gold, check your loan or pay it back. You can only have one loan at a time, and the interest is added when you borrow.',
+          'Borrow credits, check your loan or pay it back. You can only have one loan at a time, and the interest is added when you borrow.',
       },
       shop: { about: 'Browse the items for sale, 5 per page, with a Buy button on each one.' },
       buy: { about: 'Buys one or more of an item. Start typing to search the shop.' },
@@ -821,7 +826,7 @@ export const en = {
       levels: { about: 'Ranks the server by experience, 10 members per page.' },
       config: {
         about:
-          'Opens the settings panel: language, members’ gold, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans and the lottery — all with buttons, menus and forms. Destructive actions ask for confirmation.',
+          'Opens the settings panel: language, members’ credits, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans and the lottery — all with buttons, menus and forms. Destructive actions ask for confirmation.',
       },
     },
   },

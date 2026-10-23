@@ -1,23 +1,24 @@
-// The custom icon set: which game-icons.net icon and colour each emoji uses.
-// Icons by Lorc, Delapouite, Skoll, Caro Asercion and Sbed, from
-// https://game-icons.net — licensed under CC BY 3.0.
-// `npm run emojis` renders them and uploads them as application emojis.
+// The custom icon set: which Tabler icon (https://tabler.io/icons, MIT) and
+// colour each emoji uses. Names are outline icons; "filled/<name>" uses the
+// filled variant. `npm run emojis` renders them on a graphite tile and uploads
+// them as application emojis.
 import type { SlotSymbol } from '@monolith/core';
 import type { EmojiName } from './emojis.ts';
 
-const GOLD = '#e8b64c';
-const SILVER = '#cfd6df';
-const BRONZE = '#cd7f32';
-const RED = '#e05a4f';
-const GREEN = '#62c46a';
-const BLUE = '#6aa7e0';
-const PURPLE = '#b088e0';
-const BROWN = '#c99560';
-const ORANGE = '#ef8a3c';
-const TEAL = '#4fc0b4';
+const CYAN = '#5ec8e5';
+const AMBER = '#e8a23c';
+const STEEL = '#b6c0ca';
+const RUST = '#d0763a';
+const RED = '#e5534b';
+const GREEN = '#58c98a';
+const VIOLET = '#9c8cf5';
+const TEAL = '#3cc7b4';
+const GOLD = '#f0c04a';
+const SILVER = '#d5dbe1';
+const BRONZE = '#c9824a';
 
 export interface IconSpec {
-  /** Path inside the game-icons repository, without .svg */
+  /** Tabler icon name ("cpu", "filled/star") or one drawn for Monolith ("custom/monolith"). */
   icon: string;
   color: string;
 }
@@ -25,88 +26,88 @@ export interface IconSpec {
 /** Emojis without an entry keep their Unicode fallback (e.g. roulette colours). */
 export const ICONS: Partial<Record<EmojiName, IconSpec>> & Record<`reel_${SlotSymbol}`, IconSpec> =
   {
-    crest: { icon: 'delapouite/knight-banner', color: GOLD },
-    castle: { icon: 'lorc/castle', color: SILVER },
-    realm: { icon: 'caro-asercion/heraldic-sun', color: GOLD },
-    candle: { icon: 'lorc/candle-flame', color: ORANGE },
-    sparkle: { icon: 'delapouite/sparkles', color: GOLD },
-    wisp: { icon: 'lorc/moon', color: SILVER },
-    bot: { icon: 'delapouite/robot-helmet', color: SILVER },
+    logo: { icon: 'custom/monolith', color: CYAN },
+    structure: { icon: 'building-skyscraper', color: STEEL },
+    sector: { icon: 'grid-dots', color: CYAN },
+    signal: { icon: 'antenna', color: AMBER },
+    sparkle: { icon: 'sparkles', color: CYAN },
+    static: { icon: 'scan', color: STEEL },
+    bot: { icon: 'robot', color: STEEL },
 
-    coin: { icon: 'delapouite/two-coins', color: GOLD },
-    wallet: { icon: 'lorc/shiny-purse', color: BROWN },
-    bank: { icon: 'skoll/open-treasure-chest', color: GOLD },
-    deposit: { icon: 'lorc/locked-chest', color: GOLD },
-    withdraw: { icon: 'skoll/open-chest', color: GOLD },
-    netWorth: { icon: 'lorc/gems', color: TEAL },
-    money: { icon: 'delapouite/coins-pile', color: GOLD },
-    payment: { icon: 'lorc/swap-bag', color: GOLD },
-    card: { icon: 'lorc/wax-seal', color: RED },
-    rank: { icon: 'lorc/trophy', color: GOLD },
-    level: { icon: 'delapouite/upgrade', color: GREEN },
-    xp: { icon: 'delapouite/star-formation', color: GOLD },
-    message: { icon: 'delapouite/chat-bubble', color: SILVER },
-    voice: { icon: 'delapouite/microphone', color: BLUE },
-    levelUp: { icon: 'delapouite/progression', color: GREEN },
-    modules: { icon: 'lorc/cog', color: SILVER },
+    coin: { icon: 'coin', color: AMBER },
+    wallet: { icon: 'wallet', color: AMBER },
+    bank: { icon: 'vault', color: STEEL },
+    deposit: { icon: 'lock', color: CYAN },
+    withdraw: { icon: 'lock-open', color: AMBER },
+    netWorth: { icon: 'diamond', color: CYAN },
+    money: { icon: 'coins', color: AMBER },
+    payment: { icon: 'arrows-exchange', color: CYAN },
+    card: { icon: 'id', color: STEEL },
+    rank: { icon: 'trophy', color: GOLD },
+    level: { icon: 'elevator', color: CYAN },
+    xp: { icon: 'bolt', color: CYAN },
+    message: { icon: 'message-circle', color: STEEL },
+    voice: { icon: 'microphone', color: CYAN },
+    levelUp: { icon: 'stairs-up', color: GREEN },
+    modules: { icon: 'puzzle', color: STEEL },
 
-    work: { icon: 'lorc/scroll-unfurled', color: BROWN },
-    collect: { icon: 'lorc/crown-coin', color: GOLD },
-    wheel: { icon: 'caro-asercion/tarot-10-wheel-of-fortune', color: PURPLE },
-    rob: { icon: 'delapouite/robber-mask', color: RED },
-    busted: { icon: 'lorc/handcuffs', color: SILVER },
+    work: { icon: 'tool', color: RUST },
+    collect: { icon: 'plug-connected', color: AMBER },
+    wheel: { icon: 'settings', color: VIOLET },
+    rob: { icon: 'mask', color: RED },
+    busted: { icon: 'alarm', color: RED },
 
-    loan: { icon: 'delapouite/scroll-quill', color: BROWN },
-    interest: { icon: 'lorc/scales', color: SILVER },
-    due: { icon: 'delapouite/calendar', color: ORANGE },
-    bill: { icon: 'lorc/quill-ink', color: SILVER },
+    loan: { icon: 'cash', color: STEEL },
+    interest: { icon: 'gauge', color: AMBER },
+    due: { icon: 'calendar-due', color: RUST },
+    bill: { icon: 'receipt', color: STEEL },
 
-    slots: { icon: 'lorc/dragon-head', color: RED },
-    roulette: { icon: 'lorc/crystal-ball', color: PURPLE },
-    horse: { icon: 'skoll/mounted-knight', color: SILVER },
-    finish: { icon: 'delapouite/checkered-flag', color: SILVER },
-    keno: { icon: 'lorc/rune-stone', color: TEAL },
-    raffle: { icon: 'delapouite/ticket', color: GOLD },
-    ticket: { icon: 'delapouite/ticket', color: GOLD },
-    bet: { icon: 'delapouite/dice-six-faces-five', color: SILVER },
-    win: { icon: 'delapouite/laurels-trophy', color: GOLD },
-    lose: { icon: 'lorc/broken-skull', color: SILVER },
-    jackpot: { icon: 'lorc/dragon-breath', color: ORANGE },
-    up: { icon: 'delapouite/thumb-up', color: GREEN },
-    down: { icon: 'delapouite/thumb-down', color: RED },
-    refund: { icon: 'lorc/return-arrow', color: BLUE },
-    marker: { icon: 'delapouite/round-star', color: GOLD },
-    spinning: { icon: 'lorc/cycle', color: PURPLE },
-    first: { icon: 'lorc/medal', color: GOLD },
-    second: { icon: 'lorc/medal', color: SILVER },
-    third: { icon: 'lorc/medal', color: BRONZE },
+    slots: { icon: 'cherry', color: RED },
+    roulette: { icon: 'roulette', color: VIOLET },
+    drone: { icon: 'drone', color: CYAN },
+    finish: { icon: 'flag-3', color: SILVER },
+    keno: { icon: 'grid-dots', color: TEAL },
+    raffle: { icon: 'ticket', color: AMBER },
+    ticket: { icon: 'ticket', color: AMBER },
+    bet: { icon: 'poker-chip', color: STEEL },
+    win: { icon: 'podium', color: GOLD },
+    lose: { icon: 'skull', color: STEEL },
+    jackpot: { icon: 'radioactive', color: AMBER },
+    up: { icon: 'thumb-up', color: GREEN },
+    down: { icon: 'thumb-down', color: RED },
+    refund: { icon: 'arrow-back-up', color: CYAN },
+    marker: { icon: 'star', color: GOLD },
+    spinning: { icon: 'refresh', color: VIOLET },
+    first: { icon: 'medal', color: GOLD },
+    second: { icon: 'medal', color: SILVER },
+    third: { icon: 'medal', color: BRONZE },
 
-    shop: { icon: 'delapouite/shop', color: BROWN },
-    buy: { icon: 'delapouite/coins', color: GOLD },
-    inventory: { icon: 'delapouite/backpack', color: BROWN },
-    role: { icon: 'delapouite/imperial-crown', color: GOLD },
-    consumable: { icon: 'delapouite/health-potion', color: RED },
-    permanent: { icon: 'delapouite/griffin-shield', color: SILVER },
-    description: { icon: 'lorc/tied-scroll', color: BROWN },
+    shop: { icon: 'building-store', color: GREEN },
+    buy: { icon: 'shopping-cart', color: AMBER },
+    inventory: { icon: 'package', color: STEEL },
+    role: { icon: 'badge', color: CYAN },
+    consumable: { icon: 'flask-2', color: GREEN },
+    permanent: { icon: 'shield-check', color: STEEL },
+    description: { icon: 'file-description', color: STEEL },
 
-    config: { icon: 'delapouite/throne-king', color: GOLD },
-    edit: { icon: 'lorc/quill', color: SILVER },
-    reset: { icon: 'lorc/recycle', color: BLUE },
-    help: { icon: 'delapouite/spell-book', color: PURPLE },
-    clock: { icon: 'lorc/hourglass', color: SILVER },
-    cooldown: { icon: 'lorc/empty-hourglass', color: ORANGE },
-    success: { icon: 'delapouite/check-mark', color: GREEN },
-    error: { icon: 'sbed/cancel', color: RED },
-    warning: { icon: 'lorc/hazard-sign', color: ORANGE },
-    info: { icon: 'delapouite/info', color: BLUE },
+    config: { icon: 'adjustments-horizontal', color: CYAN },
+    edit: { icon: 'pencil', color: STEEL },
+    reset: { icon: 'refresh', color: CYAN },
+    help: { icon: 'book-2', color: CYAN },
+    clock: { icon: 'hourglass-high', color: STEEL },
+    cooldown: { icon: 'hourglass-empty', color: RUST },
+    success: { icon: 'circle-check', color: GREEN },
+    error: { icon: 'circle-x', color: RED },
+    warning: { icon: 'alert-triangle', color: AMBER },
+    info: { icon: 'info-circle', color: CYAN },
 
-    reel_sword: { icon: 'lorc/broadsword', color: SILVER },
-    reel_shield: { icon: 'delapouite/cross-shield', color: BLUE },
-    reel_ale: { icon: 'lorc/beer-stein', color: ORANGE },
-    reel_crown: { icon: 'delapouite/jewel-crown', color: GOLD },
-    reel_gem: { icon: 'delapouite/fire-gem', color: TEAL },
-    reel_dragon: { icon: 'lorc/dragon-head', color: RED },
+    reel_nut: { icon: 'nut', color: STEEL },
+    reel_gear: { icon: 'settings', color: RUST },
+    reel_chip: { icon: 'cpu', color: CYAN },
+    reel_cell: { icon: 'battery-4', color: GREEN },
+    reel_core: { icon: 'atom', color: VIOLET },
+    reel_monolith: { icon: 'custom/monolith', color: AMBER },
   };
 
-/** Background tile of every icon (dark leather), readable on light and dark themes. */
-export const ICON_TILE = { fill: '#2a211b', radius: 104 };
+/** Tile behind every icon: graphite panel with a thin edge, readable on light and dark themes. */
+export const ICON_TILE = { fill: '#15181c', edge: '#2c333b', radius: 22 };

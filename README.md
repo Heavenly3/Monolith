@@ -1,6 +1,6 @@
 # ⚜️ Monolith
 
-**Monolith** is an economy and casino bot for Discord with a medieval fantasy theme. Members work to earn gold, keep it in the bank, bet it in four tavern games, take loans, play the lottery and spend it in a role shop — all through clear slash commands, Discord's **Components V2** layout and a hand-picked icon set. Every server has its own economy.
+**Monolith** is an economy, levels and casino bot for Discord set inside an endless megastructure. Members work the strata to earn credits, keep them in the bank, bet them in four games, take loans, play the lottery, level up by chatting and spend their credits in a role shop — all through clear slash commands, Discord's **Components V2** layout and a custom icon set. Every server has its own economy.
 
 ![CI](https://github.com/Heavenly3/Monolith/actions/workflows/ci.yml/badge.svg)
 ![Node](https://img.shields.io/badge/node-%E2%89%A522.18-339933?logo=node.js&logoColor=white)
@@ -27,13 +27,13 @@
 ## ✨ Features
 
 - **One economy per server** — balances, shop, settings and leaderboard are separate in every server the bot joins.
-- **Clear commands, medieval flavour** — commands have the names people expect (`/balance`, `/work`, `/slots`, `/shop`...), while texts, colours and custom icons from [game-icons.net](https://game-icons.net) set a medieval fantasy mood.
+- **Clear commands, megastructure mood** — commands have the names people expect (`/balance`, `/work`, `/slots`, `/shop`...), while texts, a graphite-and-cyan palette and custom icons based on [Tabler Icons](https://tabler.io/icons) set an industrial, brutalist mood.
 - **English and Spanish** — replies follow each member's Discord language, or a language chosen by the admins. Command names, options and descriptions are translated in the Discord client too (`/saldo`, `/trabajar`, `/tragaperras`...).
-- **Levels** — experience for chatting (with an anti-spam cooldown) and for time in voice, three level curves with an adjustable difficulty, XP multipliers per role and channel, channels and roles without XP, role rewards that stack or replace each other, gold per level and level-up messages in the same channel, a fixed channel or by DM. `/rank` shows a progress card and `/levels` the ranking.
+- **Levels** — experience for chatting (with an anti-spam cooldown) and for time in voice, three level curves with an adjustable difficulty, XP multipliers per role and channel, channels and roles without XP, role rewards that stack or replace each other, credits per level and level-up messages in the same channel, a fixed channel or by DM. `/rank` shows a progress card and `/levels` the ranking.
 - **Modules** — turn the economy, games, shop, loans, lottery or levels on and off per server; turned-off commands tell members so.
-- **Settings panel (`/config`)** — set up everything without typing commands, with checkboxes, option lists and channel and role pickers: language, modules, members' gold and XP, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans, the lottery and every level setting. Destructive actions ask for confirmation, and every change is recorded in an audit log.
+- **Settings panel (`/config`)** — set up everything without typing commands, with checkboxes, option lists and channel and role pickers: language, modules, members' credits and XP, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans, the lottery and every level setting. Destructive actions ask for confirmation, and every change is recorded in an audit log.
 - **Built-in guide (`/help`)** — explains every command, option, game payout and setting, with live values and clickable commands.
-- **Fair tavern games** — Dragon's Hoard, Wizard's Roulette, the Royal Joust and Oracle's Runes, with animations, cryptographically secure randomness and a house edge verified by tests.
+- **Fair games** — slots, roulette, a drone race and keno, with animations, cryptographically secure randomness and a house edge verified by tests.
 - **Transaction ledger** — every coin that moves is recorded with its reason and resulting balance.
 - **Nothing to compile** — strict TypeScript that Node runs directly, with data in Node's built-in SQLite.
 
@@ -61,12 +61,12 @@ Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/r
 
 All games return the bet multiplied by the number shown (bet included).
 
-| Game           | Payouts                                                              |
-| -------------- | -------------------------------------------------------------------- |
-| 🎰 Slots       | Pair ×1.5 · Three of a kind ×10 · Three dragons ×25                  |
-| 🎡 Roulette    | Colour / even / odd / low / high ×2 · Dozen / column ×3 · Number ×36 |
-| 🏇 Knight race | 1st ×6 · 2nd ×2 · 3rd ×1 (bet back)                                  |
-| 🔢 Keno        | Depends on how many numbers you pick (1–10) and how many match       |
+| Game          | Payouts                                                              |
+| ------------- | -------------------------------------------------------------------- |
+| 🎰 Slots      | Pair ×1.5 · Three of a kind ×10 · Three monoliths ×25                |
+| 🎡 Roulette   | Colour / even / odd / low / high ×2 · Dozen / column ×3 · Number ×36 |
+| 🛸 Drone race | 1st ×6 · 2nd ×2 · 3rd ×1 (bet back)                                  |
+| 🔢 Keno       | Depends on how many numbers you pick (1–10) and how many match       |
 
 Rules and paytables live in [packages/core/src/config/games.ts](packages/core/src/config/games.ts).
 
@@ -123,13 +123,13 @@ Rules and paytables live in [packages/core/src/config/games.ts](packages/core/sr
 
 - **In Discord:** everything is set up from `/config`, per server. _General → Language_ chooses between automatic (each member's Discord language), English or Spanish.
 - **Defaults:** [packages/core/src/config/defaults.ts](packages/core/src/config/defaults.ts) holds the starting value of every setting.
-- **Look and feel:** [apps/bot/src/ui/theme.ts](apps/bot/src/ui/theme.ts) (name and colours), [apps/bot/src/ui/emojis.ts](apps/bot/src/ui/emojis.ts) (Unicode fallbacks) and [apps/bot/src/ui/icons.ts](apps/bot/src/ui/icons.ts) (which game-icons.net icon and colour each emoji uses). After changing `icons.ts`, run `npm run emojis -- --force`.
+- **Look and feel:** [apps/bot/src/ui/theme.ts](apps/bot/src/ui/theme.ts) (name and colours), [apps/bot/src/ui/emojis.ts](apps/bot/src/ui/emojis.ts) (Unicode fallbacks) and [apps/bot/src/ui/icons.ts](apps/bot/src/ui/icons.ts) (which Tabler icon and colour each emoji uses). After changing `icons.ts`, run `npm run emojis -- --force`.
 
 ---
 
 ## 🌐 Web dashboard
 
-Manage a server from the browser: modules, every setting, jobs, wheel prizes, role income, members' gold and XP, level rewards and multipliers (with a live preview of the level curve), the shop, loans and the change history, in English or Spanish. Messages such as level-ups are written with variable buttons and a Discord-like preview, so nobody types `{placeholders}`. It uses the same rules as `/config`, so every change applies in Discord at once. Built with Vue 3 and PrimeVue 4.
+Manage a server from the browser: modules, every setting, jobs, wheel prizes, role income, members' credits and XP, level rewards and multipliers (with a live preview of the level curve), the shop, loans and the change history, in English or Spanish. Messages such as level-ups are written with variable buttons and a Discord-like preview, so nobody types `{placeholders}`. It uses the same rules as `/config`, so every change applies in Discord at once. Built with Vue 3 and PrimeVue 4.
 
 **Set up once:** in the Developer Portal open **OAuth2**, copy the **Client Secret** into `.env` as `CLIENT_SECRET` and add `http://localhost:3000/auth/callback` under **Redirects**.
 
@@ -225,23 +225,23 @@ Buttons, menus and forms use custom IDs shaped `command:action:args`; the router
 
 ## 🧪 Development
 
-| Script                   | Description                                                    |
-| ------------------------ | -------------------------------------------------------------- |
-| `npm start`              | Start the bot.                                                 |
-| `npm run dev`            | Start with auto-restart on file changes.                       |
-| `npm run api`            | Start the dashboard API (`npm run dev:api` to auto-restart).   |
-| `npm run web`            | Start the dashboard in development mode.                       |
-| `npm run build:web`      | Build the dashboard; `npm run api` then serves it.             |
-| `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional).    |
-| `npm run check`          | Typecheck, lint, translations and tests — run before a PR.     |
-| `npm test`               | Run the test suite (Vitest).                                   |
-| `npm run typecheck`      | Type-check the whole monorepo.                                 |
-| `npm run lint`           | Lint with ESLint.                                              |
-| `npm run format`         | Format with Prettier.                                          |
-| `npm run check:i18n`     | Check Discord command translations and help pages.             |
-| `npm run emojis`         | Render and upload the icon set (`-- --force`, `-- --preview`). |
-| `npm run seed:shop`      | Add starter wares to a server's market.                        |
-| `npm run migrate:legacy` | Import data from the original v1 bot.                          |
+| Script                   | Description                                                                  |
+| ------------------------ | ---------------------------------------------------------------------------- |
+| `npm start`              | Start the bot.                                                               |
+| `npm run dev`            | Start with auto-restart on file changes.                                     |
+| `npm run api`            | Start the dashboard API (`npm run dev:api` to auto-restart).                 |
+| `npm run web`            | Start the dashboard in development mode.                                     |
+| `npm run build:web`      | Build the dashboard; `npm run api` then serves it.                           |
+| `npm run deploy`         | Register commands (`-- --global` or `-- --clear` optional).                  |
+| `npm run check`          | Typecheck, lint, translations and tests — run before a PR.                   |
+| `npm test`               | Run the test suite (Vitest).                                                 |
+| `npm run typecheck`      | Type-check the whole monorepo.                                               |
+| `npm run lint`           | Lint with ESLint.                                                            |
+| `npm run format`         | Format with Prettier.                                                        |
+| `npm run check:i18n`     | Check Discord command translations and help pages.                           |
+| `npm run emojis`         | Render and upload the icon set (`-- --force`, `-- --prune`, `-- --preview`). |
+| `npm run seed:shop`      | Add starter wares to a server's market.                                      |
+| `npm run migrate:legacy` | Import data from the original v1 bot.                                        |
 
 The tests cover the economy, loans, raffle, shop, migrations, the exact house edge of every game, and an end-to-end run of every command, button, menu and form in both languages. GitHub Actions runs `npm run check` on every push.
 
@@ -263,6 +263,6 @@ The tests cover the economy, loans, raffle, shop, migrations, the exact house ed
 
 Released under the [MIT License](LICENSE).
 
-Icons by [Lorc](https://lorcblog.blogspot.com), [Delapouite](https://delapouite.com), Skoll, Caro Asercion and Sbed, from [game-icons.net](https://game-icons.net), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). They are recoloured and placed on tiles by `npm run emojis`. Contributions are welcome — run `npm run check` before opening a pull request.
+Icons from [Tabler Icons](https://tabler.io/icons) (MIT), recoloured and placed on tiles by `npm run emojis`; the Monolith mark is drawn for this project. Fonts: Chakra Petch, Inter and JetBrains Mono (SIL Open Font License). Contributions are welcome — run `npm run check` before opening a pull request.
 
 **Monolith** — fortune favours the bold! ⚔️

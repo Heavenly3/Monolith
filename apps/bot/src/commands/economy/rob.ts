@@ -9,7 +9,7 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('rob')
-    .setDescription("Try to steal gold from another member's wallet. Risky!")
+    .setDescription("Try to steal credits from another member's wallet. Risky!")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
       option.setName('user').setDescription('Who to rob').setRequired(true),

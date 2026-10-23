@@ -17,7 +17,7 @@ function track(order: number[], chosen: number, progress: number): string {
       // Horses that finish higher run slightly faster.
       const speed = 1 - order.indexOf(horse) * 0.06;
       const position = Math.min(TRACK_LENGTH, Math.round(TRACK_LENGTH * progress * speed));
-      const lane = `${'·'.repeat(TRACK_LENGTH - position)}${emojis.horse}${'·'.repeat(position)}`;
+      const lane = `${'·'.repeat(TRACK_LENGTH - position)}${emojis.drone}${'·'.repeat(position)}`;
       const marker = horse === chosen ? ` ${emojis.marker}` : '';
       return `\`${String(horse + 1).padStart(2)}\` ${emojis.finish}${lane}${marker}`;
     })
@@ -29,7 +29,7 @@ export default defineCommand({
 
   data: new SlashCommandBuilder()
     .setName('race')
-    .setDescription('Bet on a knight in the horse race.')
+    .setDescription('Bet on a drone racing through a service conduit.')
     .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
@@ -40,8 +40,8 @@ export default defineCommand({
     )
     .addIntegerOption((option) =>
       option
-        .setName('knight')
-        .setDescription('The knight you bet on')
+        .setName('drone')
+        .setDescription('The drone you bet on')
         .setRequired(true)
         .addChoices(
           ...HORSERACE.horses.map((_, index) => ({ name: horseName(index), value: index })),
@@ -50,7 +50,7 @@ export default defineCommand({
 
   async execute(interaction, { t, guildId }) {
     const { user } = interaction;
-    const chosen = interaction.options.getInteger('knight', true);
+    const chosen = interaction.options.getInteger('drone', true);
     const bet = placeBet(guildId, user, interaction.options.getString('bet', true), 'horserace');
     if (!bet.ok) return interaction.reply(betError(t, 'horserace', bet));
 

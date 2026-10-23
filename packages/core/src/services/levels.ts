@@ -27,7 +27,7 @@ export interface XpGain {
   before: number;
   after: number;
   levelsGained: number;
-  /** Gold paid for the new levels (levels.coinsPerLevel). */
+  /** Credits paid for the new levels (levels.coinsPerLevel). */
   coins: number;
 }
 
@@ -104,7 +104,7 @@ export function isIgnored(guildId: string, { channelId, roleIds }: ActivityConte
   return roleIds.some((id) => ignoredRoles.has(id));
 }
 
-/** Adds (or removes, with a negative amount) XP and, if asked, pays gold for new levels. */
+/** Adds (or removes, with a negative amount) XP and, if asked, pays credits for new levels. */
 function changeXp(
   guildId: string,
   user: UserRef,
@@ -197,7 +197,7 @@ export function awardVoice(
 export const XP_ACTIONS = ['add', 'remove', 'setXp', 'setLevel', 'reset'] as const;
 export type XpAction = (typeof XP_ACTIONS)[number];
 
-/** Admin change of a member's experience. Gold is only paid for levels earned by chatting. */
+/** Admin change of a member's experience. Credits are only paid for levels earned by chatting. */
 export function adjust(guildId: string, user: UserRef, action: XpAction, amount: number): XpGain {
   const current = getMember(guildId, user.id).xp;
   const curve = curveOf(guildId);

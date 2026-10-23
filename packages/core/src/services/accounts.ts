@@ -244,7 +244,7 @@ export interface Adjustment {
 }
 
 /**
- * Admin change of a member's gold, shared by the bot panel and the dashboard.
+ * Admin change of a member's credits, shared by the bot panel and the dashboard.
  * `amount` is ignored for "reset".
  */
 export function adjust(

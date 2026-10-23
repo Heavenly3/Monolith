@@ -12,27 +12,27 @@ if (!guildId) {
 
 const ITEMS: NewProduct[] = [
   {
-    name: 'War Horse',
+    name: 'Grav Boots',
     price: 500,
-    description: 'A strong and loyal steed raised in the royal stables.',
+    description: 'Magnetic soles for walking the outer walls of the Structure.',
     consumable: false,
   },
   {
-    name: 'Dwarven Sword',
+    name: 'Plasma Cutter',
     price: 300,
-    description: 'A sharp blade forged deep under the mountain.',
+    description: 'Slices through bulkheads and scrap alike.',
     consumable: false,
   },
   {
-    name: 'Healing Potion',
+    name: 'Med Patch',
     price: 50,
-    description: 'Mends your wounds after a rough quest.',
+    description: 'Seals your wounds after a rough shift.',
     consumable: true,
   },
   {
-    name: 'Torch',
+    name: 'Glow Stick',
     price: 20,
-    description: 'Lights the way through dark dungeons.',
+    description: 'Lights the way through dead corridors.',
     consumable: true,
   },
 ];
