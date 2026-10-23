@@ -1,6 +1,14 @@
 // Levels of a server: role rewards, XP multipliers and members' experience.
 // Reward roles are applied by the bot the next time each member earns XP.
-import { audit, levels, progressFor, type LevelReward, type XpAction } from '@monolith/core';
+import {
+  audit,
+  levels,
+  progressFor,
+  type ImportMode,
+  type LevelReward,
+  type XpAction,
+  type XpRecord,
+} from '@monolith/core';
 import type { FastifyInstance } from 'fastify';
 import { HttpError } from '../http.ts';
 import { scope } from './scope.ts';
@@ -222,6 +230,94 @@ export async function levelRoutes(app: FastifyInstance): Promise<void> {
         amount,
       });
       return { ok: true, xp: gain.xp, level: gain.after };
+    },
+  );
+
+  app.get(
+    '/levels/export',
+    {
+      schema: {
+        querystring: {
+          type: 'object',
+          properties: { format: { enum: ['json', 'csv'], default: 'json' } },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { guild } = scope(request);
+      const { format } = request.query as { format: 'json' | 'csv' };
+      const rows = levels.exportAll(guild.id);
+      const name = `levels-${guild.id}-${new Date().toISOString().slice(0, 10)}.${format}`;
+      reply.header('content-disposition', `attachment; filename="${name}"`);
+      if (format === 'json') {
+        reply.type('application/json');
+        return JSON.stringify(
+          {
+            guildId: guild.id,
+            exportedAt: new Date().toISOString(),
+            members: rows.map(({ rank, userId, username, xp, level, messages, voiceMinutes }) => ({
+              rank,
+              userId,
+              username,
+              xp,
+              level,
+              messages,
+              voiceMinutes,
+            })),
+          },
+          null,
+          2,
+        );
+      }
+      // Usernames can contain commas and quotes; quote every text cell.
+      const cell = (value: string | null) => `"${(value ?? '').replaceAll('"', '""')}"`;
+      const lines = rows.map((r) =>
+        [r.rank, r.userId, cell(r.username), r.xp, r.level, r.messages, r.voiceMinutes].join(','),
+      );
+      reply.type('text/csv; charset=utf-8');
+      return ['rank,userId,username,xp,level,messages,voiceMinutes', ...lines].join('\n');
+    },
+  );
+
+  app.post(
+    '/levels/import',
+    {
+      bodyLimit: 16 * 1024 * 1024,
+      schema: {
+        body: {
+          type: 'object',
+          required: ['mode', 'records'],
+          additionalProperties: false,
+          properties: {
+            mode: { enum: [...levels.IMPORT_MODES] },
+            records: {
+              type: 'array',
+              maxItems: levels.MAX_IMPORT,
+              items: {
+                type: 'object',
+                required: ['userId', 'xp'],
+                properties: {
+                  userId: { type: 'string', pattern: SNOWFLAKE },
+                  xp: { type: 'integer', minimum: 0, maximum: Number.MAX_SAFE_INTEGER },
+                  messages: { type: 'integer', minimum: 0 },
+                  voiceMinutes: { type: 'integer', minimum: 0 },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    async (request) => {
+      const { guild, viewer } = scope(request);
+      const { mode, records } = request.body as { mode: ImportMode; records: XpRecord[] };
+      const count = levels.importXp(guild.id, records, mode);
+      audit.record(guild.id, viewer.session.userId, 'levelMembers.import', {
+        source: 'web',
+        mode,
+        count,
+      });
+      return { ok: true, count };
     },
   );
 

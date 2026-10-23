@@ -360,7 +360,22 @@ describe('levels', () => {
     ]);
     expect((await call('DELETE', guildUrl('/levels/messages/10'))).statusCode).toBe(200);
 
-    expect((await call('POST', guildUrl('/levels/reset'))).json()).toEqual({ ok: true, count: 1 });
+    const csv = await call('GET', guildUrl('/levels/export?format=csv'));
+    expect(csv.headers['content-type']).toContain('text/csv');
+    expect(csv.body.split('\n')[1]).toBe(`1,${BOB},"bob",${board.members[0].xp},3,0,0`);
+    const backup = (await call('GET', guildUrl('/levels/export'))).json();
+    expect(backup.members[0]).toMatchObject({ userId: BOB, level: 3 });
+    expect(
+      (
+        await call('POST', guildUrl('/levels/import'), {
+          mode: 'add',
+          records: [{ userId: ALICE, xp: 50 }],
+        })
+      ).json(),
+    ).toEqual({ ok: true, count: 1 });
+    expect(levels.leaderboardSize(ADMIN_GUILD)).toBe(2);
+
+    expect((await call('POST', guildUrl('/levels/reset'))).json()).toEqual({ ok: true, count: 2 });
     expect(levels.leaderboardSize(ADMIN_GUILD)).toBe(0);
   });
 });

@@ -29,7 +29,13 @@
 - **One economy per server** — balances, shop, settings and leaderboard are separate in every server the bot joins.
 - **Clear commands, megastructure mood** — commands have the names people expect (`/balance`, `/work`, `/slots`, `/shop`...), while texts, a graphite-and-cyan palette and custom icons based on [Tabler Icons](https://tabler.io/icons) set an industrial, brutalist mood.
 - **English and Spanish** — replies follow each member's Discord language, or a language chosen by the admins. Command names, options and descriptions are translated in the Discord client too (`/saldo`, `/trabajar`, `/tragaperras`...).
-- **Levels** — experience for chatting (with an anti-spam cooldown) and for time in voice, three level curves with an adjustable difficulty, XP multipliers per role and channel, channels and roles without XP, role rewards that stack or replace each other, credits per level and level-up messages in the same channel, a fixed channel or by DM. `/rank` shows a progress card and `/levels` the ranking.
+- **Levels** — experience for chatting (with an anti-spam cooldown) and for time in voice, and credits per level.
+  - **Curve:** three built-in curves or your own cubic formula, with difficulty, rounding and a maximum level.
+  - **Multipliers:** per role, channel or whole category, with rules for how several roles combine (largest, smallest, highest role, added or multiplied) and how role and channel combine.
+  - **Role rewards:** stack or replace each other; single rewards can be kept when replaced or given only once. Roles are checked on every XP gain, only on level change, or never.
+  - **Announcements:** in the same channel, a fixed channel or by DM, as a card or plain text, with or without a mention; every N levels up to a level, or only reward levels; special messages for exact levels.
+  - **Commands:** `/rank` shows progress, the multiplier in the channel, messages left and the cooldown, and fixes drifted roles; `/calculate` estimates the XP and chat a level takes; right-click a member → **Apps → View rank**; `/levels` shows the ranking.
+  - **Web:** an optional public ranking page, and XP export (JSON, CSV) and import, including backups from other level bots keyed by user id.
 - **Modules** — turn the economy, games, shop, loans, lottery or levels on and off per server; turned-off commands tell members so.
 - **Settings panel (`/config`)** — set up everything without typing commands, with checkboxes, option lists and channel and role pickers: language, modules, members' credits and XP, work, role income, the Wheel of Fortune, game cooldowns, shop items, loans, the lottery and every level setting. Destructive actions ask for confirmation, and every change is recorded in an audit log.
 - **Built-in guide (`/help`)** — explains every command, option, game payout and setting, with live values and clickable commands.
@@ -50,10 +56,10 @@ Amounts accept `500`, `1,500`, `2.5k`, `1m`, `half`/`mitad` or `all`/`todo`. Use
 | 📃 Loans   | `/loan request` `/loan status` `/loan repay`                                               |
 | 🏪 Shop    | `/shop` `/buy` `/use` `/inventory`                                                         |
 | ⚙️ Admin   | `/config`                                                                                  |
-| 🌟 Levels  | `/rank` `/levels`                                                                          |
+| 🌟 Levels  | `/rank` `/calculate` `/levels`                                                             |
 | 📖 Help    | `/help`                                                                                    |
 
-Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/rango` `/niveles` `/ayuda` `/config`.
+Members with Discord in Spanish see the Spanish names: `/saldo` `/depositar` `/retirar` `/pagar` `/trabajar` `/cobrar` `/rueda` `/robar` `/ranking` `/tragaperras` `/ruleta` `/carrera` `/keno` `/loteria` `/prestamo` `/tienda` `/comprar` `/usar` `/inventario` `/rango` `/calcular` `/niveles` `/ayuda` `/config`.
 
 `/config` is hidden from members without the **Administrator** permission. You can grant it to other roles in **Server Settings → Integrations → Monolith**.
 
@@ -153,21 +159,21 @@ When it runs on a public address, set `API_URL` and `WEB_URL` in `.env` to that 
 
 Only server owners and administrators can manage a server, and only when the bot is in it. Sessions are stored as hashes, changes must come from the dashboard's own address, and every change is recorded in the audit log.
 
-| Area     | Endpoints (under `/api/guilds/:guildId`)                                                                                                                  |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Overview | `GET /` — totals, top members, loans, shop and lottery                                                                                                    |
-| Settings | `GET /settings` · `PUT /settings/:category` · `POST /settings/:category/reset`                                                                            |
-| Work     | `GET/POST /work/messages` · `DELETE /work/messages/:index` · `POST /work/reset`                                                                           |
-| Wheel    | `GET/POST /wheel` · `DELETE /wheel/:index` · `POST /wheel/reset`                                                                                          |
-| Members  | `GET /members` · `GET /members/:userId` · `POST /members/:userId/adjust`                                                                                  |
-| Shop     | `GET/POST /shop` · `DELETE /shop/:itemId` · `GET /roles`                                                                                                  |
-| Income   | `GET /role-income` · `PUT/DELETE /role-income/:roleId`                                                                                                    |
-| Loans    | `GET /loans` · `DELETE /loans/:userId` · `DELETE /loans`                                                                                                  |
-| Levels   | `GET /levels` · `POST /levels/rewards` · `PUT /levels/multipliers` · `GET /levels/members` · `POST /levels/members/:userId/adjust` · `POST /levels/reset` |
-| Channels | `GET /channels`                                                                                                                                           |
-| History  | `GET /audit`                                                                                                                                              |
+| Area     | Endpoints (under `/api/guilds/:guildId`)                                                                                                                                                                                                                             |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overview | `GET /` — totals, top members, loans, shop and lottery                                                                                                                                                                                                               |
+| Settings | `GET /settings` · `PUT /settings/:category` · `POST /settings/:category/reset`                                                                                                                                                                                       |
+| Work     | `GET/POST /work/messages` · `DELETE /work/messages/:index` · `POST /work/reset`                                                                                                                                                                                      |
+| Wheel    | `GET/POST /wheel` · `DELETE /wheel/:index` · `POST /wheel/reset`                                                                                                                                                                                                     |
+| Members  | `GET /members` · `GET /members/:userId` · `POST /members/:userId/adjust`                                                                                                                                                                                             |
+| Shop     | `GET/POST /shop` · `DELETE /shop/:itemId` · `GET /roles`                                                                                                                                                                                                             |
+| Income   | `GET /role-income` · `PUT/DELETE /role-income/:roleId`                                                                                                                                                                                                               |
+| Loans    | `GET /loans` · `DELETE /loans/:userId` · `DELETE /loans`                                                                                                                                                                                                             |
+| Levels   | `GET /levels` · `POST /levels/rewards` · `PUT /levels/multipliers` · `PUT /levels/messages` · `DELETE /levels/messages/:level` · `GET /levels/members` · `POST /levels/members/:userId/adjust` · `GET /levels/export` · `POST /levels/import` · `POST /levels/reset` |
+| Channels | `GET /channels`                                                                                                                                                                                                                                                      |
+| History  | `GET /audit`                                                                                                                                                                                                                                                         |
 
-Outside a server: `GET /auth/login`, `POST /auth/logout`, `GET /api/me` and `GET /api/guilds`.
+Outside a server: `GET /auth/login`, `POST /auth/logout`, `GET /api/me` and `GET /api/guilds`. Without logging in: `GET /api/public/:guildId/leaderboard`, only for servers that turned the public ranking on.
 
 ---
 

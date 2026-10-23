@@ -186,6 +186,34 @@ describe('role rewards', () => {
   });
 });
 
+describe('backups', () => {
+  const ID = '123456789012345678';
+
+  it('exports and imports experience in every mode', () => {
+    levels.adjust(GUILD, alice, 'setXp', 300);
+    expect(levels.exportAll(GUILD)).toMatchObject([{ rank: 1, userId: alice.id, xp: 300 }]);
+
+    expect(
+      levels.importXp(
+        GUILD,
+        [
+          { userId: ID, xp: 255 },
+          { userId: 'bad', xp: 5 },
+        ],
+        'add',
+      ),
+    ).toBe(1);
+    expect(levels.getMember(GUILD, ID)).toMatchObject({ xp: 255, level: 2 });
+    levels.importXp(GUILD, [{ userId: ID, xp: 100 }], 'add');
+    expect(levels.getMember(GUILD, ID).xp).toBe(355);
+    levels.importXp(GUILD, [{ userId: ID, xp: 100 }], 'highest');
+    expect(levels.getMember(GUILD, ID).xp).toBe(355);
+    levels.importXp(GUILD, [{ userId: ID, xp: 100, messages: 9 }], 'replace');
+    expect(levels.getMember(GUILD, ID)).toMatchObject({ xp: 100, messages: 9 });
+    expect(levels.getMember(GUILD, alice.id).xp).toBe(0);
+  });
+});
+
 describe('announcements', () => {
   it('follows every, until and rewards only', () => {
     settings.set(GUILD, 'levels.announceEvery', 5);

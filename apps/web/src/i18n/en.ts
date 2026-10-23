@@ -153,6 +153,26 @@ export const en = {
     moduleOff: 'The {module} module is turned off: these settings do nothing until you turn it on.',
     enableModule: 'Turn on',
   },
+  backup: {
+    title: 'Backup and import',
+    subtitle:
+      "Download everyone's experience as JSON or CSV, or load a backup — also from other level bots that export by user id.",
+    exportJson: 'Export JSON',
+    exportCsv: 'Export CSV',
+    import: 'Import experience',
+    unreadable: 'No members with a user id and XP were found in this file.',
+    found: '{count} members with {xp} XP in total.',
+    mode: 'How to load it',
+    modes: { highest: 'Keep the highest', add: 'Add', replace: 'Replace all' },
+    modeHints: {
+      highest: "Each member keeps whichever is larger: their current XP or the file's.",
+      add: "The file's XP is added on top of what members already have.",
+      replace: "Everyone's experience is erased first; only the file remains.",
+    },
+    replaceWarning: 'Members not in the file lose all their experience.',
+    confirm: 'Load',
+    done: 'Experience loaded for {count} members.',
+  },
   public: {
     eyebrow: 'Level ranking',
     count: '{count} members with experience',

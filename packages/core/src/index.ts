@@ -39,12 +39,14 @@ export type { NewProduct } from './services/shop.ts';
 export type { WebSession } from './services/webSessions.ts';
 export type {
   ActivityContext,
+  ImportMode,
   LevelRow,
   MemberLevel,
   MultiplierBreakdown,
   RoleChanges,
   XpAction,
   XpGain,
+  XpRecord,
 } from './services/levels.ts';
 export type { Adjustment, MoneyAction } from './services/accounts.ts';
 export type { FormResult } from './services/settingsForm.ts';

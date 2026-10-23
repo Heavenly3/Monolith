@@ -313,6 +313,64 @@ export function recalculate(guildId: string): void {
   });
 }
 
+// ── Backups ─────────────────────────────────────────────────────────────────
+
+export interface XpRecord {
+  userId: string;
+  xp: number;
+  messages?: number;
+  voiceMinutes?: number;
+}
+
+export const IMPORT_MODES = ['replace', 'add', 'highest'] as const;
+export type ImportMode = (typeof IMPORT_MODES)[number];
+export const MAX_IMPORT = 100_000;
+
+/** Every member with experience, most first, for a backup or another bot. */
+export function exportAll(guildId: string): (LevelRow & { rank: number })[] {
+  return leaderboard(guildId, MAX_IMPORT).map((row, index) => ({ ...row, rank: index + 1 }));
+}
+
+/**
+ * Loads experience from a backup. "replace" wipes the server first, "add"
+ * sums it to the current XP and "highest" keeps whichever is larger. Levels
+ * are recomputed with the current curve; no credits are paid.
+ */
+export function importXp(guildId: string, records: XpRecord[], mode: ImportMode): number {
+  const valid = records.filter(
+    (r) => /^\d{17,20}$/.test(r.userId) && Number.isSafeInteger(r.xp) && r.xp >= 0,
+  );
+  const curve = curveOf(guildId);
+  transaction(() => {
+    if (mode === 'replace') resetAll(guildId);
+    for (const record of valid) {
+      const current = getMember(guildId, record.userId);
+      const xp =
+        mode === 'add'
+          ? current.xp + record.xp
+          : mode === 'highest'
+            ? Math.max(current.xp, record.xp)
+            : record.xp;
+      run(
+        `INSERT INTO member_levels (guild_id, user_id, xp, level, messages, voice_minutes, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT (guild_id, user_id) DO UPDATE SET xp = excluded.xp, level = excluded.level,
+           messages = MAX(messages, excluded.messages),
+           voice_minutes = MAX(voice_minutes, excluded.voice_minutes),
+           updated_at = excluded.updated_at`,
+        guildId,
+        record.userId,
+        xp,
+        levelFor(xp, curve),
+        Math.max(0, Math.floor(record.messages ?? 0)),
+        Math.max(0, Math.floor(record.voiceMinutes ?? 0)),
+        Date.now(),
+      );
+    }
+  });
+  return valid.length;
+}
+
 // ── Rankings ────────────────────────────────────────────────────────────────
 
 export function leaderboard(guildId: string, limit: number, offset = 0): LevelRow[] {
